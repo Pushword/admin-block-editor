@@ -50,8 +50,6 @@ editorjs:
 
     image:
       className: Image
-      config:
-        endpoint: / # TODO
 
     delimiter:
       className: Delimiter

@@ -25,6 +25,7 @@ import Undo from "editorjs-undo";
 export class editorJs {
     constructor() {
         if (typeof editorjsConfigs === "undefined") return;
+        console.log(editorjsConfigs);
 
         this.editors = [];
         this.editorjsTools = // className only
@@ -55,6 +56,16 @@ export class editorJs {
     }
 
     initEditor(config) {
+        if (typeof config.tools.image !== "undefined") {
+            console.log("erase config");
+            config.tools.image.config = {
+                endpoints: {
+                    byFile: "/admin/media/block",
+                    byUrl: "/admin/media/block",
+                },
+                //onSelectFile: function (object) { console.log(object);  },
+            };
+        }
         if (typeof config.holder === "undefined") {
             return;
         }
@@ -84,10 +95,10 @@ export class editorJs {
 
         // drag'n drop
         config.onReady = function () {
-            console.log("here");
             new DragDrop(editor);
             new Undo({ editor });
         };
+
         var editor = new EditorJS(
             Object.assign(config, {
                 onReady: function () {
