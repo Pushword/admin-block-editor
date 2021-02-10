@@ -20,7 +20,7 @@ import {
 } from "editorjs-inline-tool";
 import DragDrop from "editorjs-drag-drop";
 import Undo from "editorjs-undo";
-import Button from "editorjs-button";
+//import Button from "editorjs-button"; // this one break sonata design
 
 export class editorJs {
     constructor() {
@@ -48,7 +48,7 @@ export class editorJs {
                       StyleInlineTool: StyleInlineTool,
                       Paragraph: Paragraph,
                       Table: Table,
-                      Button: Button,
+                      //Button: Button,
                   };
 
         editorjsConfigs.forEach((config) => this.initEditor(config));
