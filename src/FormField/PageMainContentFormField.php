@@ -1,16 +1,16 @@
 <?php
 
-namespace Pushword\AdminBlockEditor;
+namespace Pushword\AdminBlockEditor\FormField;
 
 use Pushword\Admin\FormField\AbstractField;
+use Pushword\AdminBlockEditor\Form\EditorjsType;
 use Sonata\AdminBundle\Form\FormMapper;
-use Tbmatuka\EditorjsBundle\Form\EditorjsType;
 
 class PageMainContentFormField extends AbstractField
 {
     public function formField(FormMapper $formMapper): FormMapper
     {
-        return $formMapper->add('jsMainContent', EditorjsType::class, [
+        return $formMapper->add('mainContent', EditorjsType::class, [
             'required' => false,
             'label' => ' ',
             'help_html' => true,
