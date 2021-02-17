@@ -4,14 +4,14 @@
   {% set editor_id = 'editorjs_' ~ id %}
     <input type="hidden" data-editorjs="{{ editor_id }}" {{ block('widget_attributes') }} value="{{ value }}">
     <div id="{{ editor_id }}" data-input-id="{{ id }}" class="editorjs-holder"></div>
+  </div>
 
+  <div style="padding-top:10px; text-align:center">
+    <a href="#" onclick="toggleEditorJs('{{ editor_id }}')">{{ svg('unlock', {'style': 'width:12px', fill: 'currentColor'}) }}</a>
+</div>
     <script>
-        if (typeof editorjsConfigs === 'undefined') {
-            var editorjsConfigs = [];
-        }
 
-        editorjsConfigs.push(
-{
+var editorjsConfig = {
     name: "default",
     initialBlock: "paragraph",
     placeholder: "...",
@@ -115,12 +115,17 @@
             name: "button",
             className: "Button",
         },
+        pages_list: {
+            name: "pages_list",
+            className: "PagesList",
+            config: {
+                preview: "/admin/page/block/{{ attr.page_id }}",
+            }
+        },
     },
     data: {{ (value ? value : "{}")|raw }},
     logLevel: "ERROR",
     holder: "{{ editor_id }}",
-}
-        );
+};
     </script>
-  </div>
 {% endblock %}

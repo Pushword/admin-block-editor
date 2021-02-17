@@ -17,6 +17,7 @@ class PageMainContentFormField extends AbstractField
             'help' => 'admin.page.mainContent.help',
             'mapped' => false,
             'data' => $this->admin->getSubject()->jsMainContent,
+            'attr' => ['page_id' => $this->admin->getSubject()->getId()],
         ]);
     }
 }

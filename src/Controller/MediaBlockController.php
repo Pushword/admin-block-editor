@@ -94,7 +94,7 @@ final class MediaBlockController extends AbstractController
             return $this->getMediaFromMedia(substr($content['url'], \strlen('/media/default/')));
         }
 
-        $this->getMediaFileFromUrl($content['url']);
+        return $this->getMediaFileFromUrl($content['url']);
     }
 
     private function getMediaFromMedia(string $media): MediaInterface

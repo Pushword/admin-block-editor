@@ -428,7 +428,7 @@
       function srcAbstractMakeJs(module, __webpack_exports__, __webpack_require__) {
         "use strict";
 
-        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return make; });\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar make = /*#__PURE__*/function () {\n  function make() {\n    _classCallCheck(this, make);\n  }\n\n  _createClass(make, null, [{\n    key: \"element\",\n    value: function element(tagName) {\n      var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;\n      var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n      var el = document.createElement(tagName);\n\n      if (Array.isArray(classNames)) {\n        var _el$classList;\n\n        (_el$classList = el.classList).add.apply(_el$classList, _toConsumableArray(classNames));\n      } else if (classNames) {\n        el.classList.add(classNames);\n      }\n\n      for (var attrName in attributes) {\n        el.setAttribute(attrName, attributes[attrName]);\n      }\n\n      return el;\n    }\n  }, {\n    key: \"input\",\n    value: function input(tool, inputClass, placeHolder) {\n      var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';\n      var input = make.element('div', inputClass, {\n        contentEditable: !tool.readOnly\n      });\n      input.dataset.placeholder = tool.api.i18n.t(placeHolder);\n      if (value) input.textContent = value;\n      return input;\n    }\n  }]);\n\n  return make;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/Make.js?");
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return make; });\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar make = /*#__PURE__*/function () {\n  function make() {\n    _classCallCheck(this, make);\n  }\n\n  _createClass(make, [{\n    key: \"createPaginateCheckbox\",\n\n    /** I just keep this here in case i need a checkbox */\n    value: function createPaginateCheckbox() {\n      var checkboxWrapper = make.element(\"div\", [\"checkbox\", \"cdx-checkbox\"]);\n      var label = make.element(\"label\");\n      label.textContent = \"Paginate\";\n      this.nodes.paginateCheckbox = document.createElement(\"input\");\n      this.nodes.paginateCheckbox.type = \"checkbox\";\n      this.nodes.paginateCheckbox.value = this._data.display || 0;\n      checkboxWrapper.appendChild(this.nodes.paginateCheckbox);\n      checkboxWrapper.appendChild(label);\n      return checkboxWrapper;\n    }\n  }], [{\n    key: \"element\",\n    value: function element(tagName) {\n      var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;\n      var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n      var el = document.createElement(tagName);\n\n      if (Array.isArray(classNames)) {\n        var _el$classList;\n\n        (_el$classList = el.classList).add.apply(_el$classList, _toConsumableArray(classNames));\n      } else if (classNames) {\n        el.classList.add(classNames);\n      }\n\n      for (var attrName in attributes) {\n        el.setAttribute(attrName, attributes[attrName]);\n      }\n\n      return el;\n    }\n  }, {\n    key: \"input\",\n    value: function input(tool, inputClass, placeHolder) {\n      var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : \"\";\n      var input = make.element(\"div\", inputClass, {\n        contentEditable: !tool.readOnly\n      });\n      input.dataset.placeholder = tool.api.i18n.t(placeHolder);\n      if (value) input.textContent = value;\n      return input;\n    }\n  }, {\n    key: \"option\",\n    value: function option(element, value) {\n      var text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;\n      var option = document.createElement(\"option\");\n      option.text = text ? text : value;\n      option.value = value;\n      element.add(option);\n    }\n  }, {\n    key: \"options\",\n    value: function options(element, values) {\n      values.forEach(function (value) {\n        return make.option(element, value);\n      });\n    }\n  }]);\n\n  return make;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/Make.js?");
         /***/
       },
 
@@ -872,7 +872,7 @@
 
       /***/
       function node_modulesCssLoaderDistCjsJsSrcAbstractIndexCss(module, exports, __webpack_require__) {
-        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".hiden {\\n  display: none !important;\\n}\\n\\n.cdx-input-labeled,\\n.cdx-quote__caption {\\n  padding-left: 38px;\\n  background-repeat: no-repeat;\\n  background-position: 10px;\\n  white-space: nowrap;\\n  text-overflow: ellipsis;\\n  overflow: hidden;\\n}\\n\\n.cdx-quote__caption {\\n  background-image: url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"%23707684\\\" viewBox=\\\"0 0 16 16\\\">   <path d=\\\"M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z\\\"/> </svg>');\\n}\\n\\n.cdx-input-editable {\\n  margin: 5px 0;\\n}\\n.cdx-input-editable[contentEditable='true'][data-placeholder]::before {\\n  position: absolute !important;\\n  content: attr(data-placeholder);\\n  color: #707684;\\n  font-weight: normal;\\n  display: none;\\n}\\n\\n.cdx-input-editable[contentEditable='true'][data-placeholder]:empty::before {\\n  display: block;\\n}\\n\\n.cdx-input-editable[contentEditable='true'][data-placeholder]:empty:focus::before {\\n  display: none;\\n}\\n\\n/** Toggler **/\\n\\n.toggle-wrapper {\\n  color: #707684;\\n}\\n\\n.toggle-input {\\n  display: none;\\n}\\n\\n.toggle-label {\\n  width: 17px;\\n  height: 17px;\\n  position: absolute;\\n  right: -30px;\\n  top: 30px;\\n  display: inline-block;\\n  box-sizing: border-box;\\n  background: #eff2f5 center / 70% no-repeat\\n    url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" viewBox=\\\"0 0 16 16\\\"><path d=\\\"M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z\\\"/><path fill-rule=\\\"evenodd\\\" d=\\\"M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z\\\"/></svg>');\\n  cursor: pointer;\\n  transition: 0.5s;\\n}\\n\\n.toggle-input:checked + .toggle-label {\\n  opacity: 0.3;\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/index.css?./node_modules/css-loader/dist/cjs.js");
+        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".hiden {\\n    display: none !important;\\n}\\n.text-right {\\n    text-align: right;\\n}\\n.cdx-input-labeled,\\n.cdx-quote__caption {\\n    padding-left: 38px;\\n    background-repeat: no-repeat;\\n    background-position: 10px;\\n    white-space: nowrap;\\n    text-overflow: ellipsis;\\n    overflow: hidden;\\n}\\n\\n.cdx-quote__caption {\\n    background-image: url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"%23707684\\\" viewBox=\\\"0 0 16 16\\\">   <path d=\\\"M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z\\\"/> </svg>');\\n}\\n\\n.cdx-input-editable {\\n    margin: 5px 0;\\n}\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]::before {\\n    position: absolute !important;\\n    content: attr(data-placeholder);\\n    color: #707684;\\n    font-weight: normal;\\n    display: none;\\n}\\n\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]:empty::before {\\n    display: block;\\n}\\n\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]:empty:focus::before {\\n    display: none;\\n}\\n\\n.flex .cdx-input {\\n    margin: 0 5px;\\n    position: relative;\\n}\\n\\n.cdx-select {\\n    border: 1px solid rgba(201, 201, 204, 0.48);\\n    border-radius: 5px;\\n    padding: 5px 8px;\\n    outline: none;\\n    width: 100%;\\n    box-sizing: border-box;\\n}\\n.cdx-checkbox {\\n    margin-top: 15px;\\n    margin-left: 25px;\\n}\\n\\n/** Toggler **/\\n\\n.toggle-wrapper {\\n    color: #707684;\\n}\\n\\n.toggle-input {\\n    display: none;\\n}\\n\\n.toggle-label {\\n    width: 17px;\\n    height: 17px;\\n    position: absolute;\\n    right: -30px;\\n    top: 30px;\\n    display: inline-block;\\n    box-sizing: border-box;\\n    background: #eff2f5 center / 70% no-repeat\\n        url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" viewBox=\\\"0 0 16 16\\\"><path d=\\\"M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z\\\"/><path fill-rule=\\\"evenodd\\\" d=\\\"M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z\\\"/></svg>');\\n    cursor: pointer;\\n    transition: 0.5s;\\n}\\n\\n.toggle-input:checked + .toggle-label {\\n    opacity: 0.3;\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/index.css?./node_modules/css-loader/dist/cjs.js");
         /***/
       },
 
@@ -950,7 +950,7 @@
       function srcAbstractMakeJs(module, __webpack_exports__, __webpack_require__) {
         "use strict";
 
-        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return make; });\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar make = /*#__PURE__*/function () {\n  function make() {\n    _classCallCheck(this, make);\n  }\n\n  _createClass(make, null, [{\n    key: \"element\",\n    value: function element(tagName) {\n      var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;\n      var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n      var el = document.createElement(tagName);\n\n      if (Array.isArray(classNames)) {\n        var _el$classList;\n\n        (_el$classList = el.classList).add.apply(_el$classList, _toConsumableArray(classNames));\n      } else if (classNames) {\n        el.classList.add(classNames);\n      }\n\n      for (var attrName in attributes) {\n        el.setAttribute(attrName, attributes[attrName]);\n      }\n\n      return el;\n    }\n  }, {\n    key: \"input\",\n    value: function input(tool, inputClass, placeHolder) {\n      var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';\n      var input = make.element('div', inputClass, {\n        contentEditable: !tool.readOnly\n      });\n      input.dataset.placeholder = tool.api.i18n.t(placeHolder);\n      if (value) input.textContent = value;\n      return input;\n    }\n  }]);\n\n  return make;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/Make.js?");
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return make; });\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar make = /*#__PURE__*/function () {\n  function make() {\n    _classCallCheck(this, make);\n  }\n\n  _createClass(make, [{\n    key: \"createPaginateCheckbox\",\n\n    /** I just keep this here in case i need a checkbox */\n    value: function createPaginateCheckbox() {\n      var checkboxWrapper = make.element(\"div\", [\"checkbox\", \"cdx-checkbox\"]);\n      var label = make.element(\"label\");\n      label.textContent = \"Paginate\";\n      this.nodes.paginateCheckbox = document.createElement(\"input\");\n      this.nodes.paginateCheckbox.type = \"checkbox\";\n      this.nodes.paginateCheckbox.value = this._data.display || 0;\n      checkboxWrapper.appendChild(this.nodes.paginateCheckbox);\n      checkboxWrapper.appendChild(label);\n      return checkboxWrapper;\n    }\n  }], [{\n    key: \"element\",\n    value: function element(tagName) {\n      var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;\n      var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n      var el = document.createElement(tagName);\n\n      if (Array.isArray(classNames)) {\n        var _el$classList;\n\n        (_el$classList = el.classList).add.apply(_el$classList, _toConsumableArray(classNames));\n      } else if (classNames) {\n        el.classList.add(classNames);\n      }\n\n      for (var attrName in attributes) {\n        el.setAttribute(attrName, attributes[attrName]);\n      }\n\n      return el;\n    }\n  }, {\n    key: \"input\",\n    value: function input(tool, inputClass, placeHolder) {\n      var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : \"\";\n      var input = make.element(\"div\", inputClass, {\n        contentEditable: !tool.readOnly\n      });\n      input.dataset.placeholder = tool.api.i18n.t(placeHolder);\n      if (value) input.textContent = value;\n      return input;\n    }\n  }, {\n    key: \"option\",\n    value: function option(element, value) {\n      var text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;\n      var option = document.createElement(\"option\");\n      option.text = text ? text : value;\n      option.value = value;\n      element.add(option);\n    }\n  }, {\n    key: \"options\",\n    value: function options(element, values) {\n      values.forEach(function (value) {\n        return make.option(element, value);\n      });\n    }\n  }]);\n\n  return make;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/Make.js?");
         /***/
       },
 
@@ -1383,6 +1383,450 @@
         "use strict";
 
         eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Image; });\n/* harmony import */ var _editorjs_image__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @editorjs/image */ \"./node_modules/@editorjs/image/dist/bundle.js\");\n/* harmony import */ var _editorjs_image__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_editorjs_image__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @editorjs/image/src/ui */ \"./node_modules/@editorjs/image/src/ui.js\");\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\n\n\n\nvar Image = /*#__PURE__*/function (_ImageTool) {\n  _inherits(Image, _ImageTool);\n\n  var _super = _createSuper(Image);\n\n  _createClass(Image, [{\n    key: \"defaultOnSelectFile\",\n    get: function get() {\n      var _this2 = this;\n\n      return function () {\n        _this2.uploader.uploadSelectedFile({\n          onPreview: function onPreview(src) {\n            _this2.ui.showPreloader(src);\n          }\n        });\n      };\n    }\n  }]);\n\n  function Image(_ref) {\n    var _this;\n\n    var data = _ref.data,\n        config = _ref.config,\n        api = _ref.api,\n        readOnly = _ref.readOnly;\n\n    _classCallCheck(this, Image);\n\n    _this = _super.call(this, {\n      data: data,\n      config: config,\n      api: api,\n      readOnly: readOnly\n    });\n    _this.config.onSelectFile = config.onSelectFile || _this.defaultOnSelectFile;\n    Image.patterns = _this.config.imagePatterns || /(https?:\\/\\/|\\/media\\/default\\/)\\S+\\.(gif|jpe?g|png)$/i;\n    _this.ui = new _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_1__[\"default\"]({\n      api: api,\n      config: _this.config,\n      onSelectFile: function onSelectFile() {\n        return _this.config.onSelectFile(_assertThisInitialized(_this));\n      },\n      readOnly: readOnly\n    });\n    _this._data = {};\n    _this.data = data;\n    return _this;\n  }\n\n  _createClass(Image, null, [{\n    key: \"pasteConfig\",\n    get: function get() {\n      return {\n        tags: ['img'],\n        patterns: {\n          image: Image.patterns\n        },\n        files: {\n          mimeTypes: ['image/*']\n        }\n      };\n    }\n  }]);\n\n  return Image;\n}(_editorjs_image__WEBPACK_IMPORTED_MODULE_0___default.a);\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Image/Image.js?");
+        /***/
+      }
+      /******/
+
+    })["default"]
+  );
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../admin-block-editor/node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "../admin-block-editor-tools/dist/PagesList.js":
+/*!*********************************!*\
+  !*** .-tools/dist/PagesList.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+(function webpackUniversalModuleDefinition(root, factory) {
+  if (( false ? undefined : _typeof(exports)) === 'object' && ( false ? undefined : _typeof(module)) === 'object') module.exports = factory();else if (true) !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else {}
+})(window, function () {
+  return (
+    /******/
+    function (modules) {
+      // webpackBootstrap
+
+      /******/
+      // The module cache
+
+      /******/
+      var installedModules = {};
+      /******/
+
+      /******/
+      // The require function
+
+      /******/
+
+      function __webpack_require__(moduleId) {
+        /******/
+
+        /******/
+        // Check if module is in cache
+
+        /******/
+        if (installedModules[moduleId]) {
+          /******/
+          return installedModules[moduleId].exports;
+          /******/
+        }
+        /******/
+        // Create a new module (and put it into the cache)
+
+        /******/
+
+
+        var module = installedModules[moduleId] = {
+          /******/
+          i: moduleId,
+
+          /******/
+          l: false,
+
+          /******/
+          exports: {}
+          /******/
+
+        };
+        /******/
+
+        /******/
+        // Execute the module function
+
+        /******/
+
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+        /******/
+
+        /******/
+        // Flag the module as loaded
+
+        /******/
+
+        module.l = true;
+        /******/
+
+        /******/
+        // Return the exports of the module
+
+        /******/
+
+        return module.exports;
+        /******/
+      }
+      /******/
+
+      /******/
+
+      /******/
+      // expose the modules object (__webpack_modules__)
+
+      /******/
+
+
+      __webpack_require__.m = modules;
+      /******/
+
+      /******/
+      // expose the module cache
+
+      /******/
+
+      __webpack_require__.c = installedModules;
+      /******/
+
+      /******/
+      // define getter function for harmony exports
+
+      /******/
+
+      __webpack_require__.d = function (exports, name, getter) {
+        /******/
+        if (!__webpack_require__.o(exports, name)) {
+          /******/
+          Object.defineProperty(exports, name, {
+            enumerable: true,
+            get: getter
+          });
+          /******/
+        }
+        /******/
+
+      };
+      /******/
+
+      /******/
+      // define __esModule on exports
+
+      /******/
+
+
+      __webpack_require__.r = function (exports) {
+        /******/
+        if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+          /******/
+          Object.defineProperty(exports, Symbol.toStringTag, {
+            value: 'Module'
+          });
+          /******/
+        }
+        /******/
+
+
+        Object.defineProperty(exports, '__esModule', {
+          value: true
+        });
+        /******/
+      };
+      /******/
+
+      /******/
+      // create a fake namespace object
+
+      /******/
+      // mode & 1: value is a module id, require it
+
+      /******/
+      // mode & 2: merge all properties of value into the ns
+
+      /******/
+      // mode & 4: return value when already ns object
+
+      /******/
+      // mode & 8|1: behave like require
+
+      /******/
+
+
+      __webpack_require__.t = function (value, mode) {
+        /******/
+        if (mode & 1) value = __webpack_require__(value);
+        /******/
+
+        if (mode & 8) return value;
+        /******/
+
+        if (mode & 4 && _typeof(value) === 'object' && value && value.__esModule) return value;
+        /******/
+
+        var ns = Object.create(null);
+        /******/
+
+        __webpack_require__.r(ns);
+        /******/
+
+
+        Object.defineProperty(ns, 'default', {
+          enumerable: true,
+          value: value
+        });
+        /******/
+
+        if (mode & 2 && typeof value != 'string') for (var key in value) {
+          __webpack_require__.d(ns, key, function (key) {
+            return value[key];
+          }.bind(null, key));
+        }
+        /******/
+
+        return ns;
+        /******/
+      };
+      /******/
+
+      /******/
+      // getDefaultExport function for compatibility with non-harmony modules
+
+      /******/
+
+
+      __webpack_require__.n = function (module) {
+        /******/
+        var getter = module && module.__esModule ?
+        /******/
+        function getDefault() {
+          return module['default'];
+        } :
+        /******/
+        function getModuleExports() {
+          return module;
+        };
+        /******/
+
+        __webpack_require__.d(getter, 'a', getter);
+        /******/
+
+
+        return getter;
+        /******/
+      };
+      /******/
+
+      /******/
+      // Object.prototype.hasOwnProperty.call
+
+      /******/
+
+
+      __webpack_require__.o = function (object, property) {
+        return Object.prototype.hasOwnProperty.call(object, property);
+      };
+      /******/
+
+      /******/
+      // __webpack_public_path__
+
+      /******/
+
+
+      __webpack_require__.p = "/";
+      /******/
+
+      /******/
+
+      /******/
+      // Load entry module and return exports
+
+      /******/
+
+      return __webpack_require__(__webpack_require__.s = "./src/PagesList/PagesList.js");
+      /******/
+    }(
+    /************************************************************************/
+
+    /******/
+    {
+      /***/
+      "./node_modules/@codexteam/ajax/dist/main.js":
+      /*!***************************************************!*\
+        !*** ./node_modules/@codexteam/ajax/dist/main.js ***!
+        \***************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCodexteamAjaxDistMainJs(module, exports, __webpack_require__) {
+        eval("!function(e,t){ true?module.exports=t():undefined}(window,function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){\"undefined\"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:\"Module\"}),Object.defineProperty(e,\"__esModule\",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&\"object\"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,\"default\",{enumerable:!0,value:e}),2&t&&\"string\"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,\"a\",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p=\"\",n(n.s=3)}([function(e,t){var n;n=function(){return this}();try{n=n||new Function(\"return this\")()}catch(e){\"object\"==typeof window&&(n=window)}e.exports=n},function(e,t,n){\"use strict\";(function(e){var r=n(2),o=setTimeout;function i(){}function a(e){if(!(this instanceof a))throw new TypeError(\"Promises must be constructed via new\");if(\"function\"!=typeof e)throw new TypeError(\"not a function\");this._state=0,this._handled=!1,this._value=void 0,this._deferreds=[],d(e,this)}function u(e,t){for(;3===e._state;)e=e._value;0!==e._state?(e._handled=!0,a._immediateFn(function(){var n=1===e._state?t.onFulfilled:t.onRejected;if(null!==n){var r;try{r=n(e._value)}catch(e){return void s(t.promise,e)}c(t.promise,r)}else(1===e._state?c:s)(t.promise,e._value)})):e._deferreds.push(t)}function c(e,t){try{if(t===e)throw new TypeError(\"A promise cannot be resolved with itself.\");if(t&&(\"object\"==typeof t||\"function\"==typeof t)){var n=t.then;if(t instanceof a)return e._state=3,e._value=t,void f(e);if(\"function\"==typeof n)return void d((r=n,o=t,function(){r.apply(o,arguments)}),e)}e._state=1,e._value=t,f(e)}catch(t){s(e,t)}var r,o}function s(e,t){e._state=2,e._value=t,f(e)}function f(e){2===e._state&&0===e._deferreds.length&&a._immediateFn(function(){e._handled||a._unhandledRejectionFn(e._value)});for(var t=0,n=e._deferreds.length;t<n;t++)u(e,e._deferreds[t]);e._deferreds=null}function l(e,t,n){this.onFulfilled=\"function\"==typeof e?e:null,this.onRejected=\"function\"==typeof t?t:null,this.promise=n}function d(e,t){var n=!1;try{e(function(e){n||(n=!0,c(t,e))},function(e){n||(n=!0,s(t,e))})}catch(e){if(n)return;n=!0,s(t,e)}}a.prototype.catch=function(e){return this.then(null,e)},a.prototype.then=function(e,t){var n=new this.constructor(i);return u(this,new l(e,t,n)),n},a.prototype.finally=r.a,a.all=function(e){return new a(function(t,n){if(!e||void 0===e.length)throw new TypeError(\"Promise.all accepts an array\");var r=Array.prototype.slice.call(e);if(0===r.length)return t([]);var o=r.length;function i(e,a){try{if(a&&(\"object\"==typeof a||\"function\"==typeof a)){var u=a.then;if(\"function\"==typeof u)return void u.call(a,function(t){i(e,t)},n)}r[e]=a,0==--o&&t(r)}catch(e){n(e)}}for(var a=0;a<r.length;a++)i(a,r[a])})},a.resolve=function(e){return e&&\"object\"==typeof e&&e.constructor===a?e:new a(function(t){t(e)})},a.reject=function(e){return new a(function(t,n){n(e)})},a.race=function(e){return new a(function(t,n){for(var r=0,o=e.length;r<o;r++)e[r].then(t,n)})},a._immediateFn=\"function\"==typeof e&&function(t){e(t)}||function(e){o(e,0)},a._unhandledRejectionFn=function(e){\"undefined\"!=typeof console&&console&&console.warn(\"Possible Unhandled Promise Rejection:\",e)},t.a=a}).call(this,n(5).setImmediate)},function(e,t,n){\"use strict\";t.a=function(e){var t=this.constructor;return this.then(function(n){return t.resolve(e()).then(function(){return n})},function(n){return t.resolve(e()).then(function(){return t.reject(n)})})}},function(e,t,n){\"use strict\";function r(e){return(r=\"function\"==typeof Symbol&&\"symbol\"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&\"function\"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?\"symbol\":typeof e})(e)}n(4);var o,i,a,u,c,s,f,l=n(8),d=(i=function(e){return new Promise(function(t,n){e=u(e),(e=c(e)).beforeSend&&e.beforeSend();var r=window.XMLHttpRequest?new window.XMLHttpRequest:new window.ActiveXObject(\"Microsoft.XMLHTTP\");r.open(e.method,e.url),r.setRequestHeader(\"X-Requested-With\",\"XMLHttpRequest\"),Object.keys(e.headers).forEach(function(t){var n=e.headers[t];r.setRequestHeader(t,n)});var o=e.ratio;r.upload.addEventListener(\"progress\",function(t){var n=Math.round(t.loaded/t.total*100),r=Math.ceil(n*o/100);e.progress(Math.min(r,100))},!1),r.addEventListener(\"progress\",function(t){var n=Math.round(t.loaded/t.total*100),r=Math.ceil(n*(100-o)/100)+o;e.progress(Math.min(r,100))},!1),r.onreadystatechange=function(){if(4===r.readyState){var e=r.response;try{e=JSON.parse(e)}catch(e){}var o=l.parseHeaders(r.getAllResponseHeaders()),i={body:e,code:r.status,headers:o};f(r.status)?t(i):n(i)}},r.send(e.data)})},a=function(e){return e.method=\"POST\",i(e)},u=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(e.url&&\"string\"!=typeof e.url)throw new Error(\"Url must be a string\");if(e.url=e.url||\"\",e.method&&\"string\"!=typeof e.method)throw new Error(\"`method` must be a string or null\");if(e.method=e.method?e.method.toUpperCase():\"GET\",e.headers&&\"object\"!==r(e.headers))throw new Error(\"`headers` must be an object or null\");if(e.headers=e.headers||{},e.type&&(\"string\"!=typeof e.type||!Object.values(o).includes(e.type)))throw new Error(\"`type` must be taken from module's «contentType» library\");if(e.progress&&\"function\"!=typeof e.progress)throw new Error(\"`progress` must be a function or null\");if(e.progress=e.progress||function(e){},e.beforeSend=e.beforeSend||function(e){},e.ratio&&\"number\"!=typeof e.ratio)throw new Error(\"`ratio` must be a number\");if(e.ratio<0||e.ratio>100)throw new Error(\"`ratio` must be in a 0-100 interval\");if(e.ratio=e.ratio||90,e.accept&&\"string\"!=typeof e.accept)throw new Error(\"`accept` must be a string with a list of allowed mime-types\");if(e.accept=e.accept||\"*/*\",e.multiple&&\"boolean\"!=typeof e.multiple)throw new Error(\"`multiple` must be a true or false\");if(e.multiple=e.multiple||!1,e.fieldName&&\"string\"!=typeof e.fieldName)throw new Error(\"`fieldName` must be a string\");return e.fieldName=e.fieldName||\"files\",e},c=function(e){switch(e.method){case\"GET\":var t=s(e.data,o.URLENCODED);delete e.data,e.url=/\\?/.test(e.url)?e.url+\"&\"+t:e.url+\"?\"+t;break;case\"POST\":case\"PUT\":case\"DELETE\":case\"UPDATE\":var n=function(){return(arguments.length>0&&void 0!==arguments[0]?arguments[0]:{}).type||o.JSON}(e);(l.isFormData(e.data)||l.isFormElement(e.data))&&(n=o.FORM),e.data=s(e.data,n),n!==d.contentType.FORM&&(e.headers[\"content-type\"]=n)}return e},s=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};switch(arguments.length>1?arguments[1]:void 0){case o.URLENCODED:return l.urlEncode(e);case o.JSON:return l.jsonEncode(e);case o.FORM:return l.formEncode(e);default:return e}},f=function(e){return e>=200&&e<300},{contentType:o={URLENCODED:\"application/x-www-form-urlencoded; charset=utf-8\",FORM:\"multipart/form-data\",JSON:\"application/json; charset=utf-8\"},request:i,get:function(e){return e.method=\"GET\",i(e)},post:a,transport:function(e){return e=u(e),l.selectFiles(e).then(function(t){for(var n=new FormData,r=0;r<t.length;r++)n.append(e.fieldName,t[r],t[r].name);l.isObject(e.data)&&Object.keys(e.data).forEach(function(t){var r=e.data[t];n.append(t,r)});var o=e.beforeSend;return e.beforeSend=function(){return o(t)},e.data=n,a(e)})},selectFiles:function(e){return delete(e=u(e)).beforeSend,l.selectFiles(e)}});e.exports=d},function(e,t,n){\"use strict\";n.r(t);var r=n(1);window.Promise=window.Promise||r.a},function(e,t,n){(function(e){var r=void 0!==e&&e||\"undefined\"!=typeof self&&self||window,o=Function.prototype.apply;function i(e,t){this._id=e,this._clearFn=t}t.setTimeout=function(){return new i(o.call(setTimeout,r,arguments),clearTimeout)},t.setInterval=function(){return new i(o.call(setInterval,r,arguments),clearInterval)},t.clearTimeout=t.clearInterval=function(e){e&&e.close()},i.prototype.unref=i.prototype.ref=function(){},i.prototype.close=function(){this._clearFn.call(r,this._id)},t.enroll=function(e,t){clearTimeout(e._idleTimeoutId),e._idleTimeout=t},t.unenroll=function(e){clearTimeout(e._idleTimeoutId),e._idleTimeout=-1},t._unrefActive=t.active=function(e){clearTimeout(e._idleTimeoutId);var t=e._idleTimeout;t>=0&&(e._idleTimeoutId=setTimeout(function(){e._onTimeout&&e._onTimeout()},t))},n(6),t.setImmediate=\"undefined\"!=typeof self&&self.setImmediate||void 0!==e&&e.setImmediate||this&&this.setImmediate,t.clearImmediate=\"undefined\"!=typeof self&&self.clearImmediate||void 0!==e&&e.clearImmediate||this&&this.clearImmediate}).call(this,n(0))},function(e,t,n){(function(e,t){!function(e,n){\"use strict\";if(!e.setImmediate){var r,o,i,a,u,c=1,s={},f=!1,l=e.document,d=Object.getPrototypeOf&&Object.getPrototypeOf(e);d=d&&d.setTimeout?d:e,\"[object process]\"==={}.toString.call(e.process)?r=function(e){t.nextTick(function(){m(e)})}:!function(){if(e.postMessage&&!e.importScripts){var t=!0,n=e.onmessage;return e.onmessage=function(){t=!1},e.postMessage(\"\",\"*\"),e.onmessage=n,t}}()?e.MessageChannel?((i=new MessageChannel).port1.onmessage=function(e){m(e.data)},r=function(e){i.port2.postMessage(e)}):l&&\"onreadystatechange\"in l.createElement(\"script\")?(o=l.documentElement,r=function(e){var t=l.createElement(\"script\");t.onreadystatechange=function(){m(e),t.onreadystatechange=null,o.removeChild(t),t=null},o.appendChild(t)}):r=function(e){setTimeout(m,0,e)}:(a=\"setImmediate$\"+Math.random()+\"$\",u=function(t){t.source===e&&\"string\"==typeof t.data&&0===t.data.indexOf(a)&&m(+t.data.slice(a.length))},e.addEventListener?e.addEventListener(\"message\",u,!1):e.attachEvent(\"onmessage\",u),r=function(t){e.postMessage(a+t,\"*\")}),d.setImmediate=function(e){\"function\"!=typeof e&&(e=new Function(\"\"+e));for(var t=new Array(arguments.length-1),n=0;n<t.length;n++)t[n]=arguments[n+1];var o={callback:e,args:t};return s[c]=o,r(c),c++},d.clearImmediate=p}function p(e){delete s[e]}function m(e){if(f)setTimeout(m,0,e);else{var t=s[e];if(t){f=!0;try{!function(e){var t=e.callback,r=e.args;switch(r.length){case 0:t();break;case 1:t(r[0]);break;case 2:t(r[0],r[1]);break;case 3:t(r[0],r[1],r[2]);break;default:t.apply(n,r)}}(t)}finally{p(e),f=!1}}}}}(\"undefined\"==typeof self?void 0===e?this:e:self)}).call(this,n(0),n(7))},function(e,t){var n,r,o=e.exports={};function i(){throw new Error(\"setTimeout has not been defined\")}function a(){throw new Error(\"clearTimeout has not been defined\")}function u(e){if(n===setTimeout)return setTimeout(e,0);if((n===i||!n)&&setTimeout)return n=setTimeout,setTimeout(e,0);try{return n(e,0)}catch(t){try{return n.call(null,e,0)}catch(t){return n.call(this,e,0)}}}!function(){try{n=\"function\"==typeof setTimeout?setTimeout:i}catch(e){n=i}try{r=\"function\"==typeof clearTimeout?clearTimeout:a}catch(e){r=a}}();var c,s=[],f=!1,l=-1;function d(){f&&c&&(f=!1,c.length?s=c.concat(s):l=-1,s.length&&p())}function p(){if(!f){var e=u(d);f=!0;for(var t=s.length;t;){for(c=s,s=[];++l<t;)c&&c[l].run();l=-1,t=s.length}c=null,f=!1,function(e){if(r===clearTimeout)return clearTimeout(e);if((r===a||!r)&&clearTimeout)return r=clearTimeout,clearTimeout(e);try{r(e)}catch(t){try{return r.call(null,e)}catch(t){return r.call(this,e)}}}(e)}}function m(e,t){this.fun=e,this.array=t}function h(){}o.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];s.push(new m(e,t)),1!==s.length||f||u(p)},m.prototype.run=function(){this.fun.apply(null,this.array)},o.title=\"browser\",o.browser=!0,o.env={},o.argv=[],o.version=\"\",o.versions={},o.on=h,o.addListener=h,o.once=h,o.off=h,o.removeListener=h,o.removeAllListeners=h,o.emit=h,o.prependListener=h,o.prependOnceListener=h,o.listeners=function(e){return[]},o.binding=function(e){throw new Error(\"process.binding is not supported\")},o.cwd=function(){return\"/\"},o.chdir=function(e){throw new Error(\"process.chdir is not supported\")},o.umask=function(){return 0}},function(e,t,n){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,\"value\"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}var o=n(9);e.exports=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError(\"Cannot call a class as a function\")}(this,e)}var t,n,i;return t=e,i=[{key:\"urlEncode\",value:function(e){return o(e)}},{key:\"jsonEncode\",value:function(e){return JSON.stringify(e)}},{key:\"formEncode\",value:function(e){if(this.isFormData(e))return e;if(this.isFormElement(e))return new FormData(e);if(this.isObject(e)){var t=new FormData;return Object.keys(e).forEach(function(n){var r=e[n];t.append(n,r)}),t}throw new Error(\"`data` must be an instance of Object, FormData or <FORM> HTMLElement\")}},{key:\"isObject\",value:function(e){return\"[object Object]\"===Object.prototype.toString.call(e)}},{key:\"isFormData\",value:function(e){return e instanceof FormData}},{key:\"isFormElement\",value:function(e){return e instanceof HTMLFormElement}},{key:\"selectFiles\",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return new Promise(function(t,n){var r=document.createElement(\"INPUT\");r.type=\"file\",e.multiple&&r.setAttribute(\"multiple\",\"multiple\"),e.accept&&r.setAttribute(\"accept\",e.accept),r.style.display=\"none\",document.body.appendChild(r),r.addEventListener(\"change\",function(e){var n=e.target.files;t(n),document.body.removeChild(r)},!1),r.click()})}},{key:\"parseHeaders\",value:function(e){var t=e.trim().split(/[\\r\\n]+/),n={};return t.forEach(function(e){var t=e.split(\": \"),r=t.shift(),o=t.join(\": \");r&&(n[r]=o)}),n}}],(n=null)&&r(t.prototype,n),i&&r(t,i),e}()},function(e,t){var n=function(e){return encodeURIComponent(e).replace(/[!'()*]/g,escape).replace(/%20/g,\"+\")},r=function(e,t,o,i){return t=t||null,o=o||\"&\",i=i||null,e?function(e){for(var t=new Array,n=0;n<e.length;n++)e[n]&&t.push(e[n]);return t}(Object.keys(e).map(function(a){var u,c,s=a;if(i&&(s=i+\"[\"+s+\"]\"),\"object\"==typeof e[a]&&null!==e[a])u=r(e[a],null,o,s);else{t&&(c=s,s=!isNaN(parseFloat(c))&&isFinite(c)?t+Number(s):s);var f=e[a];f=(f=0===(f=!1===(f=!0===f?\"1\":f)?\"0\":f)?\"0\":f)||\"\",u=n(s)+\"=\"+n(f)}return u})).join(o).replace(/[!'()*]/g,\"\"):\"\"};e.exports=r}])});\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@codexteam/ajax/dist/main.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/cjs.js!./src/Abstract/index.css":
+      /*!**********************************************************************!*\
+        !*** ./node_modules/css-loader/dist/cjs.js!./src/Abstract/index.css ***!
+        \**********************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistCjsJsSrcAbstractIndexCss(module, exports, __webpack_require__) {
+        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".hiden {\\n    display: none !important;\\n}\\n.text-right {\\n    text-align: right;\\n}\\n.cdx-input-labeled,\\n.cdx-quote__caption {\\n    padding-left: 38px;\\n    background-repeat: no-repeat;\\n    background-position: 10px;\\n    white-space: nowrap;\\n    text-overflow: ellipsis;\\n    overflow: hidden;\\n}\\n\\n.cdx-quote__caption {\\n    background-image: url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"%23707684\\\" viewBox=\\\"0 0 16 16\\\">   <path d=\\\"M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z\\\"/> </svg>');\\n}\\n\\n.cdx-input-editable {\\n    margin: 5px 0;\\n}\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]::before {\\n    position: absolute !important;\\n    content: attr(data-placeholder);\\n    color: #707684;\\n    font-weight: normal;\\n    display: none;\\n}\\n\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]:empty::before {\\n    display: block;\\n}\\n\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]:empty:focus::before {\\n    display: none;\\n}\\n\\n.flex .cdx-input {\\n    margin: 0 5px;\\n    position: relative;\\n}\\n\\n.cdx-select {\\n    border: 1px solid rgba(201, 201, 204, 0.48);\\n    border-radius: 5px;\\n    padding: 5px 8px;\\n    outline: none;\\n    width: 100%;\\n    box-sizing: border-box;\\n}\\n.cdx-checkbox {\\n    margin-top: 15px;\\n    margin-left: 25px;\\n}\\n\\n/** Toggler **/\\n\\n.toggle-wrapper {\\n    color: #707684;\\n}\\n\\n.toggle-input {\\n    display: none;\\n}\\n\\n.toggle-label {\\n    width: 17px;\\n    height: 17px;\\n    position: absolute;\\n    right: -30px;\\n    top: 30px;\\n    display: inline-block;\\n    box-sizing: border-box;\\n    background: #eff2f5 center / 70% no-repeat\\n        url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" viewBox=\\\"0 0 16 16\\\"><path d=\\\"M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z\\\"/><path fill-rule=\\\"evenodd\\\" d=\\\"M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z\\\"/></svg>');\\n    cursor: pointer;\\n    transition: 0.5s;\\n}\\n\\n.toggle-input:checked + .toggle-label {\\n    opacity: 0.3;\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/index.css?./node_modules/css-loader/dist/cjs.js");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/cjs.js!./src/PagesList/index.css":
+      /*!***********************************************************************!*\
+        !*** ./node_modules/css-loader/dist/cjs.js!./src/PagesList/index.css ***!
+        \***********************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistCjsJsSrcPagesListIndexCss(module, exports, __webpack_require__) {
+        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".cdx-notifies {\\n    z-index: 1000 !important;\\n}\\n.mr-5px {\\n    margin-right: 5px;\\n}\\n.cdx-input-labeled-pageslist-kw {\\n    background-image: url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"%23707684\\\" viewBox=\\\"0 0 16 16\\\">   <path d=\\\"M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z\\\"/> </svg>');\\n}\\n.cdx-input-labeled-pageslist-max {\\n    max-width: 82px;\\n    border-radius: 16px;\\n    border-top-right-radius: 0;\\n    border-bottom-right-radius: 0;\\n    margin-right: 0 !important;\\n    background-image: url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"%23707684\\\" viewBox=\\\"0 0 16 16\\\">   <path fill-rule=\\\"evenodd\\\" d=\\\"M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zm-6 8A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm6 0A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1z\\\"/> </svg>');\\n}\\n.cdx-input-labeled-pageslist-maxpages {\\n    max-width: 82px;\\n    border-radius: 16px;\\n    border-top-left-radius: 0;\\n    border-bottom-left-radius: 0;\\n    margin-left: -1px !important;\\n    background-image: url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"%23707684\\\" viewBox=\\\"0 0 16 16\\\">  <path d=\\\"M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z\\\"/></svg>');\\n}\\n\\n.cdx-input-labeled-pageslist-maxpages[contentEditable=\\\"true\\\"][data-placeholder]::before,\\n.cdx-input-labeled-pageslist-max[contentEditable=\\\"true\\\"][data-placeholder]::before {\\n    right: 16px;\\n}\\n\\n.flex {\\n    display: flex;\\n}\\n\\n.flex-center {\\n    justify-content: center;\\n}\\n\\n[style*=\\\"--aspect-ratio\\\"] > :first-child {\\n    width: 100%;\\n}\\n[style*=\\\"--aspect-ratio\\\"] > img {\\n    height: auto;\\n}\\n@supports (--custom: property) {\\n    [style*=\\\"--aspect-ratio\\\"] {\\n        position: relative;\\n    }\\n    [style*=\\\"--aspect-ratio\\\"]::before {\\n        content: \\\"\\\";\\n        display: block;\\n        padding-bottom: calc(100% / (var(--aspect-ratio)));\\n    }\\n    [style*=\\\"--aspect-ratio\\\"] > :first-child {\\n        position: absolute;\\n        top: 0;\\n        left: 0;\\n        height: 100%;\\n    }\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/PagesList/index.css?./node_modules/css-loader/dist/cjs.js");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/runtime/api.js":
+      /*!*****************************************************!*\
+        !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+        \*****************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistRuntimeApiJs(module, exports, __webpack_require__) {
+        "use strict";
+
+        eval("\n\n/*\n  MIT License http://www.opensource.org/licenses/mit-license.php\n  Author Tobias Koppers @sokra\n*/\n// css base code, injected by the css-loader\n// eslint-disable-next-line func-names\nmodule.exports = function (useSourceMap) {\n  var list = []; // return the list of modules as css string\n\n  list.toString = function toString() {\n    return this.map(function (item) {\n      var content = cssWithMappingToString(item, useSourceMap);\n\n      if (item[2]) {\n        return \"@media \".concat(item[2], \" {\").concat(content, \"}\");\n      }\n\n      return content;\n    }).join('');\n  }; // import a list of modules into the list\n  // eslint-disable-next-line func-names\n\n\n  list.i = function (modules, mediaQuery, dedupe) {\n    if (typeof modules === 'string') {\n      // eslint-disable-next-line no-param-reassign\n      modules = [[null, modules, '']];\n    }\n\n    var alreadyImportedModules = {};\n\n    if (dedupe) {\n      for (var i = 0; i < this.length; i++) {\n        // eslint-disable-next-line prefer-destructuring\n        var id = this[i][0];\n\n        if (id != null) {\n          alreadyImportedModules[id] = true;\n        }\n      }\n    }\n\n    for (var _i = 0; _i < modules.length; _i++) {\n      var item = [].concat(modules[_i]);\n\n      if (dedupe && alreadyImportedModules[item[0]]) {\n        // eslint-disable-next-line no-continue\n        continue;\n      }\n\n      if (mediaQuery) {\n        if (!item[2]) {\n          item[2] = mediaQuery;\n        } else {\n          item[2] = \"\".concat(mediaQuery, \" and \").concat(item[2]);\n        }\n      }\n\n      list.push(item);\n    }\n  };\n\n  return list;\n};\n\nfunction cssWithMappingToString(item, useSourceMap) {\n  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring\n\n  var cssMapping = item[3];\n\n  if (!cssMapping) {\n    return content;\n  }\n\n  if (useSourceMap && typeof btoa === 'function') {\n    var sourceMapping = toComment(cssMapping);\n    var sourceURLs = cssMapping.sources.map(function (source) {\n      return \"/*# sourceURL=\".concat(cssMapping.sourceRoot || '').concat(source, \" */\");\n    });\n    return [content].concat(sourceURLs).concat([sourceMapping]).join('\\n');\n  }\n\n  return [content].join('\\n');\n} // Adapted from convert-source-map (MIT)\n\n\nfunction toComment(sourceMap) {\n  // eslint-disable-next-line no-undef\n  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));\n  var data = \"sourceMappingURL=data:application/json;charset=utf-8;base64,\".concat(base64);\n  return \"/*# \".concat(data, \" */\");\n}\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/css-loader/dist/runtime/api.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+      /*!****************************************************************************!*\
+        !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+        \****************************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesStyleLoaderDistRuntimeInjectStylesIntoStyleTagJs(module, exports, __webpack_require__) {
+        "use strict";
+
+        eval("\n\nvar isOldIE = function isOldIE() {\n  var memo;\n  return function memorize() {\n    if (typeof memo === 'undefined') {\n      // Test for IE <= 9 as proposed by Browserhacks\n      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805\n      // Tests for existence of standard globals is to allow style-loader\n      // to operate correctly into non-standard environments\n      // @see https://github.com/webpack-contrib/style-loader/issues/177\n      memo = Boolean(window && document && document.all && !window.atob);\n    }\n\n    return memo;\n  };\n}();\n\nvar getTarget = function getTarget() {\n  var memo = {};\n  return function memorize(target) {\n    if (typeof memo[target] === 'undefined') {\n      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself\n\n      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {\n        try {\n          // This will throw an exception if access to iframe is blocked\n          // due to cross-origin restrictions\n          styleTarget = styleTarget.contentDocument.head;\n        } catch (e) {\n          // istanbul ignore next\n          styleTarget = null;\n        }\n      }\n\n      memo[target] = styleTarget;\n    }\n\n    return memo[target];\n  };\n}();\n\nvar stylesInDom = [];\n\nfunction getIndexByIdentifier(identifier) {\n  var result = -1;\n\n  for (var i = 0; i < stylesInDom.length; i++) {\n    if (stylesInDom[i].identifier === identifier) {\n      result = i;\n      break;\n    }\n  }\n\n  return result;\n}\n\nfunction modulesToDom(list, options) {\n  var idCountMap = {};\n  var identifiers = [];\n\n  for (var i = 0; i < list.length; i++) {\n    var item = list[i];\n    var id = options.base ? item[0] + options.base : item[0];\n    var count = idCountMap[id] || 0;\n    var identifier = \"\".concat(id, \" \").concat(count);\n    idCountMap[id] = count + 1;\n    var index = getIndexByIdentifier(identifier);\n    var obj = {\n      css: item[1],\n      media: item[2],\n      sourceMap: item[3]\n    };\n\n    if (index !== -1) {\n      stylesInDom[index].references++;\n      stylesInDom[index].updater(obj);\n    } else {\n      stylesInDom.push({\n        identifier: identifier,\n        updater: addStyle(obj, options),\n        references: 1\n      });\n    }\n\n    identifiers.push(identifier);\n  }\n\n  return identifiers;\n}\n\nfunction insertStyleElement(options) {\n  var style = document.createElement('style');\n  var attributes = options.attributes || {};\n\n  if (typeof attributes.nonce === 'undefined') {\n    var nonce =  true ? __webpack_require__.nc : undefined;\n\n    if (nonce) {\n      attributes.nonce = nonce;\n    }\n  }\n\n  Object.keys(attributes).forEach(function (key) {\n    style.setAttribute(key, attributes[key]);\n  });\n\n  if (typeof options.insert === 'function') {\n    options.insert(style);\n  } else {\n    var target = getTarget(options.insert || 'head');\n\n    if (!target) {\n      throw new Error(\"Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.\");\n    }\n\n    target.appendChild(style);\n  }\n\n  return style;\n}\n\nfunction removeStyleElement(style) {\n  // istanbul ignore if\n  if (style.parentNode === null) {\n    return false;\n  }\n\n  style.parentNode.removeChild(style);\n}\n/* istanbul ignore next  */\n\n\nvar replaceText = function replaceText() {\n  var textStore = [];\n  return function replace(index, replacement) {\n    textStore[index] = replacement;\n    return textStore.filter(Boolean).join('\\n');\n  };\n}();\n\nfunction applyToSingletonTag(style, index, remove, obj) {\n  var css = remove ? '' : obj.media ? \"@media \".concat(obj.media, \" {\").concat(obj.css, \"}\") : obj.css; // For old IE\n\n  /* istanbul ignore if  */\n\n  if (style.styleSheet) {\n    style.styleSheet.cssText = replaceText(index, css);\n  } else {\n    var cssNode = document.createTextNode(css);\n    var childNodes = style.childNodes;\n\n    if (childNodes[index]) {\n      style.removeChild(childNodes[index]);\n    }\n\n    if (childNodes.length) {\n      style.insertBefore(cssNode, childNodes[index]);\n    } else {\n      style.appendChild(cssNode);\n    }\n  }\n}\n\nfunction applyToTag(style, options, obj) {\n  var css = obj.css;\n  var media = obj.media;\n  var sourceMap = obj.sourceMap;\n\n  if (media) {\n    style.setAttribute('media', media);\n  } else {\n    style.removeAttribute('media');\n  }\n\n  if (sourceMap && typeof btoa !== 'undefined') {\n    css += \"\\n/*# sourceMappingURL=data:application/json;base64,\".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), \" */\");\n  } // For old IE\n\n  /* istanbul ignore if  */\n\n\n  if (style.styleSheet) {\n    style.styleSheet.cssText = css;\n  } else {\n    while (style.firstChild) {\n      style.removeChild(style.firstChild);\n    }\n\n    style.appendChild(document.createTextNode(css));\n  }\n}\n\nvar singleton = null;\nvar singletonCounter = 0;\n\nfunction addStyle(obj, options) {\n  var style;\n  var update;\n  var remove;\n\n  if (options.singleton) {\n    var styleIndex = singletonCounter++;\n    style = singleton || (singleton = insertStyleElement(options));\n    update = applyToSingletonTag.bind(null, style, styleIndex, false);\n    remove = applyToSingletonTag.bind(null, style, styleIndex, true);\n  } else {\n    style = insertStyleElement(options);\n    update = applyToTag.bind(null, style, options);\n\n    remove = function remove() {\n      removeStyleElement(style);\n    };\n  }\n\n  update(obj);\n  return function updateStyle(newObj) {\n    if (newObj) {\n      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {\n        return;\n      }\n\n      update(obj = newObj);\n    } else {\n      remove();\n    }\n  };\n}\n\nmodule.exports = function (list, options) {\n  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>\n  // tags it will allow on a page\n\n  if (!options.singleton && typeof options.singleton !== 'boolean') {\n    options.singleton = isOldIE();\n  }\n\n  list = list || [];\n  var lastIdentifiers = modulesToDom(list, options);\n  return function update(newList) {\n    newList = newList || [];\n\n    if (Object.prototype.toString.call(newList) !== '[object Array]') {\n      return;\n    }\n\n    for (var i = 0; i < lastIdentifiers.length; i++) {\n      var identifier = lastIdentifiers[i];\n      var index = getIndexByIdentifier(identifier);\n      stylesInDom[index].references--;\n    }\n\n    var newLastIdentifiers = modulesToDom(newList, options);\n\n    for (var _i = 0; _i < lastIdentifiers.length; _i++) {\n      var _identifier = lastIdentifiers[_i];\n\n      var _index = getIndexByIdentifier(_identifier);\n\n      if (stylesInDom[_index].references === 0) {\n        stylesInDom[_index].updater();\n\n        stylesInDom.splice(_index, 1);\n      }\n    }\n\n    lastIdentifiers = newLastIdentifiers;\n  };\n};\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js?");
+        /***/
+      },
+
+      /***/
+      "./src/Abstract/AbstractToggleTool.js":
+      /*!********************************************!*\
+        !*** ./src/Abstract/AbstractToggleTool.js ***!
+        \********************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcAbstractAbstractToggleToolJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return AbstractToggleTool; });\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./src/Abstract/index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Abstract/Make */ \"./src/Abstract/Make.js\");\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\n\n\n\nvar AbstractToggleTool = /*#__PURE__*/function () {\n  _createClass(AbstractToggleTool, [{\n    key: \"validate\",\n    value: function validate() {\n      return Object.keys(this.data).length;\n    }\n  }, {\n    key: \"defaultCSSClass\",\n    get: function get() {\n      return {\n        inputClass: [this.api.styles.input, 'cdx-input-editable'],\n        hide: 'hiden',\n        previewWrapper: 'preview-wrapper'\n      };\n    }\n  }, {\n    key: \"defaultData\",\n    get: function get() {\n      return {};\n    }\n  }, {\n    key: \"defaultConfig\",\n    get: function get() {\n      return {};\n    }\n  }, {\n    key: \"data\",\n    get: function get() {\n      console.log(this._data);\n      return this._data;\n    },\n    set: function set(data) {\n      this._data = Object.assign({}, data);\n    }\n  }, {\n    key: \"STATE\",\n    get: function get() {\n      return {\n        EDIT: 0,\n        VIEW: 1\n      };\n    }\n  }], [{\n    key: \"toolbox\",\n    get: function get() {\n      throw 'You must implement toolbox';\n    }\n  }, {\n    key: \"isReadOnlySupported\",\n    get: function get() {\n      return true;\n    }\n  }, {\n    key: \"enableLineBreaks\",\n    get: function get() {\n      return false;\n    }\n  }]);\n\n  function AbstractToggleTool(_ref) {\n    var data = _ref.data,\n        config = _ref.config,\n        api = _ref.api,\n        readOnly = _ref.readOnly;\n\n    _classCallCheck(this, AbstractToggleTool);\n\n    //super();\n    this.api = api;\n    this.readOnly = readOnly;\n    this.nodes = {};\n    this.config = Object.assign(this.defaultConfig, config);\n    this.CSS = Object.assign(this.defaultCSSClass, config.css || {});\n    this.data = Object.assign(this.defaultData, data);\n  }\n\n  _createClass(AbstractToggleTool, [{\n    key: \"render\",\n    value: function render() {\n      var _this = this;\n\n      this.nodes.wrapper = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('div', this.api.styles.block);\n      this.nodes.preview = this.createPreview();\n      this.nodes.wrapper.appendChild(this.nodes.preview);\n      this.createEditBtn();\n      this.nodes.wrapper.appendChild(this.nodes.editBtn);\n      this.nodes.inputs = this.createInputs();\n      this.nodes.wrapper.appendChild(this.nodes.inputs);\n      this.init();\n      this.nodes.editInput.addEventListener('change', function (event) {\n        if (_this.nodes.editInput.checked) {\n          _this.updateData();\n\n          _this.show(_this.STATE.VIEW);\n        } else {\n          _this.show(_this.STATE.EDIT);\n        }\n      });\n      return this.nodes.wrapper;\n    }\n    /**\n     * onloadShowViewOrEdit\n     */\n\n  }, {\n    key: \"init\",\n    value: function init() {\n      if (this.validate()) {\n        this.updateData();\n        this.show(this.STATE.VIEW);\n      } else {\n        this.show(this.STATE.EDIT);\n      }\n    }\n  }, {\n    key: \"createInputs\",\n    value: function createInputs() {\n      throw 'You must implement createInputs()';\n    }\n  }, {\n    key: \"updateData\",\n    value: function updateData() {\n      throw 'You must implement updateData()';\n    }\n  }, {\n    key: \"createPreview\",\n    value: function createPreview() {\n      var previewHolder = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('div', [this.CSS.hide, this.CSS.previewWrapper]);\n      return previewHolder;\n    }\n  }, {\n    key: \"save\",\n    value: function save() {\n      this.updateData(); // permit to save data even if user does'nt toggle\n\n      return this._data;\n    }\n  }, {\n    key: \"show\",\n    value: function show(state) {\n      if (state === this.STATE.VIEW) {\n        this.nodes.preview.classList.remove(this.CSS.hide);\n        this.nodes.inputs.classList.add(this.CSS.hide);\n        this.showEditBtn();\n      } else {\n        this.nodes.preview.classList.add(this.CSS.hide);\n        this.nodes.inputs.classList.remove(this.CSS.hide);\n        this.showEditBtn(0);\n      }\n    }\n  }, {\n    key: \"createEditBtn\",\n    value: function createEditBtn() {\n      var id = Math.random().toString(36).substring(7);\n      this.nodes.editBtn = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('div', 'toggle-wrapper');\n      this.nodes.editInput = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('input', ['toggle-input'], {\n        type: 'checkbox',\n        id: 'toggle_' + id\n      });\n      var label = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('label', ['toggle-label'], {\n        \"for\": 'toggle_' + id\n      });\n      this.nodes.editBtn.appendChild(this.nodes.editInput);\n      this.nodes.editBtn.appendChild(label);\n      return this.nodes.editBtn;\n    }\n  }, {\n    key: \"showEditBtn\",\n    value: function showEditBtn() {\n      var show = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;\n      if (typeof this.nodes.editBtn === 'undefined') throw 'must createEditBtn before';\n      this.nodes.editInput.checked = show ? 1 : 0;\n    }\n  }]);\n\n  return AbstractToggleTool;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/AbstractToggleTool.js?");
+        /***/
+      },
+
+      /***/
+      "./src/Abstract/Make.js":
+      /*!******************************!*\
+        !*** ./src/Abstract/Make.js ***!
+        \******************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcAbstractMakeJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return make; });\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar make = /*#__PURE__*/function () {\n  function make() {\n    _classCallCheck(this, make);\n  }\n\n  _createClass(make, [{\n    key: \"createPaginateCheckbox\",\n\n    /** I just keep this here in case i need a checkbox */\n    value: function createPaginateCheckbox() {\n      var checkboxWrapper = make.element(\"div\", [\"checkbox\", \"cdx-checkbox\"]);\n      var label = make.element(\"label\");\n      label.textContent = \"Paginate\";\n      this.nodes.paginateCheckbox = document.createElement(\"input\");\n      this.nodes.paginateCheckbox.type = \"checkbox\";\n      this.nodes.paginateCheckbox.value = this._data.display || 0;\n      checkboxWrapper.appendChild(this.nodes.paginateCheckbox);\n      checkboxWrapper.appendChild(label);\n      return checkboxWrapper;\n    }\n  }], [{\n    key: \"element\",\n    value: function element(tagName) {\n      var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;\n      var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n      var el = document.createElement(tagName);\n\n      if (Array.isArray(classNames)) {\n        var _el$classList;\n\n        (_el$classList = el.classList).add.apply(_el$classList, _toConsumableArray(classNames));\n      } else if (classNames) {\n        el.classList.add(classNames);\n      }\n\n      for (var attrName in attributes) {\n        el.setAttribute(attrName, attributes[attrName]);\n      }\n\n      return el;\n    }\n  }, {\n    key: \"input\",\n    value: function input(tool, inputClass, placeHolder) {\n      var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : \"\";\n      var input = make.element(\"div\", inputClass, {\n        contentEditable: !tool.readOnly\n      });\n      input.dataset.placeholder = tool.api.i18n.t(placeHolder);\n      if (value) input.textContent = value;\n      return input;\n    }\n  }, {\n    key: \"option\",\n    value: function option(element, value) {\n      var text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;\n      var option = document.createElement(\"option\");\n      option.text = text ? text : value;\n      option.value = value;\n      element.add(option);\n    }\n  }, {\n    key: \"options\",\n    value: function options(element, values) {\n      values.forEach(function (value) {\n        return make.option(element, value);\n      });\n    }\n  }]);\n\n  return make;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/Make.js?");
+        /***/
+      },
+
+      /***/
+      "./src/Abstract/index.css":
+      /*!********************************!*\
+        !*** ./src/Abstract/index.css ***!
+        \********************************/
+
+      /*! no static exports found */
+
+      /***/
+      function srcAbstractIndexCss(module, exports, __webpack_require__) {
+        eval("var api = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!./index.css */ \"./node_modules/css-loader/dist/cjs.js!./src/Abstract/index.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\n\n\nmodule.exports = content.locals || {};\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/index.css?");
+        /***/
+      },
+
+      /***/
+      "./src/PagesList/PagesList.js":
+      /*!************************************!*\
+        !*** ./src/PagesList/PagesList.js ***!
+        \************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcPagesListPagesListJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return PagesList; });\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./src/PagesList/index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toolbox-icon.svg */ \"./src/PagesList/toolbox-icon.svg\");\n/* harmony import */ var _Abstract_AbstractToggleTool_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Abstract/AbstractToggleTool.js */ \"./src/Abstract/AbstractToggleTool.js\");\n/* harmony import */ var _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Abstract/Make */ \"./src/Abstract/Make.js\");\n/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @codexteam/ajax */ \"./node_modules/@codexteam/ajax/dist/main.js\");\n/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_codexteam_ajax__WEBPACK_IMPORTED_MODULE_4__);\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }\n\nfunction _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"next\", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"throw\", err); } _next(undefined); }); }; }\n\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _get(target, property, receiver) { if (typeof Reflect !== \"undefined\" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }\n\nfunction _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\n\n\n\n\n\n\nwindow.resizeIframe = function (obj) {\n  obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 20 + \"px\";\n};\n\nvar PagesList = /*#__PURE__*/function (_AbstractToggleTool) {\n  _inherits(PagesList, _AbstractToggleTool);\n\n  var _super = _createSuper(PagesList);\n\n  _createClass(PagesList, null, [{\n    key: \"toolbox\",\n    get: function get() {\n      return {\n        title: \"Pages\",\n        icon: _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_1__[\"default\"]\n      };\n    }\n  }]);\n\n  function PagesList(_ref) {\n    var data = _ref.data,\n        config = _ref.config,\n        api = _ref.api,\n        readOnly = _ref.readOnly;\n\n    _classCallCheck(this, PagesList);\n\n    return _super.call(this, {\n      data: data,\n      config: config,\n      api: api,\n      readOnly: readOnly\n    });\n  }\n\n  _createClass(PagesList, [{\n    key: \"createInputs\",\n    value: function createInputs() {\n      this.nodes.kwInput = _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].input(this, [\"cdx-input-labeled\", \"cdx-input-labeled-pageslist-kw\"].concat(_toConsumableArray(this.CSS.inputClass)), \"Pages containing a keyword or CHILDREN\", this._data.kw);\n      this.nodes.displaySelect = document.createElement(\"select\");\n      this.nodes.displaySelect.classList.add(\"cdx-select\");\n      this.nodes.displaySelect.classList.add(\"mr-5px\");\n      _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].options(this.nodes.displaySelect, [\"list\", \"card\"]);\n      if (this._data.display) this.nodes.displaySelect.value = this._data.display;\n      var detailsWrapper = _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].element(\"div\", [\"flex\"]);\n      this.nodes.maxInput = _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].input(this, [\"cdx-input-labeled\", \"cdx-input-labeled-pageslist-max\", \"text-right\"].concat(_toConsumableArray(this.CSS.inputClass)), \"9\", this._data.max);\n      this.nodes.maxPagesInput = _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].input(this, [\"cdx-input-labeled\", \"cdx-input-labeled-pageslist-maxpages\", \"text-right\"].concat(_toConsumableArray(this.CSS.inputClass)), \"1\", this._data.maxPages);\n      detailsWrapper.appendChild(this.nodes.displaySelect);\n      detailsWrapper.appendChild(this.createOrderSelect());\n      detailsWrapper.appendChild(this.nodes.maxInput);\n      detailsWrapper.appendChild(this.nodes.maxPagesInput);\n      var inputHolder = _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].element(\"div\");\n      inputHolder.appendChild(this.nodes.kwInput);\n      inputHolder.appendChild(detailsWrapper);\n      return inputHolder;\n    }\n  }, {\n    key: \"createOrderSelect\",\n    value: function createOrderSelect() {\n      this.nodes.orderSelect = document.createElement(\"select\");\n      this.nodes.orderSelect.classList.add(\"cdx-select\");\n      _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].option(this.nodes.orderSelect, \"createdAt DESC\");\n      _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].option(this.nodes.orderSelect, \"createdAt ASC\");\n      _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].option(this.nodes.orderSelect, \"force DESC\");\n      _Abstract_Make__WEBPACK_IMPORTED_MODULE_3__[\"default\"].option(this.nodes.orderSelect, \"force ASC\");\n      if (this._data.order) this.nodes.orderSelect.value = this._data.order;\n      return this.nodes.orderSelect;\n    }\n  }, {\n    key: \"show\",\n    value: function show(state) {\n      if (state === this.STATE.VIEW) {\n        if (this.validate()) {\n          this.getPreviewFromServer();\n        } else {\n          console.log(this._data);\n          this.api.notifier.show({\n            message: this.api.i18n.t(\"Something is missing to properly render the the pages list.\"),\n            style: \"error\"\n          });\n        }\n      }\n\n      _get(_getPrototypeOf(PagesList.prototype), \"show\", this).call(this, state);\n    }\n  }, {\n    key: \"updateData\",\n    value: function updateData() {\n      this._data.kw = this.nodes.kwInput.textContent;\n      this._data.display = this.nodes.displaySelect.value;\n      this._data.order = this.nodes.orderSelect.value;\n      this._data.max = this.nodes.maxInput.textContent;\n      this._data.maxPages = this.nodes.maxPagesInput.textContent;\n    }\n  }, {\n    key: \"validate\",\n    value: function validate() {\n      return this._data.kw ? true : false;\n    }\n  }, {\n    key: \"getPreviewFromServer\",\n    value: function () {\n      var _getPreviewFromServer = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {\n        var _this = this;\n\n        return regeneratorRuntime.wrap(function _callee$(_context) {\n          while (1) {\n            switch (_context.prev = _context.next) {\n              case 0:\n                this.updateData();\n                _codexteam_ajax__WEBPACK_IMPORTED_MODULE_4___default.a.post({\n                  url: this.config.preview,\n                  data: this._data,\n                  type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_4___default.a.contentType.JSON\n                }).then(function (response) {\n                  _this.updatePreview(response.body.content);\n                })[\"catch\"](function (error) {\n                  _this.updatePreview(\"An error occured...\");\n                });\n\n              case 2:\n              case \"end\":\n                return _context.stop();\n            }\n          }\n        }, _callee, this);\n      }));\n\n      function getPreviewFromServer() {\n        return _getPreviewFromServer.apply(this, arguments);\n      }\n\n      return getPreviewFromServer;\n    }()\n  }, {\n    key: \"updatePreview\",\n    value: function updatePreview(content) {\n      this.nodes.preview.innerHTML = content;\n    }\n  }]);\n\n  return PagesList;\n}(_Abstract_AbstractToggleTool_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"]);\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/PagesList/PagesList.js?");
+        /***/
+      },
+
+      /***/
+      "./src/PagesList/index.css":
+      /*!*********************************!*\
+        !*** ./src/PagesList/index.css ***!
+        \*********************************/
+
+      /*! no static exports found */
+
+      /***/
+      function srcPagesListIndexCss(module, exports, __webpack_require__) {
+        eval("var api = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!./index.css */ \"./node_modules/css-loader/dist/cjs.js!./src/PagesList/index.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\n\n\nmodule.exports = content.locals || {};\n\n//# sourceURL=webpack://%5Bname%5D/./src/PagesList/index.css?");
+        /***/
+      },
+
+      /***/
+      "./src/PagesList/toolbox-icon.svg":
+      /*!****************************************!*\
+        !*** ./src/PagesList/toolbox-icon.svg ***!
+        \****************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcPagesListToolboxIconSvg(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" class=\\\"bi bi-puzzle\\\" viewBox=\\\"0 0 16 16\\\">\\n  <path d=\\\"M3.112 3.645A1.5 1.5 0 0 1 4.605 2H7a.5.5 0 0 1 .5.5v.382c0 .696-.497 1.182-.872 1.469a.459.459 0 0 0-.115.118.113.113 0 0 0-.012.025L6.5 4.5v.003l.003.01c.004.01.014.028.036.053a.86.86 0 0 0 .27.194C7.09 4.9 7.51 5 8 5c.492 0 .912-.1 1.19-.24a.86.86 0 0 0 .271-.194.213.213 0 0 0 .039-.063v-.009a.112.112 0 0 0-.012-.025.459.459 0 0 0-.115-.118c-.375-.287-.872-.773-.872-1.469V2.5A.5.5 0 0 1 9 2h2.395a1.5 1.5 0 0 1 1.493 1.645L12.645 6.5h.237c.195 0 .42-.147.675-.48.21-.274.528-.52.943-.52.568 0 .947.447 1.154.862C15.877 6.807 16 7.387 16 8s-.123 1.193-.346 1.638c-.207.415-.586.862-1.154.862-.415 0-.733-.246-.943-.52-.255-.333-.48-.48-.675-.48h-.237l.243 2.855A1.5 1.5 0 0 1 11.395 14H9a.5.5 0 0 1-.5-.5v-.382c0-.696.497-1.182.872-1.469a.459.459 0 0 0 .115-.118.113.113 0 0 0 .012-.025L9.5 11.5v-.003a.214.214 0 0 0-.039-.064.859.859 0 0 0-.27-.193C8.91 11.1 8.49 11 8 11c-.491 0-.912.1-1.19.24a.859.859 0 0 0-.271.194.214.214 0 0 0-.039.063v.003l.001.006a.113.113 0 0 0 .012.025c.016.027.05.068.115.118.375.287.872.773.872 1.469v.382a.5.5 0 0 1-.5.5H4.605a1.5 1.5 0 0 1-1.493-1.645L3.356 9.5h-.238c-.195 0-.42.147-.675.48-.21.274-.528.52-.943.52-.568 0-.947-.447-1.154-.862C.123 9.193 0 8.613 0 8s.123-1.193.346-1.638C.553 5.947.932 5.5 1.5 5.5c.415 0 .733.246.943.52.255.333.48.48.675.48h.238l-.244-2.855zM4.605 3a.5.5 0 0 0-.498.55l.001.007.29 3.4A.5.5 0 0 1 3.9 7.5h-.782c-.696 0-1.182-.497-1.469-.872a.459.459 0 0 0-.118-.115.112.112 0 0 0-.025-.012L1.5 6.5h-.003a.213.213 0 0 0-.064.039.86.86 0 0 0-.193.27C1.1 7.09 1 7.51 1 8c0 .491.1.912.24 1.19.07.14.14.225.194.271a.213.213 0 0 0 .063.039H1.5l.006-.001a.112.112 0 0 0 .025-.012.459.459 0 0 0 .118-.115c.287-.375.773-.872 1.469-.872H3.9a.5.5 0 0 1 .498.542l-.29 3.408a.5.5 0 0 0 .497.55h1.878c-.048-.166-.195-.352-.463-.557-.274-.21-.52-.528-.52-.943 0-.568.447-.947.862-1.154C6.807 10.123 7.387 10 8 10s1.193.123 1.638.346c.415.207.862.586.862 1.154 0 .415-.246.733-.52.943-.268.205-.415.39-.463.557h1.878a.5.5 0 0 0 .498-.55l-.001-.007-.29-3.4A.5.5 0 0 1 12.1 8.5h.782c.696 0 1.182.497 1.469.872.05.065.091.099.118.115.013.008.021.01.025.012a.02.02 0 0 0 .006.001h.003a.214.214 0 0 0 .064-.039.86.86 0 0 0 .193-.27c.14-.28.24-.7.24-1.191 0-.492-.1-.912-.24-1.19a.86.86 0 0 0-.194-.271.215.215 0 0 0-.063-.039H14.5l-.006.001a.113.113 0 0 0-.025.012.459.459 0 0 0-.118.115c-.287.375-.773.872-1.469.872H12.1a.5.5 0 0 1-.498-.543l.29-3.407a.5.5 0 0 0-.497-.55H9.517c.048.166.195.352.463.557.274.21.52.528.52.943 0 .568-.447.947-.862 1.154C9.193 5.877 8.613 6 8 6s-1.193-.123-1.638-.346C5.947 5.447 5.5 5.068 5.5 4.5c0-.415.246-.733.52-.943.268-.205.415-.39.463-.557H4.605z\\\"/>\\n</svg>\\n\");\n\n//# sourceURL=webpack://%5Bname%5D/./src/PagesList/toolbox-icon.svg?");
         /***/
       }
       /******/
@@ -2277,13 +2721,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editorjs_table__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_editorjs_table__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var _pushword_editorjs_tools_dist_Embed_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @pushword/editorjs-tools/dist/Embed.js */ "../admin-block-editor-tools/dist/Embed.js");
 /* harmony import */ var _pushword_editorjs_tools_dist_Embed_js__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_pushword_editorjs_tools_dist_Embed_js__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! editorjs-inline-tool */ "./node_modules/editorjs-inline-tool/esm/index.js");
-/* harmony import */ var editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! editorjs-drag-drop */ "./node_modules/editorjs-drag-drop/dist/bundle.js");
-/* harmony import */ var editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_17__);
-/* harmony import */ var editorjs_undo__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! editorjs-undo */ "./node_modules/editorjs-undo/dist/bundle.js");
-/* harmony import */ var editorjs_undo__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(editorjs_undo__WEBPACK_IMPORTED_MODULE_18__);
-/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @codexteam/ajax */ "./node_modules/@codexteam/ajax/dist/main.js");
-/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(_codexteam_ajax__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var _pushword_editorjs_tools_dist_PagesList_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @pushword/editorjs-tools/dist/PagesList.js */ "../admin-block-editor-tools/dist/PagesList.js");
+/* harmony import */ var _pushword_editorjs_tools_dist_PagesList_js__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_pushword_editorjs_tools_dist_PagesList_js__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! editorjs-inline-tool */ "./node_modules/editorjs-inline-tool/esm/index.js");
+/* harmony import */ var editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! editorjs-drag-drop */ "./node_modules/editorjs-drag-drop/dist/bundle.js");
+/* harmony import */ var editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var editorjs_undo__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! editorjs-undo */ "./node_modules/editorjs-undo/dist/bundle.js");
+/* harmony import */ var editorjs_undo__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(editorjs_undo__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @codexteam/ajax */ "./node_modules/@codexteam/ajax/dist/main.js");
+/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(_codexteam_ajax__WEBPACK_IMPORTED_MODULE_20__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -2314,6 +2760,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
  //"@editorjs/embed";
 
+ //"@editorjs/embed";
+
 
 
  //import Button from "editorjs-button"; // this one break sonata design
@@ -2331,12 +2779,12 @@ window.editorJsTool.onSelectFile = function () {
   jQuery("#" + id).one("change", function (event) {
     console.log("call onChange select file");
     var id = jQuery(this).val();
-    var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_19___default.a.post({
+    var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.post({
       url: "/admin/media/block",
       data: Object.assign({
         id: id
       }),
-      type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_19___default.a.contentType.JSON
+      type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.contentType.JSON
     }).then(function (response) {
       //Tool.ui.showPreloader(response.body.file.url);
       //Tool.ui.fillImage(response.body.file.url);
@@ -2357,12 +2805,12 @@ window.editorJsTool.onUploadFile = function () {
   var id = document.querySelector("input[id*=inline_image]").getAttribute("id");
   jQuery("#" + id).one("change", function (event) {
     var id = jQuery(this).val();
-    var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_19___default.a.post({
+    var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.post({
       url: "/admin/media/block",
       data: Object.assign({
         id: id
       }),
-      type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_19___default.a.contentType.JSON
+      type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.contentType.JSON
     }).then(function (response) {
       Tool.onUpload(response);
     })["catch"](function (error) {
@@ -2371,19 +2819,42 @@ window.editorJsTool.onUploadFile = function () {
   });
 };
 
+window.toggleEditorJs = function (editorId) {
+  var editorJsInput = document.querySelector("input[data-editorjs]");
+  var textareaInput = document.querySelector("textarea[data-editorjs]");
+  var elementToReplace = editorJsInput ? editorJsInput : textareaInput;
+  console.log(document.getElementById(editorId));
+  document.getElementById(editorId).style.display = editorJsInput ? "none" : "block";
+  var replaceElement = document.createElement(editorJsInput ? "textarea" : "input");
+
+  for (var i = 0, l = elementToReplace.attributes.length; i < l; ++i) {
+    var nodeName = elementToReplace.attributes.item(i).nodeName;
+    var nodeValue = elementToReplace.attributes.item(i).nodeValue;
+    replaceElement.setAttribute(nodeName, nodeValue);
+  }
+
+  if (editorJsInput) {
+    replaceElement.innerHTML = editorJsInput.value;
+    replaceElement.classList.add("form-control");
+    replaceElement.style.border = 0;
+  } //else replaceElement.setAttribute("value", replaceElement.innerHTML); // useless because editor.js doesn't listen value content
+
+
+  elementToReplace.parentNode.replaceChild(replaceElement, elementToReplace);
+};
+/** Was initially design to permit multiple editor.js in one page */
+
+
 var editorJs = /*#__PURE__*/function () {
   function editorJs() {
-    var _this = this;
-
     _classCallCheck(this, editorJs);
 
-    if (typeof editorjsConfigs === "undefined") return;
+    if (typeof editorjsConfig === "undefined") return;
     this.editors = [];
-    this.editorjsTools = // className only
-    typeof editorjsTools !== "undefined" ? editorjsTools : {
-      Bold: editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_16__["StrongInlineTool"],
-      Italic: editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_16__["ItalicInlineTool"],
-      Underline: editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_16__["UnderlineInlineTool"],
+    this.editorjsTools = typeof editorjsTools !== "undefined" ? editorjsTools : {
+      Bold: editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_17__["StrongInlineTool"],
+      Italic: editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_17__["ItalicInlineTool"],
+      Underline: editorjs_inline_tool__WEBPACK_IMPORTED_MODULE_17__["UnderlineInlineTool"],
       Header: editorjs_header_with_anchor__WEBPACK_IMPORTED_MODULE_1___default.a,
       List: _editorjs_list__WEBPACK_IMPORTED_MODULE_2___default.a,
       Raw: _editorjs_raw__WEBPACK_IMPORTED_MODULE_3___default.a,
@@ -2398,18 +2869,17 @@ var editorJs = /*#__PURE__*/function () {
       StyleInlineTool: editorjs_style__WEBPACK_IMPORTED_MODULE_11__["StyleInlineTool"],
       Paragraph: editorjs_paragraph_with_alignment__WEBPACK_IMPORTED_MODULE_13___default.a,
       Table: _editorjs_table__WEBPACK_IMPORTED_MODULE_14___default.a,
-      Embed: _pushword_editorjs_tools_dist_Embed_js__WEBPACK_IMPORTED_MODULE_15___default.a //Button: Button,
+      Embed: _pushword_editorjs_tools_dist_Embed_js__WEBPACK_IMPORTED_MODULE_15___default.a,
+      PagesList: _pushword_editorjs_tools_dist_PagesList_js__WEBPACK_IMPORTED_MODULE_16___default.a //Button: Button,
 
     };
-    editorjsConfigs.forEach(function (config) {
-      return _this.initEditor(config);
-    });
+    this.initEditor(editorjsConfig);
   }
 
   _createClass(editorJs, [{
     key: "initEditor",
     value: function initEditor(config) {
-      var _this2 = this;
+      var _this = this;
 
       if (typeof config.holder === "undefined") {
         return;
@@ -2418,8 +2888,8 @@ var editorJs = /*#__PURE__*/function () {
       if (typeof config.tools !== "undefined") {
         // set tool classes
         Object.keys(config.tools).forEach(function (toolName) {
-          if (typeof _this2.editorjsTools[config.tools[toolName].className] !== "undefined") {
-            config.tools[toolName]["class"] = _this2.editorjsTools[config.tools[toolName].className];
+          if (typeof _this.editorjsTools[config.tools[toolName].className] !== "undefined") {
+            config.tools[toolName]["class"] = _this.editorjsTools[config.tools[toolName].className];
           } else {
             console.log(config.tools[toolName].className);
             delete config.tools[toolName];
@@ -2446,16 +2916,16 @@ var editorJs = /*#__PURE__*/function () {
       })); // drag'n drop
 
       config.onReady = function () {
-        new editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_17___default.a(editor);
-        new editorjs_undo__WEBPACK_IMPORTED_MODULE_18___default.a({
+        new editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_18___default.a(editor);
+        new editorjs_undo__WEBPACK_IMPORTED_MODULE_19___default.a({
           editor: editor
         });
       };
 
       var editor = new _editorjs_editorjs__WEBPACK_IMPORTED_MODULE_0___default.a(Object.assign(config, {
         onReady: function onReady() {
-          new editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_17___default.a(editor);
-          new editorjs_undo__WEBPACK_IMPORTED_MODULE_18___default.a({
+          new editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_18___default.a(editor);
+          new editorjs_undo__WEBPACK_IMPORTED_MODULE_19___default.a({
             editor: editor
           });
         }
