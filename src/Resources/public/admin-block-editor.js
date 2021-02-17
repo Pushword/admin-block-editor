@@ -980,7 +980,7 @@
       function srcEmbedEmbedJs(module, __webpack_exports__, __webpack_require__) {
         "use strict";
 
-        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Embed; });\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./src/Embed/index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @editorjs/image/src/index.css */ \"./node_modules/@editorjs/image/src/index.css\");\n/* harmony import */ var _editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./toolbox-icon.svg */ \"./src/Embed/toolbox-icon.svg\");\n/* harmony import */ var _Abstract_AbstractToggleTool_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Abstract/AbstractToggleTool.js */ \"./src/Abstract/AbstractToggleTool.js\");\n/* harmony import */ var _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @editorjs/image/src/ui */ \"./node_modules/@editorjs/image/src/ui.js\");\n/* harmony import */ var _editorjs_image_src_uploader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @editorjs/image/src/uploader */ \"./node_modules/@editorjs/image/src/uploader.js\");\n/* harmony import */ var _upload_svg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./upload.svg */ \"./src/Embed/upload.svg\");\n/* harmony import */ var _folder_svg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./folder.svg */ \"./src/Embed/folder.svg\");\n/* harmony import */ var _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Abstract/Make */ \"./src/Abstract/Make.js\");\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _get(target, property, receiver) { if (typeof Reflect !== \"undefined\" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }\n\nfunction _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\n\n\n\n\n\n\n\n\n\n\nvar Embed = /*#__PURE__*/function (_AbstractToggleTool) {\n  _inherits(Embed, _AbstractToggleTool);\n\n  var _super = _createSuper(Embed);\n\n  _createClass(Embed, [{\n    key: \"defaultOnSelectFile\",\n    get: function get() {\n      var _this2 = this;\n\n      return function () {\n        _this2.uploader.uploadSelectedFile({\n          onPreview: function onPreview(src) {\n            _this2.showPreloader(src);\n          }\n        });\n      };\n    }\n  }], [{\n    key: \"toolbox\",\n    get: function get() {\n      return {\n        title: 'Embed',\n        icon: _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_2__[\"default\"]\n      };\n    }\n  }]);\n\n  function Embed(_ref) {\n    var _this;\n\n    var data = _ref.data,\n        config = _ref.config,\n        api = _ref.api,\n        readOnly = _ref.readOnly;\n\n    _classCallCheck(this, Embed);\n\n    _this = _super.call(this, {\n      data: data,\n      config: config,\n      api: api,\n      readOnly: readOnly\n    });\n    _this.onSelectFile = config.onSelectFile || _this.defaultOnSelectFile;\n    _this.onUploadFile = config.onUploadFile || '';\n    _this.uploader = new _editorjs_image_src_uploader__WEBPACK_IMPORTED_MODULE_5__[\"default\"]({\n      config: _this.config,\n      onUpload: function onUpload(response) {\n        return _this.onUpload(response);\n      },\n      onError: function onError(error) {\n        return _this.uploadingFailed(error);\n      }\n    });\n    return _this;\n  }\n\n  _createClass(Embed, [{\n    key: \"onUpload\",\n    value: function onUpload(response) {\n      if (response.success && response.file) {\n        this._data.image = response.file;\n\n        if (this._data.image.url) {\n          this.fillImage(this._data.image.url);\n        }\n      } else {\n        this.uploadingFailed('incorrect response: ' + JSON.stringify(response));\n      }\n    }\n  }, {\n    key: \"uploadingFailed\",\n    value: function uploadingFailed(errorText) {\n      console.log('Image Tool: uploading failed because of', errorText);\n      this.api.notifier.show({\n        message: this.api.i18n.t('Couldn’t upload image. Please try another.'),\n        style: 'error'\n      });\n      this.hidePreloader();\n    }\n  }, {\n    key: \"createInputs\",\n    value: function createInputs() {\n      this.nodes.inputAlternativeText = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].input(this, ['cdx-input-labeled', 'cdx-input-labeled-embed-text'].concat(_toConsumableArray(this.CSS.inputClass)), 'Alternative Text', this._data.alternativeText);\n      this.nodes.inputServiceUrl = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].input(this, ['cdx-input-labeled', 'cdx-input-labeled-embed-service-url'].concat(_toConsumableArray(this.CSS.inputClass)), 'Service URL', this._data.serviceUrl);\n      this.createImageInput();\n      var inputHolder = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element('div');\n      inputHolder.appendChild(this.nodes.inputAlternativeText);\n      inputHolder.appendChild(this.nodes.inputServiceUrl);\n      inputHolder.appendChild(this.nodes.fileButton);\n      return inputHolder;\n    }\n  }, {\n    key: \"show\",\n    value: function show(state) {\n      if (state === this.STATE.VIEW) {\n        if (this.validate()) {\n          this.nodes.preview.innerHTML = '<a href=\"' + this._data.serviceUrl + '\" style=\"display:block;--aspect-ratio:16/9;background: center / cover no-repeat url(\\'' + this._data.image.url + '\\');\" target=_blank><div style=\"display: flex;justify-content: center;align-items: center; width:100%;height:100%;color:#c4302b\">' + _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_2__[\"default\"].replace('width=\"16\"', 'width=\"100\"').replace('height=\"16\"', 'height=\"100\"') + '</div></a>';\n        } else {\n          console.log(this._data);\n          this.api.notifier.show({\n            message: this.api.i18n.t('Something is missing to properly render the embeded video.'),\n            style: 'error'\n          });\n        }\n      }\n\n      _get(_getPrototypeOf(Embed.prototype), \"show\", this).call(this, state);\n    }\n  }, {\n    key: \"updateData\",\n    value: function updateData() {\n      this._data.serviceUrl = this.nodes.inputServiceUrl.textContent;\n      this._data.alternativeText = this.nodes.inputAlternativeText.textContent;\n    }\n    /*\n    uploadFile(file) {\n      this.uploader.uploadByFile(file, {\n        onPreview: (src) => {\n          this.showPreloader(src);\n        },\n      });\n    }\n     uploadUrl(url) {\n      this.showPreloader(url);\n      this.uploader.uploadByUrl(url);\n    }*/\n\n  }, {\n    key: \"showPreloader\",\n    value: function showPreloader(src) {\n      this.nodes.imagePreloader.style.display = 'block';\n      this.nodes.imagePreloader.style.backgroundImage = \"url(\".concat(src, \")\");\n      this.toggleStatus(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status.UPLOADING);\n    }\n  }, {\n    key: \"hidePreloader\",\n    value: function hidePreloader() {\n      this.nodes.imagePreloader.style.display = 'none';\n      this.nodes.imagePreloader.style.backgroundImage = '';\n      this.toggleStatus(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status.EMPTY);\n    }\n  }, {\n    key: \"fillImage\",\n    value: function fillImage(url) {\n      var _this3 = this;\n\n      if (this.nodes.imageEl) this.nodes.imageEl.remove();\n      this.nodes.imageEl = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element('img', 'image-tool__image-picture', {\n        src: url,\n        style: 'max-height:47px;padding-left:1em'\n      });\n      this.showPreloader(url);\n      this.nodes.imageEl.addEventListener('load', function () {\n        _this3.toggleStatus(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status.FILLED);\n\n        if (_this3.nodes.imagePreloader) {\n          _this3.nodes.imagePreloader.style.backgroundImage = '';\n        }\n      });\n      this.nodes.fileButton.appendChild(this.nodes.imageEl);\n      if (this.validate() && this.nodes.inputs) this.show(this.STATE.VIEW);\n    }\n  }, {\n    key: \"validate\",\n    value: function validate() {\n      return this._data.serviceUrl && this._data.alternativeText && this._data.image && this._data.image.url ? true : false;\n    }\n  }, {\n    key: \"toggleStatus\",\n    value: function toggleStatus(status) {\n      for (var statusType in _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status) {\n        if (Object.prototype.hasOwnProperty.call(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status, statusType)) {\n          this.nodes.wrapper.classList.toggle(\"\".concat(this.CSS.wrapper, \"--\").concat(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status[statusType]), status === _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status[statusType]);\n        }\n      }\n    }\n  }, {\n    key: \"createImageInput\",\n    value: function createImageInput() {\n      this.nodes.imagePreloader = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element('div', 'image-tool__image-preloader');\n      this.nodes.imagePreloader.style.display = 'none';\n      this.nodes.fileButton = this.createFileButton();\n      this.nodes.fileButton.appendChild(this.nodes.imagePreloader);\n      if (this._data.image) this.fillImage(this._data.image.url);\n    }\n  }, {\n    key: \"createFileButton\",\n    value: function createFileButton() {\n      var _this4 = this;\n\n      var buttonWrapper = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element('div', ['flex', 'cdx-input-labeled-embed-preview', 'cdx-input-labeled'].concat(_toConsumableArray(this.CSS.inputClass)));\n      var buttonSelect = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element('div', [this.api.styles.button]);\n      buttonSelect.innerHTML = \"\".concat(_folder_svg__WEBPACK_IMPORTED_MODULE_7__[\"default\"], \" \").concat(this.api.i18n.t('Select'));\n      buttonSelect.addEventListener('click', function () {\n        _this4.onSelectFile();\n      });\n      buttonWrapper.appendChild(buttonSelect);\n\n      if (this.config.onUploadFile) {\n        var buttonUpload = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element('div', [this.api.styles.button]);\n        buttonUpload.innerHTML = \"\".concat(_upload_svg__WEBPACK_IMPORTED_MODULE_6__[\"default\"], \" \").concat(this.api.i18n.t('Upload'));\n        buttonUpload.style.marginLeft = '-2px';\n        buttonUpload.addEventListener('click', function () {\n          _this4.onUploadFile();\n        });\n        buttonWrapper.appendChild(buttonUpload);\n      }\n\n      return buttonWrapper;\n    }\n  }]);\n\n  return Embed;\n}(_Abstract_AbstractToggleTool_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"]);\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Embed/Embed.js?");
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Embed; });\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./src/Embed/index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @editorjs/image/src/index.css */ \"./node_modules/@editorjs/image/src/index.css\");\n/* harmony import */ var _editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./toolbox-icon.svg */ \"./src/Embed/toolbox-icon.svg\");\n/* harmony import */ var _Abstract_AbstractToggleTool_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Abstract/AbstractToggleTool.js */ \"./src/Abstract/AbstractToggleTool.js\");\n/* harmony import */ var _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @editorjs/image/src/ui */ \"./node_modules/@editorjs/image/src/ui.js\");\n/* harmony import */ var _editorjs_image_src_uploader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @editorjs/image/src/uploader */ \"./node_modules/@editorjs/image/src/uploader.js\");\n/* harmony import */ var _upload_svg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./upload.svg */ \"./src/Embed/upload.svg\");\n/* harmony import */ var _folder_svg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./folder.svg */ \"./src/Embed/folder.svg\");\n/* harmony import */ var _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Abstract/Make */ \"./src/Abstract/Make.js\");\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _get(target, property, receiver) { if (typeof Reflect !== \"undefined\" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }\n\nfunction _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\n\n\n\n\n\n\n\n\n\n\nvar Embed = /*#__PURE__*/function (_AbstractToggleTool) {\n  _inherits(Embed, _AbstractToggleTool);\n\n  var _super = _createSuper(Embed);\n\n  _createClass(Embed, [{\n    key: \"defaultOnSelectFile\",\n    get: function get() {\n      var _this2 = this;\n\n      return function () {\n        _this2.uploader.uploadSelectedFile({\n          onPreview: function onPreview(src) {\n            _this2.showPreloader(src);\n          }\n        });\n      };\n    }\n  }], [{\n    key: \"toolbox\",\n    get: function get() {\n      return {\n        title: \"Embed\",\n        icon: _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_2__[\"default\"]\n      };\n    }\n  }]);\n\n  function Embed(_ref) {\n    var _this;\n\n    var data = _ref.data,\n        config = _ref.config,\n        api = _ref.api,\n        readOnly = _ref.readOnly;\n\n    _classCallCheck(this, Embed);\n\n    _this = _super.call(this, {\n      data: data,\n      config: config,\n      api: api,\n      readOnly: readOnly\n    });\n    _this.onSelectFile = config.onSelectFile || _this.defaultOnSelectFile;\n    _this.onUploadFile = config.onUploadFile || \"\";\n    _this.uploader = new _editorjs_image_src_uploader__WEBPACK_IMPORTED_MODULE_5__[\"default\"]({\n      config: _this.config,\n      onUpload: function onUpload(response) {\n        return _this.onUpload(response);\n      },\n      onError: function onError(error) {\n        return _this.uploadingFailed(error);\n      }\n    });\n    return _this;\n  }\n\n  _createClass(Embed, [{\n    key: \"onUpload\",\n    value: function onUpload(response) {\n      if (response.success && response.file) {\n        this._data.image = response.file;\n\n        if (this._data.image.url) {\n          this.fillImage(this._data.image.url);\n        }\n      } else {\n        this.uploadingFailed(\"incorrect response: \" + JSON.stringify(response));\n      }\n    }\n  }, {\n    key: \"uploadingFailed\",\n    value: function uploadingFailed(errorText) {\n      console.log(\"Image Tool: uploading failed because of\", errorText);\n      this.api.notifier.show({\n        message: this.api.i18n.t(\"Couldn’t upload image. Please try another.\"),\n        style: \"error\"\n      });\n      this.hidePreloader();\n    }\n  }, {\n    key: \"createInputs\",\n    value: function createInputs() {\n      this.nodes.inputAlternativeText = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].input(this, [\"cdx-input-labeled\", \"cdx-input-labeled-embed-text\"].concat(_toConsumableArray(this.CSS.inputClass)), \"Alternative Text\", this._data.alternativeText);\n      this.nodes.inputServiceUrl = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].input(this, [\"cdx-input-labeled\", \"cdx-input-labeled-embed-service-url\"].concat(_toConsumableArray(this.CSS.inputClass)), \"Service URL\", this._data.serviceUrl);\n      this.createImageInput();\n      var inputHolder = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\");\n      inputHolder.appendChild(this.nodes.inputAlternativeText);\n      inputHolder.appendChild(this.nodes.inputServiceUrl);\n      inputHolder.appendChild(this.nodes.fileButton);\n      return inputHolder;\n    }\n  }, {\n    key: \"show\",\n    value: function show(state) {\n      if (state === this.STATE.VIEW) {\n        if (this.validate()) {\n          this.nodes.preview.innerHTML = '<a href=\"' + this._data.serviceUrl + '\" style=\"display:block;--aspect-ratio:16/9;background: center / cover no-repeat url(\\'' + this._data.image.url + '\\');\" target=_blank><div style=\"display: flex;justify-content: center;align-items: center; width:100%;height:100%;color:#c4302b\">' + _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_2__[\"default\"].replace('width=\"16\"', 'width=\"100\"').replace('height=\"16\"', 'height=\"100\"') + \"</div></a>\";\n        } else {\n          console.log(this._data);\n          this.api.notifier.show({\n            message: this.api.i18n.t(\"Something is missing to properly render the embeded video.\"),\n            style: \"error\"\n          });\n        }\n      }\n\n      _get(_getPrototypeOf(Embed.prototype), \"show\", this).call(this, state);\n    }\n  }, {\n    key: \"updateData\",\n    value: function updateData() {\n      this._data.serviceUrl = this.nodes.inputServiceUrl.textContent;\n      this._data.alternativeText = this.nodes.inputAlternativeText.textContent;\n    }\n    /*\n    uploadFile(file) {\n    this.uploader.uploadByFile(file, {\n      onPreview: (src) => {\n        this.showPreloader(src);\n      },\n    });\n    }\n    uploadUrl(url) {\n    this.showPreloader(url);\n    this.uploader.uploadByUrl(url);\n    }*/\n\n  }, {\n    key: \"showPreloader\",\n    value: function showPreloader(src) {\n      this.nodes.imagePreloader.style.display = \"block\";\n      this.nodes.imagePreloader.style.backgroundImage = \"url(\".concat(src, \")\");\n      this.toggleStatus(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status.UPLOADING);\n    }\n  }, {\n    key: \"hidePreloader\",\n    value: function hidePreloader() {\n      this.nodes.imagePreloader.style.display = \"none\";\n      this.nodes.imagePreloader.style.backgroundImage = \"\";\n      this.toggleStatus(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status.EMPTY);\n    }\n  }, {\n    key: \"fillImage\",\n    value: function fillImage(url) {\n      var _this3 = this;\n\n      if (this.nodes.imageEl) this.nodes.imageEl.remove();\n      this.nodes.imageEl = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"img\", \"image-tool__image-picture\", {\n        src: url,\n        style: \"max-height:47px;padding-left:1em\"\n      });\n      this.showPreloader(url);\n      this.nodes.imageEl.addEventListener(\"load\", function () {\n        _this3.toggleStatus(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status.FILLED);\n\n        if (_this3.nodes.imagePreloader) {\n          _this3.nodes.imagePreloader.style.backgroundImage = \"\";\n        }\n      });\n      this.nodes.fileButton.appendChild(this.nodes.imageEl);\n      if (this.validate() && this.nodes.inputs) this.show(this.STATE.VIEW);\n    }\n  }, {\n    key: \"validate\",\n    value: function validate() {\n      return this._data.serviceUrl && this._data.alternativeText && this._data.image && this._data.image.url ? true : false;\n    }\n  }, {\n    key: \"toggleStatus\",\n    value: function toggleStatus(status) {\n      for (var statusType in _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status) {\n        if (Object.prototype.hasOwnProperty.call(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status, statusType)) {\n          this.nodes.wrapper.classList.toggle(\"\".concat(this.CSS.wrapper, \"--\").concat(_editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status[statusType]), status === _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__[\"default\"].status[statusType]);\n        }\n      }\n    }\n  }, {\n    key: \"createImageInput\",\n    value: function createImageInput() {\n      this.nodes.imagePreloader = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", \"image-tool__image-preloader\");\n      this.nodes.imagePreloader.style.display = \"none\";\n      this.nodes.fileButton = this.createFileButton();\n      this.nodes.fileButton.appendChild(this.nodes.imagePreloader);\n      if (this._data.image) this.fillImage(this._data.image.url);\n    }\n  }, {\n    key: \"createFileButton\",\n    value: function createFileButton() {\n      var _this4 = this;\n\n      var buttonWrapper = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [\"flex\", \"cdx-input-labeled-embed-preview\", \"cdx-input-labeled\"].concat(_toConsumableArray(this.CSS.inputClass)));\n      var buttonSelect = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [this.api.styles.button]);\n      buttonSelect.innerHTML = \"\".concat(_folder_svg__WEBPACK_IMPORTED_MODULE_7__[\"default\"], \" \").concat(this.api.i18n.t(\"Select\"));\n      buttonSelect.addEventListener(\"click\", function () {\n        _this4.onSelectFile();\n      });\n      buttonWrapper.appendChild(buttonSelect);\n\n      if (this.config.onUploadFile) {\n        var buttonUpload = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [this.api.styles.button]);\n        buttonUpload.innerHTML = \"\".concat(_upload_svg__WEBPACK_IMPORTED_MODULE_6__[\"default\"], \" \").concat(this.api.i18n.t(\"Upload\"));\n        buttonUpload.style.marginLeft = \"-2px\";\n        buttonUpload.addEventListener(\"click\", function () {\n          _this4.onUploadFile();\n        });\n        buttonWrapper.appendChild(buttonUpload);\n      }\n\n      return buttonWrapper;\n    }\n  }]);\n\n  return Embed;\n}(_Abstract_AbstractToggleTool_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"]);\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Embed/Embed.js?");
         /***/
       },
 
@@ -1043,6 +1043,634 @@
         "use strict";
 
         eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" class=\\\"bi bi-upload\\\" viewBox=\\\"0 0 16 16\\\">\\n  <path d=\\\"M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z\\\"/>\\n  <path d=\\\"M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z\\\"/>\\n</svg>\");\n\n//# sourceURL=webpack://%5Bname%5D/./src/Embed/upload.svg?");
+        /***/
+      }
+      /******/
+
+    })["default"]
+  );
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../admin-block-editor/node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "../admin-block-editor-tools/dist/Gallery.js":
+/*!*******************************!*\
+  !*** .-tools/dist/Gallery.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+(function webpackUniversalModuleDefinition(root, factory) {
+  if (( false ? undefined : _typeof(exports)) === 'object' && ( false ? undefined : _typeof(module)) === 'object') module.exports = factory();else if (true) !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else {}
+})(window, function () {
+  return (
+    /******/
+    function (modules) {
+      // webpackBootstrap
+
+      /******/
+      // The module cache
+
+      /******/
+      var installedModules = {};
+      /******/
+
+      /******/
+      // The require function
+
+      /******/
+
+      function __webpack_require__(moduleId) {
+        /******/
+
+        /******/
+        // Check if module is in cache
+
+        /******/
+        if (installedModules[moduleId]) {
+          /******/
+          return installedModules[moduleId].exports;
+          /******/
+        }
+        /******/
+        // Create a new module (and put it into the cache)
+
+        /******/
+
+
+        var module = installedModules[moduleId] = {
+          /******/
+          i: moduleId,
+
+          /******/
+          l: false,
+
+          /******/
+          exports: {}
+          /******/
+
+        };
+        /******/
+
+        /******/
+        // Execute the module function
+
+        /******/
+
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+        /******/
+
+        /******/
+        // Flag the module as loaded
+
+        /******/
+
+        module.l = true;
+        /******/
+
+        /******/
+        // Return the exports of the module
+
+        /******/
+
+        return module.exports;
+        /******/
+      }
+      /******/
+
+      /******/
+
+      /******/
+      // expose the modules object (__webpack_modules__)
+
+      /******/
+
+
+      __webpack_require__.m = modules;
+      /******/
+
+      /******/
+      // expose the module cache
+
+      /******/
+
+      __webpack_require__.c = installedModules;
+      /******/
+
+      /******/
+      // define getter function for harmony exports
+
+      /******/
+
+      __webpack_require__.d = function (exports, name, getter) {
+        /******/
+        if (!__webpack_require__.o(exports, name)) {
+          /******/
+          Object.defineProperty(exports, name, {
+            enumerable: true,
+            get: getter
+          });
+          /******/
+        }
+        /******/
+
+      };
+      /******/
+
+      /******/
+      // define __esModule on exports
+
+      /******/
+
+
+      __webpack_require__.r = function (exports) {
+        /******/
+        if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+          /******/
+          Object.defineProperty(exports, Symbol.toStringTag, {
+            value: 'Module'
+          });
+          /******/
+        }
+        /******/
+
+
+        Object.defineProperty(exports, '__esModule', {
+          value: true
+        });
+        /******/
+      };
+      /******/
+
+      /******/
+      // create a fake namespace object
+
+      /******/
+      // mode & 1: value is a module id, require it
+
+      /******/
+      // mode & 2: merge all properties of value into the ns
+
+      /******/
+      // mode & 4: return value when already ns object
+
+      /******/
+      // mode & 8|1: behave like require
+
+      /******/
+
+
+      __webpack_require__.t = function (value, mode) {
+        /******/
+        if (mode & 1) value = __webpack_require__(value);
+        /******/
+
+        if (mode & 8) return value;
+        /******/
+
+        if (mode & 4 && _typeof(value) === 'object' && value && value.__esModule) return value;
+        /******/
+
+        var ns = Object.create(null);
+        /******/
+
+        __webpack_require__.r(ns);
+        /******/
+
+
+        Object.defineProperty(ns, 'default', {
+          enumerable: true,
+          value: value
+        });
+        /******/
+
+        if (mode & 2 && typeof value != 'string') for (var key in value) {
+          __webpack_require__.d(ns, key, function (key) {
+            return value[key];
+          }.bind(null, key));
+        }
+        /******/
+
+        return ns;
+        /******/
+      };
+      /******/
+
+      /******/
+      // getDefaultExport function for compatibility with non-harmony modules
+
+      /******/
+
+
+      __webpack_require__.n = function (module) {
+        /******/
+        var getter = module && module.__esModule ?
+        /******/
+        function getDefault() {
+          return module['default'];
+        } :
+        /******/
+        function getModuleExports() {
+          return module;
+        };
+        /******/
+
+        __webpack_require__.d(getter, 'a', getter);
+        /******/
+
+
+        return getter;
+        /******/
+      };
+      /******/
+
+      /******/
+      // Object.prototype.hasOwnProperty.call
+
+      /******/
+
+
+      __webpack_require__.o = function (object, property) {
+        return Object.prototype.hasOwnProperty.call(object, property);
+      };
+      /******/
+
+      /******/
+      // __webpack_public_path__
+
+      /******/
+
+
+      __webpack_require__.p = "/";
+      /******/
+
+      /******/
+
+      /******/
+      // Load entry module and return exports
+
+      /******/
+
+      return __webpack_require__(__webpack_require__.s = "./src/Gallery/Gallery.js");
+      /******/
+    }(
+    /************************************************************************/
+
+    /******/
+    {
+      /***/
+      "./node_modules/@codexteam/ajax/dist/main.js":
+      /*!***************************************************!*\
+        !*** ./node_modules/@codexteam/ajax/dist/main.js ***!
+        \***************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCodexteamAjaxDistMainJs(module, exports, __webpack_require__) {
+        eval("!function(e,t){ true?module.exports=t():undefined}(window,function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){\"undefined\"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:\"Module\"}),Object.defineProperty(e,\"__esModule\",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&\"object\"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,\"default\",{enumerable:!0,value:e}),2&t&&\"string\"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,\"a\",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p=\"\",n(n.s=3)}([function(e,t){var n;n=function(){return this}();try{n=n||new Function(\"return this\")()}catch(e){\"object\"==typeof window&&(n=window)}e.exports=n},function(e,t,n){\"use strict\";(function(e){var r=n(2),o=setTimeout;function i(){}function a(e){if(!(this instanceof a))throw new TypeError(\"Promises must be constructed via new\");if(\"function\"!=typeof e)throw new TypeError(\"not a function\");this._state=0,this._handled=!1,this._value=void 0,this._deferreds=[],d(e,this)}function u(e,t){for(;3===e._state;)e=e._value;0!==e._state?(e._handled=!0,a._immediateFn(function(){var n=1===e._state?t.onFulfilled:t.onRejected;if(null!==n){var r;try{r=n(e._value)}catch(e){return void s(t.promise,e)}c(t.promise,r)}else(1===e._state?c:s)(t.promise,e._value)})):e._deferreds.push(t)}function c(e,t){try{if(t===e)throw new TypeError(\"A promise cannot be resolved with itself.\");if(t&&(\"object\"==typeof t||\"function\"==typeof t)){var n=t.then;if(t instanceof a)return e._state=3,e._value=t,void f(e);if(\"function\"==typeof n)return void d((r=n,o=t,function(){r.apply(o,arguments)}),e)}e._state=1,e._value=t,f(e)}catch(t){s(e,t)}var r,o}function s(e,t){e._state=2,e._value=t,f(e)}function f(e){2===e._state&&0===e._deferreds.length&&a._immediateFn(function(){e._handled||a._unhandledRejectionFn(e._value)});for(var t=0,n=e._deferreds.length;t<n;t++)u(e,e._deferreds[t]);e._deferreds=null}function l(e,t,n){this.onFulfilled=\"function\"==typeof e?e:null,this.onRejected=\"function\"==typeof t?t:null,this.promise=n}function d(e,t){var n=!1;try{e(function(e){n||(n=!0,c(t,e))},function(e){n||(n=!0,s(t,e))})}catch(e){if(n)return;n=!0,s(t,e)}}a.prototype.catch=function(e){return this.then(null,e)},a.prototype.then=function(e,t){var n=new this.constructor(i);return u(this,new l(e,t,n)),n},a.prototype.finally=r.a,a.all=function(e){return new a(function(t,n){if(!e||void 0===e.length)throw new TypeError(\"Promise.all accepts an array\");var r=Array.prototype.slice.call(e);if(0===r.length)return t([]);var o=r.length;function i(e,a){try{if(a&&(\"object\"==typeof a||\"function\"==typeof a)){var u=a.then;if(\"function\"==typeof u)return void u.call(a,function(t){i(e,t)},n)}r[e]=a,0==--o&&t(r)}catch(e){n(e)}}for(var a=0;a<r.length;a++)i(a,r[a])})},a.resolve=function(e){return e&&\"object\"==typeof e&&e.constructor===a?e:new a(function(t){t(e)})},a.reject=function(e){return new a(function(t,n){n(e)})},a.race=function(e){return new a(function(t,n){for(var r=0,o=e.length;r<o;r++)e[r].then(t,n)})},a._immediateFn=\"function\"==typeof e&&function(t){e(t)}||function(e){o(e,0)},a._unhandledRejectionFn=function(e){\"undefined\"!=typeof console&&console&&console.warn(\"Possible Unhandled Promise Rejection:\",e)},t.a=a}).call(this,n(5).setImmediate)},function(e,t,n){\"use strict\";t.a=function(e){var t=this.constructor;return this.then(function(n){return t.resolve(e()).then(function(){return n})},function(n){return t.resolve(e()).then(function(){return t.reject(n)})})}},function(e,t,n){\"use strict\";function r(e){return(r=\"function\"==typeof Symbol&&\"symbol\"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&\"function\"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?\"symbol\":typeof e})(e)}n(4);var o,i,a,u,c,s,f,l=n(8),d=(i=function(e){return new Promise(function(t,n){e=u(e),(e=c(e)).beforeSend&&e.beforeSend();var r=window.XMLHttpRequest?new window.XMLHttpRequest:new window.ActiveXObject(\"Microsoft.XMLHTTP\");r.open(e.method,e.url),r.setRequestHeader(\"X-Requested-With\",\"XMLHttpRequest\"),Object.keys(e.headers).forEach(function(t){var n=e.headers[t];r.setRequestHeader(t,n)});var o=e.ratio;r.upload.addEventListener(\"progress\",function(t){var n=Math.round(t.loaded/t.total*100),r=Math.ceil(n*o/100);e.progress(Math.min(r,100))},!1),r.addEventListener(\"progress\",function(t){var n=Math.round(t.loaded/t.total*100),r=Math.ceil(n*(100-o)/100)+o;e.progress(Math.min(r,100))},!1),r.onreadystatechange=function(){if(4===r.readyState){var e=r.response;try{e=JSON.parse(e)}catch(e){}var o=l.parseHeaders(r.getAllResponseHeaders()),i={body:e,code:r.status,headers:o};f(r.status)?t(i):n(i)}},r.send(e.data)})},a=function(e){return e.method=\"POST\",i(e)},u=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(e.url&&\"string\"!=typeof e.url)throw new Error(\"Url must be a string\");if(e.url=e.url||\"\",e.method&&\"string\"!=typeof e.method)throw new Error(\"`method` must be a string or null\");if(e.method=e.method?e.method.toUpperCase():\"GET\",e.headers&&\"object\"!==r(e.headers))throw new Error(\"`headers` must be an object or null\");if(e.headers=e.headers||{},e.type&&(\"string\"!=typeof e.type||!Object.values(o).includes(e.type)))throw new Error(\"`type` must be taken from module's «contentType» library\");if(e.progress&&\"function\"!=typeof e.progress)throw new Error(\"`progress` must be a function or null\");if(e.progress=e.progress||function(e){},e.beforeSend=e.beforeSend||function(e){},e.ratio&&\"number\"!=typeof e.ratio)throw new Error(\"`ratio` must be a number\");if(e.ratio<0||e.ratio>100)throw new Error(\"`ratio` must be in a 0-100 interval\");if(e.ratio=e.ratio||90,e.accept&&\"string\"!=typeof e.accept)throw new Error(\"`accept` must be a string with a list of allowed mime-types\");if(e.accept=e.accept||\"*/*\",e.multiple&&\"boolean\"!=typeof e.multiple)throw new Error(\"`multiple` must be a true or false\");if(e.multiple=e.multiple||!1,e.fieldName&&\"string\"!=typeof e.fieldName)throw new Error(\"`fieldName` must be a string\");return e.fieldName=e.fieldName||\"files\",e},c=function(e){switch(e.method){case\"GET\":var t=s(e.data,o.URLENCODED);delete e.data,e.url=/\\?/.test(e.url)?e.url+\"&\"+t:e.url+\"?\"+t;break;case\"POST\":case\"PUT\":case\"DELETE\":case\"UPDATE\":var n=function(){return(arguments.length>0&&void 0!==arguments[0]?arguments[0]:{}).type||o.JSON}(e);(l.isFormData(e.data)||l.isFormElement(e.data))&&(n=o.FORM),e.data=s(e.data,n),n!==d.contentType.FORM&&(e.headers[\"content-type\"]=n)}return e},s=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};switch(arguments.length>1?arguments[1]:void 0){case o.URLENCODED:return l.urlEncode(e);case o.JSON:return l.jsonEncode(e);case o.FORM:return l.formEncode(e);default:return e}},f=function(e){return e>=200&&e<300},{contentType:o={URLENCODED:\"application/x-www-form-urlencoded; charset=utf-8\",FORM:\"multipart/form-data\",JSON:\"application/json; charset=utf-8\"},request:i,get:function(e){return e.method=\"GET\",i(e)},post:a,transport:function(e){return e=u(e),l.selectFiles(e).then(function(t){for(var n=new FormData,r=0;r<t.length;r++)n.append(e.fieldName,t[r],t[r].name);l.isObject(e.data)&&Object.keys(e.data).forEach(function(t){var r=e.data[t];n.append(t,r)});var o=e.beforeSend;return e.beforeSend=function(){return o(t)},e.data=n,a(e)})},selectFiles:function(e){return delete(e=u(e)).beforeSend,l.selectFiles(e)}});e.exports=d},function(e,t,n){\"use strict\";n.r(t);var r=n(1);window.Promise=window.Promise||r.a},function(e,t,n){(function(e){var r=void 0!==e&&e||\"undefined\"!=typeof self&&self||window,o=Function.prototype.apply;function i(e,t){this._id=e,this._clearFn=t}t.setTimeout=function(){return new i(o.call(setTimeout,r,arguments),clearTimeout)},t.setInterval=function(){return new i(o.call(setInterval,r,arguments),clearInterval)},t.clearTimeout=t.clearInterval=function(e){e&&e.close()},i.prototype.unref=i.prototype.ref=function(){},i.prototype.close=function(){this._clearFn.call(r,this._id)},t.enroll=function(e,t){clearTimeout(e._idleTimeoutId),e._idleTimeout=t},t.unenroll=function(e){clearTimeout(e._idleTimeoutId),e._idleTimeout=-1},t._unrefActive=t.active=function(e){clearTimeout(e._idleTimeoutId);var t=e._idleTimeout;t>=0&&(e._idleTimeoutId=setTimeout(function(){e._onTimeout&&e._onTimeout()},t))},n(6),t.setImmediate=\"undefined\"!=typeof self&&self.setImmediate||void 0!==e&&e.setImmediate||this&&this.setImmediate,t.clearImmediate=\"undefined\"!=typeof self&&self.clearImmediate||void 0!==e&&e.clearImmediate||this&&this.clearImmediate}).call(this,n(0))},function(e,t,n){(function(e,t){!function(e,n){\"use strict\";if(!e.setImmediate){var r,o,i,a,u,c=1,s={},f=!1,l=e.document,d=Object.getPrototypeOf&&Object.getPrototypeOf(e);d=d&&d.setTimeout?d:e,\"[object process]\"==={}.toString.call(e.process)?r=function(e){t.nextTick(function(){m(e)})}:!function(){if(e.postMessage&&!e.importScripts){var t=!0,n=e.onmessage;return e.onmessage=function(){t=!1},e.postMessage(\"\",\"*\"),e.onmessage=n,t}}()?e.MessageChannel?((i=new MessageChannel).port1.onmessage=function(e){m(e.data)},r=function(e){i.port2.postMessage(e)}):l&&\"onreadystatechange\"in l.createElement(\"script\")?(o=l.documentElement,r=function(e){var t=l.createElement(\"script\");t.onreadystatechange=function(){m(e),t.onreadystatechange=null,o.removeChild(t),t=null},o.appendChild(t)}):r=function(e){setTimeout(m,0,e)}:(a=\"setImmediate$\"+Math.random()+\"$\",u=function(t){t.source===e&&\"string\"==typeof t.data&&0===t.data.indexOf(a)&&m(+t.data.slice(a.length))},e.addEventListener?e.addEventListener(\"message\",u,!1):e.attachEvent(\"onmessage\",u),r=function(t){e.postMessage(a+t,\"*\")}),d.setImmediate=function(e){\"function\"!=typeof e&&(e=new Function(\"\"+e));for(var t=new Array(arguments.length-1),n=0;n<t.length;n++)t[n]=arguments[n+1];var o={callback:e,args:t};return s[c]=o,r(c),c++},d.clearImmediate=p}function p(e){delete s[e]}function m(e){if(f)setTimeout(m,0,e);else{var t=s[e];if(t){f=!0;try{!function(e){var t=e.callback,r=e.args;switch(r.length){case 0:t();break;case 1:t(r[0]);break;case 2:t(r[0],r[1]);break;case 3:t(r[0],r[1],r[2]);break;default:t.apply(n,r)}}(t)}finally{p(e),f=!1}}}}}(\"undefined\"==typeof self?void 0===e?this:e:self)}).call(this,n(0),n(7))},function(e,t){var n,r,o=e.exports={};function i(){throw new Error(\"setTimeout has not been defined\")}function a(){throw new Error(\"clearTimeout has not been defined\")}function u(e){if(n===setTimeout)return setTimeout(e,0);if((n===i||!n)&&setTimeout)return n=setTimeout,setTimeout(e,0);try{return n(e,0)}catch(t){try{return n.call(null,e,0)}catch(t){return n.call(this,e,0)}}}!function(){try{n=\"function\"==typeof setTimeout?setTimeout:i}catch(e){n=i}try{r=\"function\"==typeof clearTimeout?clearTimeout:a}catch(e){r=a}}();var c,s=[],f=!1,l=-1;function d(){f&&c&&(f=!1,c.length?s=c.concat(s):l=-1,s.length&&p())}function p(){if(!f){var e=u(d);f=!0;for(var t=s.length;t;){for(c=s,s=[];++l<t;)c&&c[l].run();l=-1,t=s.length}c=null,f=!1,function(e){if(r===clearTimeout)return clearTimeout(e);if((r===a||!r)&&clearTimeout)return r=clearTimeout,clearTimeout(e);try{r(e)}catch(t){try{return r.call(null,e)}catch(t){return r.call(this,e)}}}(e)}}function m(e,t){this.fun=e,this.array=t}function h(){}o.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];s.push(new m(e,t)),1!==s.length||f||u(p)},m.prototype.run=function(){this.fun.apply(null,this.array)},o.title=\"browser\",o.browser=!0,o.env={},o.argv=[],o.version=\"\",o.versions={},o.on=h,o.addListener=h,o.once=h,o.off=h,o.removeListener=h,o.removeAllListeners=h,o.emit=h,o.prependListener=h,o.prependOnceListener=h,o.listeners=function(e){return[]},o.binding=function(e){throw new Error(\"process.binding is not supported\")},o.cwd=function(){return\"/\"},o.chdir=function(e){throw new Error(\"process.chdir is not supported\")},o.umask=function(){return 0}},function(e,t,n){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,\"value\"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}var o=n(9);e.exports=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError(\"Cannot call a class as a function\")}(this,e)}var t,n,i;return t=e,i=[{key:\"urlEncode\",value:function(e){return o(e)}},{key:\"jsonEncode\",value:function(e){return JSON.stringify(e)}},{key:\"formEncode\",value:function(e){if(this.isFormData(e))return e;if(this.isFormElement(e))return new FormData(e);if(this.isObject(e)){var t=new FormData;return Object.keys(e).forEach(function(n){var r=e[n];t.append(n,r)}),t}throw new Error(\"`data` must be an instance of Object, FormData or <FORM> HTMLElement\")}},{key:\"isObject\",value:function(e){return\"[object Object]\"===Object.prototype.toString.call(e)}},{key:\"isFormData\",value:function(e){return e instanceof FormData}},{key:\"isFormElement\",value:function(e){return e instanceof HTMLFormElement}},{key:\"selectFiles\",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return new Promise(function(t,n){var r=document.createElement(\"INPUT\");r.type=\"file\",e.multiple&&r.setAttribute(\"multiple\",\"multiple\"),e.accept&&r.setAttribute(\"accept\",e.accept),r.style.display=\"none\",document.body.appendChild(r),r.addEventListener(\"change\",function(e){var n=e.target.files;t(n),document.body.removeChild(r)},!1),r.click()})}},{key:\"parseHeaders\",value:function(e){var t=e.trim().split(/[\\r\\n]+/),n={};return t.forEach(function(e){var t=e.split(\": \"),r=t.shift(),o=t.join(\": \");r&&(n[r]=o)}),n}}],(n=null)&&r(t.prototype,n),i&&r(t,i),e}()},function(e,t){var n=function(e){return encodeURIComponent(e).replace(/[!'()*]/g,escape).replace(/%20/g,\"+\")},r=function(e,t,o,i){return t=t||null,o=o||\"&\",i=i||null,e?function(e){for(var t=new Array,n=0;n<e.length;n++)e[n]&&t.push(e[n]);return t}(Object.keys(e).map(function(a){var u,c,s=a;if(i&&(s=i+\"[\"+s+\"]\"),\"object\"==typeof e[a]&&null!==e[a])u=r(e[a],null,o,s);else{t&&(c=s,s=!isNaN(parseFloat(c))&&isFinite(c)?t+Number(s):s);var f=e[a];f=(f=0===(f=!1===(f=!0===f?\"1\":f)?\"0\":f)?\"0\":f)||\"\",u=n(s)+\"=\"+n(f)}return u})).join(o).replace(/[!'()*]/g,\"\"):\"\"};e.exports=r}])});\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@codexteam/ajax/dist/main.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@editorjs/image/src/index.css":
+      /*!****************************************************!*\
+        !*** ./node_modules/@editorjs/image/src/index.css ***!
+        \****************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesEditorjsImageSrcIndexCss(module, exports, __webpack_require__) {
+        eval("var api = __webpack_require__(/*! ../../../style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../../css-loader/dist/cjs.js!./index.css */ \"./node_modules/css-loader/dist/cjs.js!./node_modules/@editorjs/image/src/index.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\n\n\nmodule.exports = content.locals || {};\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@editorjs/image/src/index.css?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@editorjs/image/src/svg/button-icon.svg":
+      /*!**************************************************************!*\
+        !*** ./node_modules/@editorjs/image/src/svg/button-icon.svg ***!
+        \**************************************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function node_modulesEditorjsImageSrcSvgButtonIconSvg(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"<svg width=\\\"20\\\" height=\\\"20\\\" viewBox=\\\"0 0 20 20\\\" xmlns=\\\"http://www.w3.org/2000/svg\\\">\\n    <path d=\\\"M3.15 13.628A7.749 7.749 0 0 0 10 17.75a7.74 7.74 0 0 0 6.305-3.242l-2.387-2.127-2.765 2.244-4.389-4.496-3.614 3.5zm-.787-2.303l4.446-4.371 4.52 4.63 2.534-2.057 3.533 2.797c.23-.734.354-1.514.354-2.324a7.75 7.75 0 1 0-15.387 1.325zM10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z\\\"/>\\n</svg>\");\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@editorjs/image/src/svg/button-icon.svg?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@editorjs/image/src/ui.js":
+      /*!************************************************!*\
+        !*** ./node_modules/@editorjs/image/src/ui.js ***!
+        \************************************************/
+
+      /*! exports provided: default, make */
+
+      /***/
+      function node_modulesEditorjsImageSrcUiJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Ui; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"make\", function() { return make; });\n/* harmony import */ var _svg_button_icon_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./svg/button-icon.svg */ \"./node_modules/@editorjs/image/src/svg/button-icon.svg\");\n\n\n/**\n * Class for working with UI:\n *  - rendering base structure\n *  - show/hide preview\n *  - apply tune view\n */\nclass Ui {\n  /**\n   * @param {object} ui - image tool Ui module\n   * @param {object} ui.api - Editor.js API\n   * @param {ImageConfig} ui.config - user config\n   * @param {Function} ui.onSelectFile - callback for clicks on Select file button\n   */\n  constructor({ api, config, onSelectFile }) {\n    this.api = api;\n    this.config = config;\n    this.onSelectFile = onSelectFile;\n    this.nodes = {\n      wrapper: make('div', [this.CSS.baseClass, this.CSS.wrapper]),\n      imageContainer: make('div', [ this.CSS.imageContainer ]),\n      fileButton: this.createFileButton(),\n      imageEl: undefined,\n      imagePreloader: make('div', this.CSS.imagePreloader),\n      caption: make('div', [this.CSS.input, this.CSS.caption], {\n        contentEditable: true,\n      }),\n    };\n\n    /**\n     * Create base structure\n     *  <wrapper>\n     *    <image-container>\n     *      <image-preloader />\n     *    </image-container>\n     *    <caption />\n     *    <select-file-button />\n     *  </wrapper>\n     */\n    this.nodes.caption.dataset.placeholder = this.config.captionPlaceholder;\n    this.nodes.imageContainer.appendChild(this.nodes.imagePreloader);\n    this.nodes.wrapper.appendChild(this.nodes.imageContainer);\n    this.nodes.wrapper.appendChild(this.nodes.caption);\n    this.nodes.wrapper.appendChild(this.nodes.fileButton);\n  }\n\n  /**\n   * CSS classes\n   *\n   * @returns {object}\n   */\n  get CSS() {\n    return {\n      baseClass: this.api.styles.block,\n      loading: this.api.styles.loader,\n      input: this.api.styles.input,\n      button: this.api.styles.button,\n\n      /**\n       * Tool's classes\n       */\n      wrapper: 'image-tool',\n      imageContainer: 'image-tool__image',\n      imagePreloader: 'image-tool__image-preloader',\n      imageEl: 'image-tool__image-picture',\n      caption: 'image-tool__caption',\n    };\n  };\n\n  /**\n   * Ui statuses:\n   * - empty\n   * - uploading\n   * - filled\n   *\n   * @returns {{EMPTY: string, UPLOADING: string, FILLED: string}}\n   */\n  static get status() {\n    return {\n      EMPTY: 'empty',\n      UPLOADING: 'loading',\n      FILLED: 'filled',\n    };\n  }\n\n  /**\n   * Renders tool UI\n   *\n   * @param {ImageToolData} toolData - saved tool data\n   * @returns {Element}\n   */\n  render(toolData) {\n    if (!toolData.file || Object.keys(toolData.file).length === 0) {\n      this.toggleStatus(Ui.status.EMPTY);\n    } else {\n      this.toggleStatus(Ui.status.UPLOADING);\n    }\n\n    return this.nodes.wrapper;\n  }\n\n  /**\n   * Creates upload-file button\n   *\n   * @returns {Element}\n   */\n  createFileButton() {\n    const button = make('div', [ this.CSS.button ]);\n\n    button.innerHTML = this.config.buttonContent || `${_svg_button_icon_svg__WEBPACK_IMPORTED_MODULE_0__[\"default\"]} Select an Image`;\n\n    button.addEventListener('click', () => {\n      this.onSelectFile();\n    });\n\n    return button;\n  }\n\n  /**\n   * Shows uploading preloader\n   *\n   * @param {string} src - preview source\n   * @returns {void}\n   */\n  showPreloader(src) {\n    this.nodes.imagePreloader.style.backgroundImage = `url(${src})`;\n\n    this.toggleStatus(Ui.status.UPLOADING);\n  }\n\n  /**\n   * Hide uploading preloader\n   *\n   * @returns {void}\n   */\n  hidePreloader() {\n    this.nodes.imagePreloader.style.backgroundImage = '';\n    this.toggleStatus(Ui.status.EMPTY);\n  }\n\n  /**\n   * Shows an image\n   *\n   * @param {string} url - image source\n   * @returns {void}\n   */\n  fillImage(url) {\n    /**\n     * Check for a source extension to compose element correctly: video tag for mp4, img — for others\n     */\n    const tag = /\\.mp4$/.test(url) ? 'VIDEO' : 'IMG';\n\n    const attributes = {\n      src: url,\n    };\n\n    /**\n     * We use eventName variable because IMG and VIDEO tags have different event to be called on source load\n     * - IMG: load\n     * - VIDEO: loadeddata\n     *\n     * @type {string}\n     */\n    let eventName = 'load';\n\n    /**\n     * Update attributes and eventName if source is a mp4 video\n     */\n    if (tag === 'VIDEO') {\n      /**\n       * Add attributes for playing muted mp4 as a gif\n       *\n       * @type {boolean}\n       */\n      attributes.autoplay = true;\n      attributes.loop = true;\n      attributes.muted = true;\n      attributes.playsinline = true;\n\n      /**\n       * Change event to be listened\n       *\n       * @type {string}\n       */\n      eventName = 'loadeddata';\n    }\n\n    /**\n     * Compose tag with defined attributes\n     *\n     * @type {Element}\n     */\n    this.nodes.imageEl = make(tag, this.CSS.imageEl, attributes);\n\n    /**\n     * Add load event listener\n     */\n    this.nodes.imageEl.addEventListener(eventName, () => {\n      this.toggleStatus(Ui.status.FILLED);\n\n      /**\n       * Preloader does not exists on first rendering with presaved data\n       */\n      if (this.nodes.imagePreloader) {\n        this.nodes.imagePreloader.style.backgroundImage = '';\n      }\n    });\n\n    this.nodes.imageContainer.appendChild(this.nodes.imageEl);\n  }\n\n  /**\n   * Shows caption input\n   *\n   * @param {string} text - caption text\n   * @returns {void}\n   */\n  fillCaption(text) {\n    if (this.nodes.caption) {\n      this.nodes.caption.innerHTML = text;\n    }\n  }\n\n  /**\n   * Changes UI status\n   *\n   * @param {string} status - see {@link Ui.status} constants\n   * @returns {void}\n   */\n  toggleStatus(status) {\n    for (const statusType in Ui.status) {\n      if (Object.prototype.hasOwnProperty.call(Ui.status, statusType)) {\n        this.nodes.wrapper.classList.toggle(`${this.CSS.wrapper}--${Ui.status[statusType]}`, status === Ui.status[statusType]);\n      }\n    }\n  }\n\n  /**\n   * Apply visual representation of activated tune\n   *\n   * @param {string} tuneName - one of available tunes {@link Tunes.tunes}\n   * @param {boolean} status - true for enable, false for disable\n   * @returns {void}\n   */\n  applyTune(tuneName, status) {\n    this.nodes.wrapper.classList.toggle(`${this.CSS.wrapper}--${tuneName}`, status);\n  }\n}\n\n/**\n * Helper for making Elements with attributes\n *\n * @param  {string} tagName           - new Element tag name\n * @param  {Array|string} classNames  - list or name of CSS class\n * @param  {object} attributes        - any attributes\n * @returns {Element}\n */\nconst make = function make(tagName, classNames = null, attributes = {}) {\n  const el = document.createElement(tagName);\n\n  if (Array.isArray(classNames)) {\n    el.classList.add(...classNames);\n  } else if (classNames) {\n    el.classList.add(classNames);\n  }\n\n  for (const attrName in attributes) {\n    el[attrName] = attributes[attrName];\n  }\n\n  return el;\n};\n\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@editorjs/image/src/ui.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@editorjs/image/src/uploader.js":
+      /*!******************************************************!*\
+        !*** ./node_modules/@editorjs/image/src/uploader.js ***!
+        \******************************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function node_modulesEditorjsImageSrcUploaderJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Uploader; });\n/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @codexteam/ajax */ \"./node_modules/@codexteam/ajax/dist/main.js\");\n/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_codexteam_ajax__WEBPACK_IMPORTED_MODULE_0__);\n\n\n/**\n * Module for file uploading. Handle 3 scenarios:\n *  1. Select file from device and upload\n *  2. Upload by pasting URL\n *  3. Upload by pasting file from Clipboard or by Drag'n'Drop\n */\nclass Uploader {\n  /**\n   * @param {object} params - uploader module params\n   * @param {ImageConfig} params.config - image tool config\n   * @param {Function} params.onUpload - one callback for all uploading (file, url, d-n-d, pasting)\n   * @param {Function} params.onError - callback for uploading errors\n   */\n  constructor({ config, onUpload, onError }) {\n    this.config = config;\n    this.onUpload = onUpload;\n    this.onError = onError;\n  }\n\n  /**\n   * Handle clicks on the upload file button\n   * Fires ajax.transport()\n   *\n   * @param {Function} onPreview - callback fired when preview is ready\n   */\n  uploadSelectedFile({ onPreview }) {\n    const preparePreview = function (file) {\n      const reader = new FileReader();\n\n      reader.readAsDataURL(file);\n      reader.onload = (e) => {\n        onPreview(e.target.result);\n      };\n    };\n\n    /**\n     * Custom uploading\n     * or default uploading\n     */\n    let upload;\n\n    // custom uploading\n    if (this.config.uploader && typeof this.config.uploader.uploadByFile === 'function') {\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.selectFiles({ accept: this.config.types }).then((files) => {\n        preparePreview(files[0]);\n\n        const customUpload = this.config.uploader.uploadByFile(files[0]);\n\n        if (!isPromise(customUpload)) {\n          console.warn('Custom uploader method uploadByFile should return a Promise');\n        }\n\n        return customUpload;\n      });\n\n    // default uploading\n    } else {\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.transport({\n        url: this.config.endpoints.byFile,\n        data: this.config.additionalRequestData,\n        accept: this.config.types,\n        headers: this.config.additionalRequestHeaders,\n        beforeSend: (files) => {\n          preparePreview(files[0]);\n        },\n        fieldName: this.config.field,\n      }).then((response) => response.body);\n    }\n\n    upload.then((response) => {\n      this.onUpload(response);\n    }).catch((error) => {\n      this.onError(error);\n    });\n  }\n\n  /**\n   * Handle clicks on the upload file button\n   * Fires ajax.post()\n   *\n   * @param {string} url - image source url\n   */\n  uploadByUrl(url) {\n    let upload;\n\n    /**\n     * Custom uploading\n     */\n    if (this.config.uploader && typeof this.config.uploader.uploadByUrl === 'function') {\n      upload = this.config.uploader.uploadByUrl(url);\n\n      if (!isPromise(upload)) {\n        console.warn('Custom uploader method uploadByUrl should return a Promise');\n      }\n    } else {\n      /**\n       * Default uploading\n       */\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.post({\n        url: this.config.endpoints.byUrl,\n        data: Object.assign({\n          url: url,\n        }, this.config.additionalRequestData),\n        type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.contentType.JSON,\n        headers: this.config.additionalRequestHeaders,\n      }).then(response => response.body);\n    }\n\n    upload.then((response) => {\n      this.onUpload(response);\n    }).catch((error) => {\n      this.onError(error);\n    });\n  }\n\n  /**\n   * Handle clicks on the upload file button\n   * Fires ajax.post()\n   *\n   * @param {File} file - file pasted by drag-n-drop\n   * @param {Function} onPreview - file pasted by drag-n-drop\n   */\n  uploadByFile(file, { onPreview }) {\n    /**\n     * Load file for preview\n     *\n     * @type {FileReader}\n     */\n    const reader = new FileReader();\n\n    reader.readAsDataURL(file);\n    reader.onload = (e) => {\n      onPreview(e.target.result);\n    };\n\n    let upload;\n\n    /**\n     * Custom uploading\n     */\n    if (this.config.uploader && typeof this.config.uploader.uploadByFile === 'function') {\n      upload = this.config.uploader.uploadByFile(file);\n\n      if (!isPromise(upload)) {\n        console.warn('Custom uploader method uploadByFile should return a Promise');\n      }\n    } else {\n      /**\n       * Default uploading\n       */\n      const formData = new FormData();\n\n      formData.append(this.config.field, file);\n\n      if (this.config.additionalRequestData && Object.keys(this.config.additionalRequestData).length) {\n        Object.entries(this.config.additionalRequestData).forEach(([name, value]) => {\n          formData.append(name, value);\n        });\n      }\n\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.post({\n        url: this.config.endpoints.byFile,\n        data: formData,\n        type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.contentType.JSON,\n        headers: this.config.additionalRequestHeaders,\n      }).then(response => response.body);\n    }\n\n    upload.then((response) => {\n      this.onUpload(response);\n    }).catch((error) => {\n      this.onError(error);\n    });\n  }\n}\n\n/**\n * Check if passed object is a Promise\n *\n * @param  {*}  object - object to check\n * @returns {boolean}\n */\nfunction isPromise(object) {\n  return Promise.resolve(object) === object;\n}\n\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@editorjs/image/src/uploader.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@vietlongn/editorjs-carousel/src/index.css":
+      /*!*****************************************************************!*\
+        !*** ./node_modules/@vietlongn/editorjs-carousel/src/index.css ***!
+        \*****************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesVietlongnEditorjsCarouselSrcIndexCss(module, exports, __webpack_require__) {
+        eval("var api = __webpack_require__(/*! ../../../style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../../css-loader/dist/cjs.js!./index.css */ \"./node_modules/css-loader/dist/cjs.js!./node_modules/@vietlongn/editorjs-carousel/src/index.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\n\n\nmodule.exports = content.locals || {};\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@vietlongn/editorjs-carousel/src/index.css?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@vietlongn/editorjs-carousel/src/index.js":
+      /*!****************************************************************!*\
+        !*** ./node_modules/@vietlongn/editorjs-carousel/src/index.js ***!
+        \****************************************************************/
+
+      /*! exports provided: default, make */
+
+      /***/
+      function node_modulesVietlongnEditorjsCarouselSrcIndexJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return SimpleCarousel; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"make\", function() { return make; });\n/* harmony import */ var _uploader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./uploader */ \"./node_modules/@vietlongn/editorjs-carousel/src/uploader.js\");\n/* harmony import */ var _svg_button_icon_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./svg/button-icon.svg */ \"./node_modules/@vietlongn/editorjs-carousel/src/svg/button-icon.svg\");\n// eslint-disable-next-line require-jsdoc\n\n\n__webpack_require__(/*! ./index.css */ \"./node_modules/@vietlongn/editorjs-carousel/src/index.css\").toString();\n\n// eslint-disable-next-line require-jsdoc\nclass SimpleCarousel {\n  /**\n   * @param {CarousellData} data - previously saved data\n   * @param {CarouselConfig} config - user config for Tool\n   * @param {object} api - Editor.js API\n   */\n  constructor({ data, config, api }) {\n    this.api = api;\n    this.data = data;\n    this.IconClose = '<svg class=\"icon icon--cross\" width=\"12px\" height=\"12px\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#cross\"></use></svg>';\n    this.config = {\n      endpoints: config.endpoints || '',\n      additionalRequestData: config.additionalRequestData || {},\n      additionalRequestHeaders: config.additionalRequestHeaders || {},\n      field: config.field || 'image',\n      types: config.types || 'image/*',\n      captionPlaceholder: this.api.i18n.t('Caption'),\n      buttonContent: config.buttonContent || '',\n      uploader: config.uploader || undefined\n    };\n    /**\n     * Module for file uploading\n     */\n    this.uploader = new _uploader__WEBPACK_IMPORTED_MODULE_0__[\"default\"]({\n      config: this.config,\n      onUpload: (response) => this.onUpload(response),\n      onError: (error) => this.uploadingFailed(error)\n    });\n  }\n\n  /**\n   * CSS classes\n   * @constructor\n   */\n  get CSS() {\n    return {\n      baseClass: this.api.styles.block,\n      loading: this.api.styles.loader,\n      input: this.api.styles.input,\n      button: this.api.styles.button,\n\n      /**\n       * Tool's classes\n       */\n      wrapper: 'cdxcarousel-wrapper',\n      addButton: 'cdxcarousel-addImage',\n      block: 'cdxcarousel-block',\n      item: 'cdxcarousel-item',\n      removeBtn: 'cdxcarousel-removeBtn',\n      inputUrl: 'cdxcarousel-inputUrl',\n      caption: 'cdxcarousel-caption',\n      list: 'cdxcarousel-list',\n      imagePreloader: 'image-tool__image-preloader'\n    };\n  };\n\n  /**\n   * Get Tool toolbox settings\n   * icon - Tool icon's SVG\n   * title - title to show in toolbox\n   *\n   * @return {{icon: string, title: string}}\n   */\n  static get toolbox() {\n    return {\n      title: 'Carousel',\n      icon: '<svg width=\"38\" height=\"18\" viewBox=\"0 0 38 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><mask id=\"mask0\" mask-type=\"alpha\" maskUnits=\"userSpaceOnUse\" x=\"10\" y=\"0\" width=\"18\" height=\"18\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M28 16V2C28 0.9 27.1 0 26 0H12C10.9 0 10 0.9 10 2V16C10 17.1 10.9 18 12 18H26C27.1 18 28 17.1 28 16V16ZM15.5 10.5L18 13.51L21.5 9L26 15H12L15.5 10.5V10.5Z\"  /></mask><g mask=\"url(#mask0)\"><rect x=\"10\" width=\"18\" height=\"18\"  /></g><mask id=\"mask1\" mask-type=\"alpha\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"3\" width=\"7\" height=\"12\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M7 13.59L2.67341 9L7 4.41L5.66802 3L0 9L5.66802 15L7 13.59Z\" fill=\"white\"/></mask><g mask=\"url(#mask1)\"><rect y=\"3\" width=\"7.55735\" height=\"12\"  /></g><mask id=\"mask2\" mask-type=\"alpha\" maskUnits=\"userSpaceOnUse\" x=\"31\" y=\"3\" width=\"7\" height=\"12\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M31 13.59L35.3266 9L31 4.41L32.332 3L38 9L32.332 15L31 13.59Z\" fill=\"white\"/></mask><g mask=\"url(#mask2)\"><rect x=\"30.4426\" y=\"2.25\" width=\"7.55735\" height=\"13\" /></g></svg>'\n    };\n  }\n\n  /**\n   * Renders Block content\n   * @public\n   *\n   * @return {HTMLDivElement}\n   */\n  render() {\n    /*\n     * Structure\n     * <wrapper>\n     *  <list>\n     *    <item/>\n     *    ...\n     *  </list>\n     *  <addButton>\n     * </wrapper>\n     */\n    // Создаем базу для начала\n    this.wrapper = make('div', [ this.CSS.wrapper ]);\n    this.list = make('div', [ this.CSS.list ]);\n    this.addButton = this.createAddButton();\n\n    this.list.appendChild(this.addButton);\n    this.wrapper.appendChild(this.list);\n    if (this.data.length > 0) {\n      console.log('load_item render', this.data);\n      for (const load of this.data) {\n        const loadItem = this.creteNewItem(load.url, load.caption);\n\n        this.list.insertBefore(loadItem, this.addButton);\n      }\n    }\n    return this.wrapper;\n  }\n\n  // eslint-disable-next-line require-jsdoc\n  save(blockContent) {\n    const list = blockContent.getElementsByClassName(this.CSS.item);\n    const data = [];\n\n    if (list.length > 0) {\n      for (const item of list) {\n        if (item.firstChild.value) {\n          data.push({\n            url: item.firstChild.value,\n            caption: item.lastChild.value\n          });\n        }\n      }\n    }\n    return data;\n  }\n\n  /**\n   * Create Image block\n   * @public\n   *\n   * @param {string} url - url of saved or upload image\n   * @param {string} caption - caption of image\n   *\n   * Structure\n   * <item>\n   *  <url/>\n   *  <removeButton/>\n   *  <img/>\n   *  <caption>\n   * </item>\n   *\n   * @return {HTMLDivElement}\n   */\n  creteNewItem(url, caption) {\n    // Create item, remove button and field for image url\n    const block = make('div', [ this.CSS.block ]);\n    const item = make('div', [ this.CSS.item ]);\n    const removeBtn = make('div', [ this.CSS.removeBtn ]);\n    const imageUrl = make('input', [ this.CSS.inputUrl ]);\n    const imagePreloader = make('div', [ this.CSS.imagePreloader ]);\n\n    imageUrl.value = url;\n    removeBtn.innerHTML = this.IconClose;\n    removeBtn.addEventListener('click', () => {\n      block.remove();\n    });\n    removeBtn.style.display = 'none';\n\n    item.appendChild(imageUrl);\n    item.appendChild(removeBtn);\n    block.appendChild(item);\n    /*\n     * If data already yet\n     * We create Image view\n     */\n    if (url) {\n      this._createImage(url, item, caption, removeBtn);\n    } else {\n      item.appendChild(imagePreloader);\n    }\n    return block;\n  }\n\n  /**\n   * Create Image View\n   * @public\n   *\n   * @param {string} url - url of saved or upload image\n   * @param {HTMLDivElement} item - block of created image\n   * @param {string} captionText - caption of image\n   * @param {HTMLDivElement} removeBtn - button for remove image block\n   *\n   * @return {HTMLDivElement}\n   */\n  _createImage(url, item, captionText, removeBtn) {\n    const image = document.createElement('img');\n    const caption = make('input', [this.CSS.caption, this.CSS.input]);\n\n    image.src = url;\n    if (captionText) {\n      caption.value = captionText;\n    }\n    caption.placeholder = this.config.captionPlaceholder;\n\n    removeBtn.style.display = 'flex';\n\n    item.appendChild(image);\n    item.appendChild(caption);\n  }\n\n  /**\n   * File uploading callback\n   * @private\n   *\n   * @param {Response} response\n   */\n  onUpload(response) {\n    if (response.success && response.file) {\n      // Берем последний созданный элемент и ставим изображение с сервера\n      console.log(this.list);\n      console.log(this.list.childNodes.length);\n      console.log(this.list.childNodes.length - 1);\n      this._createImage(response.file.url, this.list.childNodes[this.list.childNodes.length - 2].firstChild, '', this.list.childNodes[this.list.childNodes.length - 2].firstChild.childNodes[1]);\n      this.list.childNodes[this.list.childNodes.length - 2].firstChild.childNodes[2].style.backgroundImage = '';\n      this.list.childNodes[this.list.childNodes.length - 2].firstChild.firstChild.value = response.file.url;\n      this.list.childNodes[this.list.childNodes.length - 2].firstChild.classList.add('cdxcarousel-item--empty');\n    } else {\n      this.uploadingFailed('incorrect response: ' + JSON.stringify(response));\n    }\n  }\n\n  /**\n   * Handle uploader errors\n   * @private\n   *\n   * @param {string} errorText\n   */\n  uploadingFailed(errorText) {\n    console.log('Gallery : uploading failed because of', errorText);\n\n    this.api.notifier.show({\n      message: this.api.i18n.t('Can not upload an image, try another'),\n      style: 'error'\n    });\n  }\n\n  /**\n   * Shows uploading preloader\n   * @param {string} src - preview source\n   */\n  showPreloader(src) {\n    this.nodes.imagePreloader.style.backgroundImage = `url(${src})`;\n  }\n\n  // eslint-disable-next-line require-jsdoc\n  onSelectFile() {\n    // Создаем элемент\n    this.uploader.uploadSelectedFile({\n      onPreview: (src) => {\n        const newItem = this.creteNewItem('', '');\n\n        newItem.firstChild.lastChild.style.backgroundImage = `url(${src})`;\n        console.log('preload', newItem.firstChild.lastChild);\n        this.list.insertBefore(newItem, this.addButton);\n        console.log(src);\n      }\n    });\n  }\n\n  /**\n   * Create add button\n   * @private\n   */\n  createAddButton() {\n    const addButton = make('div', [this.CSS.button, this.CSS.addButton]);\n    const block = make('div', [ this.CSS.block ]);\n\n    addButton.innerHTML = `${_svg_button_icon_svg__WEBPACK_IMPORTED_MODULE_1__[\"default\"]} Add Image`;\n    addButton.addEventListener('click', () => {\n      this.onSelectFile();\n    });\n    block.appendChild(addButton);\n\n    return block;\n  }\n}\n\n/**\n * Helper for making Elements with attributes\n *\n * @param  {string} tagName           - new Element tag name\n * @param  {array|string} classNames  - list or name of CSS class\n * @param  {Object} attributes        - any attributes\n * @return {Element}\n */\nconst make = function make(tagName, classNames = null, attributes = {}) {\n  const el = document.createElement(tagName);\n\n  if (Array.isArray(classNames)) {\n    el.classList.add(...classNames);\n  } else if (classNames) {\n    el.classList.add(classNames);\n  }\n\n  for (const attrName in attributes) {\n    el[attrName] = attributes[attrName];\n  }\n\n  return el;\n};\n\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@vietlongn/editorjs-carousel/src/index.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@vietlongn/editorjs-carousel/src/svg/button-icon.svg":
+      /*!***************************************************************************!*\
+        !*** ./node_modules/@vietlongn/editorjs-carousel/src/svg/button-icon.svg ***!
+        \***************************************************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function node_modulesVietlongnEditorjsCarouselSrcSvgButtonIconSvg(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"<svg width=\\\"20\\\" height=\\\"20\\\" viewBox=\\\"0 0 20 20\\\" xmlns=\\\"http://www.w3.org/2000/svg\\\">\\n    <path d=\\\"M3.15 13.628A7.749 7.749 0 0 0 10 17.75a7.74 7.74 0 0 0 6.305-3.242l-2.387-2.127-2.765 2.244-4.389-4.496-3.614 3.5zm-.787-2.303l4.446-4.371 4.52 4.63 2.534-2.057 3.533 2.797c.23-.734.354-1.514.354-2.324a7.75 7.75 0 1 0-15.387 1.325zM10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z\\\"/>\\n</svg>\");\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@vietlongn/editorjs-carousel/src/svg/button-icon.svg?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/@vietlongn/editorjs-carousel/src/uploader.js":
+      /*!*******************************************************************!*\
+        !*** ./node_modules/@vietlongn/editorjs-carousel/src/uploader.js ***!
+        \*******************************************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function node_modulesVietlongnEditorjsCarouselSrcUploaderJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Uploader; });\n/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @codexteam/ajax */ \"./node_modules/@codexteam/ajax/dist/main.js\");\n/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_codexteam_ajax__WEBPACK_IMPORTED_MODULE_0__);\n\n\n/**\n * Module for file uploading. Handle 3 scenarios:\n *  1. Select file from device and upload\n *  2. Upload by pasting URL\n *  3. Upload by pasting file from Clipboard or by Drag'n'Drop\n */\nclass Uploader {\n  /**\n   * @param {object} params - uploader module params\n   * @param {ImageConfig} params.config - image tool config\n   * @param {Function} params.onUpload - one callback for all uploading (file, url, d-n-d, pasting)\n   * @param {Function} params.onError - callback for uploading errors\n   */\n  constructor({ config, onUpload, onError }) {\n    this.config = config;\n    this.onUpload = onUpload;\n    this.onError = onError;\n  }\n\n  /**\n   * Handle clicks on the upload file button\n   * Fires ajax.transport()\n   *\n   * @param {Function} onPreview - callback fired when preview is ready\n   */\n  uploadSelectedFile({ onPreview }) {\n    const preparePreview = function (file) {\n      const reader = new window.FileReader();\n\n      reader.readAsDataURL(file);\n      reader.onload = (e) => {\n        onPreview(e.target.result);\n      };\n    };\n\n    /**\n     * Custom uploading\n     * or default uploading\n     */\n    let upload;\n\n    // custom uploading\n    if (this.config.uploader && typeof this.config.uploader.uploadByFile === 'function') {\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.selectFiles({ accept: this.config.types }).then((files) => {\n        preparePreview(files[0]);\n\n        const customUpload = this.config.uploader.uploadByFile(files[0]);\n\n        if (!isPromise(customUpload)) {\n          console.warn('Custom uploader method uploadByFile should return a Promise');\n        }\n\n        return customUpload;\n      });\n\n    // default uploading\n    } else {\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.transport({\n        url: this.config.endpoints.byFile,\n        data: this.config.additionalRequestData,\n        accept: this.config.types,\n        headers: this.config.additionalRequestHeaders,\n        beforeSend: (files) => {\n          preparePreview(files[0]);\n        },\n        fieldName: this.config.field,\n      }).then((response) => response.body);\n    }\n\n    upload.then((response) => {\n      this.onUpload(response);\n    }).catch((error) => {\n      this.onError(error);\n    });\n  }\n\n  /**\n   * Handle clicks on the upload file button\n   * Fires ajax.post()\n   *\n   * @param {string} url - image source url\n   */\n  uploadByUrl(url) {\n    let upload;\n\n    /**\n     * Custom uploading\n     */\n    if (this.config.uploader && typeof this.config.uploader.uploadByUrl === 'function') {\n      upload = this.config.uploader.uploadByUrl(url);\n\n      if (!isPromise(upload)) {\n        console.warn('Custom uploader method uploadByUrl should return a Promise');\n      }\n    } else {\n      /**\n       * Default uploading\n       */\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.post({\n        url: this.config.endpoints.byUrl,\n        data: Object.assign({\n          url: url,\n        }, this.config.additionalRequestData),\n        type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.contentType.JSON,\n        headers: this.config.additionalRequestHeaders,\n      }).then(response => response.body);\n    }\n\n    upload.then((response) => {\n      this.onUpload(response);\n    }).catch((error) => {\n      this.onError(error);\n    });\n  }\n\n  /**\n   * Handle clicks on the upload file button\n   * Fires ajax.post()\n   *\n   * @param {File} file - file pasted by drag-n-drop\n   * @param {Function} onPreview - file pasted by drag-n-drop\n   */\n  uploadByFile(file, { onPreview }) {\n    /**\n     * Load file for preview\n     *\n     * @type {FileReader}\n     */\n    const reader = new window.FileReader();\n\n    reader.readAsDataURL(file);\n    reader.onload = (e) => {\n      onPreview(e.target.result);\n    };\n\n    let upload;\n\n    /**\n     * Custom uploading\n     */\n    if (this.config.uploader && typeof this.config.uploader.uploadByFile === 'function') {\n      upload = this.config.uploader.uploadByFile(file);\n\n      if (!isPromise(upload)) {\n        console.warn('Custom uploader method uploadByFile should return a Promise');\n      }\n    } else {\n      /**\n       * Default uploading\n       */\n      const formData = new window.FormData();\n\n      formData.append(this.config.field, file);\n\n      if (this.config.additionalRequestData && Object.keys(this.config.additionalRequestData).length) {\n        Object.entries(this.config.additionalRequestData).forEach(([name, value]) => {\n          formData.append(name, value);\n        });\n      }\n\n      upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.post({\n        url: this.config.endpoints.byFile,\n        data: formData,\n        type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.contentType.JSON,\n        headers: this.config.additionalRequestHeaders,\n      }).then(response => response.body);\n    }\n\n    upload.then((response) => {\n      this.onUpload(response);\n    }).catch((error) => {\n      this.onError(error);\n    });\n  }\n}\n\n/**\n * Check if passed object is a Promise\n *\n * @param  {*}  object - object to check\n * @returns {boolean}\n */\nfunction isPromise(object) {\n  return window.Promise.resolve(object) === object;\n}\n\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@vietlongn/editorjs-carousel/src/uploader.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/cjs.js!./node_modules/@editorjs/image/src/index.css":
+      /*!******************************************************************************************!*\
+        !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/@editorjs/image/src/index.css ***!
+        \******************************************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistCjsJsNode_modulesEditorjsImageSrcIndexCss(module, exports, __webpack_require__) {
+        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".image-tool {\\n  --bg-color: #cdd1e0;\\n  --front-color: #388ae5;\\n  --border-color: #e8e8eb;\\n\\n  &__image {\\n    border-radius: 3px;\\n    overflow: hidden;\\n    margin-bottom: 10px;\\n\\n    &-picture {\\n      max-width: 100%;\\n      vertical-align: bottom;\\n      display: block;\\n    }\\n\\n    &-preloader {\\n      width: 50px;\\n      height: 50px;\\n      border-radius: 50%;\\n      background-size: cover;\\n      margin: auto;\\n      position: relative;\\n      background-color: var(--bg-color);\\n      background-position: center center;\\n\\n      &::after {\\n        content: \\\"\\\";\\n        position: absolute;\\n        z-index: 3;\\n        width: 60px;\\n        height: 60px;\\n        border-radius: 50%;\\n        border: 2px solid var(--bg-color);\\n        border-top-color: var(--front-color);\\n        left: 50%;\\n        top: 50%;\\n        margin-top: -30px;\\n        margin-left: -30px;\\n        animation: image-preloader-spin 2s infinite linear;\\n        box-sizing: border-box;\\n      }\\n    }\\n  }\\n\\n  &__caption {\\n    &[contentEditable=\\\"true\\\"][data-placeholder]::before {\\n      position: absolute;\\n      content: attr(data-placeholder);\\n      color: #707684;\\n      font-weight: normal;\\n      display: none;\\n    }\\n\\n    &[contentEditable=\\\"true\\\"][data-placeholder]:empty {\\n      &::before {\\n        display: block;\\n      }\\n\\n      &:focus::before {\\n        display: none;\\n      }\\n    }\\n  }\\n\\n  &--empty {\\n    ^&__image {\\n      display: none;\\n    }\\n  }\\n\\n  &--empty,\\n  &--loading {\\n    ^&__caption {\\n      display: none;\\n    }\\n  }\\n\\n  &--filled {\\n    .cdx-button {\\n      display: none;\\n    }\\n\\n    ^&__image {\\n      &-preloader {\\n        display: none;\\n      }\\n    }\\n  }\\n\\n  &--loading {\\n    ^&__image {\\n      min-height: 200px;\\n      display: flex;\\n      border: 1px solid var(--border-color);\\n      background-color: #fff;\\n\\n      &-picture {\\n        display: none;\\n      }\\n    }\\n\\n    .cdx-button {\\n      display: none;\\n    }\\n  }\\n\\n  /**\\n   * Tunes\\n   * ----------------\\n   */\\n\\n  &--withBorder {\\n    ^&__image {\\n      border: 1px solid var(--border-color);\\n    }\\n  }\\n\\n  &--withBackground {\\n    ^&__image {\\n      padding: 15px;\\n      background: var(--bg-color);\\n\\n      &-picture {\\n        max-width: 60%;\\n        margin: 0 auto;\\n      }\\n    }\\n  }\\n\\n  &--stretched {\\n    ^&__image {\\n      &-picture {\\n        width: 100%;\\n      }\\n    }\\n  }\\n}\\n\\n@keyframes image-preloader-spin {\\n  0% {\\n    transform: rotate(0deg);\\n  }\\n  100% {\\n    transform: rotate(360deg);\\n  }\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@editorjs/image/src/index.css?./node_modules/css-loader/dist/cjs.js");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/cjs.js!./node_modules/@vietlongn/editorjs-carousel/src/index.css":
+      /*!*******************************************************************************************************!*\
+        !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/@vietlongn/editorjs-carousel/src/index.css ***!
+        \*******************************************************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistCjsJsNode_modulesVietlongnEditorjsCarouselSrcIndexCss(module, exports, __webpack_require__) {
+        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".cdxcarousel-addImage {\\n    height: 225px;\\n    display: flex;\\n    justify-content: center;\\n    align-items: center;\\n    padding: 5px;\\n    position: relative;\\n    flex-direction: row;\\n    margin-top: 5px;\\n}\\n\\n.cdxcarousel-item--empty .image-tool__image-preloader{\\n  display: none;\\n}\\n\\n.cdxcarousel-item img {\\n    margin-bottom: 15px;\\n    display: block;\\n    object-fit: cover;\\n    width: 100%;\\n    height: 180px;\\n    order: 1;\\n}\\n\\n.cdxcarousel-inputUrl {\\n    order: 0;\\n    display: none;\\n}\\n\\n.cdxcarousel-caption {\\n    order: 3;\\n}\\n\\n\\n.cdxcarousel-block {\\n    width: 50%;\\n}\\n\\n.cdxcarousel-list {\\n    display: flex;\\n    flex-wrap: wrap;\\n    flex-direction: row;\\n    justify-content: flex-start;\\n    align-items: flex-start;\\n}\\n\\n.cdxcarousel-wrapper {\\n    margin-top: 10px;\\n    margin-bottom: 15px;\\n}\\n\\n.cdxcarousel-item {\\n    height: 235px;\\n    padding: 5px;\\n    display: flex;\\n    position: relative;\\n    flex-direction: column;\\n}\\n\\n\\n.cdxcarousel-removeBtn {\\n    position: absolute;\\n    padding: 3px;\\n    right: 10px;\\n    top: 10px;\\n    display: inline-flex;\\n    width: 34px;\\n    height: 34px;\\n    line-height: 34px;\\n    justify-content: center;\\n    align-items: center;\\n    border-radius: 3px;\\n    cursor: pointer;\\n    border: 0;\\n    outline: none;\\n    background-color: white;\\n    color: #000;\\n    transition: background 200ms;\\n}\\n\\n.cdxcarousel-removeBtn:hover {\\n    background: #eff2f5;\\n}\\n\\n.image-tool {\\n\\n  &__image {\\n    border-radius: 3px;\\n    overflow: hidden;\\n    margin-bottom: 10px;\\n\\n    &-picture {\\n      max-width: 100%;\\n      vertical-align: bottom;\\n      display: block;\\n    }\\n\\n    &-preloader {\\n      width: 50px;\\n      height: 50px;\\n      border-radius: 50%;\\n      background-size: cover;\\n      margin: auto;\\n      position: relative;\\n      background-color: #cdd1e0;\\n      background-position: center center;\\n\\n      &::after {\\n        content: \\\"\\\";\\n        position: absolute;\\n        z-index: 3;\\n        width: 60px;\\n        height: 60px;\\n        border-radius: 50%;\\n        border: 2px solid #cdd1e0;\\n        border-top-color: #388ae5;\\n        left: 50%;\\n        top: 50%;\\n        margin-top: -30px;\\n        margin-left: -30px;\\n        animation: image-preloader-spin 2s infinite linear;\\n        box-sizing: border-box;\\n      }\\n    }\\n  }\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@vietlongn/editorjs-carousel/src/index.css?./node_modules/css-loader/dist/cjs.js");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/cjs.js!./src/Abstract/index.css":
+      /*!**********************************************************************!*\
+        !*** ./node_modules/css-loader/dist/cjs.js!./src/Abstract/index.css ***!
+        \**********************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistCjsJsSrcAbstractIndexCss(module, exports, __webpack_require__) {
+        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".hiden {\\n    display: none !important;\\n}\\n.text-right {\\n    text-align: right;\\n}\\n.cdx-input-labeled,\\n.cdx-quote__caption {\\n    padding-left: 38px;\\n    background-repeat: no-repeat;\\n    background-position: 10px;\\n    white-space: nowrap;\\n    text-overflow: ellipsis;\\n    overflow: hidden;\\n}\\n\\n.cdx-quote__caption {\\n    background-image: url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"%23707684\\\" viewBox=\\\"0 0 16 16\\\">   <path d=\\\"M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z\\\"/> </svg>');\\n}\\n\\n.cdx-input-editable {\\n    margin: 5px 0;\\n}\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]::before {\\n    position: absolute !important;\\n    content: attr(data-placeholder);\\n    color: #707684;\\n    font-weight: normal;\\n    display: none;\\n}\\n\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]:empty::before {\\n    display: block;\\n}\\n\\n.cdx-input-editable[contentEditable=\\\"true\\\"][data-placeholder]:empty:focus::before {\\n    display: none;\\n}\\n\\n.flex .cdx-input {\\n    margin: 0 5px;\\n    position: relative;\\n}\\n\\n.cdx-select {\\n    border: 1px solid rgba(201, 201, 204, 0.48);\\n    border-radius: 5px;\\n    padding: 5px 8px;\\n    outline: none;\\n    width: 100%;\\n    box-sizing: border-box;\\n}\\n.cdx-checkbox {\\n    margin-top: 15px;\\n    margin-left: 25px;\\n}\\n\\n/** Toggler **/\\n\\n.toggle-wrapper {\\n    color: #707684;\\n}\\n\\n.toggle-input {\\n    display: none;\\n}\\n\\n.toggle-label {\\n    width: 17px;\\n    height: 17px;\\n    position: absolute;\\n    right: -30px;\\n    top: 30px;\\n    display: inline-block;\\n    box-sizing: border-box;\\n    background: #eff2f5 center / 70% no-repeat\\n        url('data:image/svg+xml,<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" viewBox=\\\"0 0 16 16\\\"><path d=\\\"M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z\\\"/><path fill-rule=\\\"evenodd\\\" d=\\\"M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z\\\"/></svg>');\\n    cursor: pointer;\\n    transition: 0.5s;\\n}\\n\\n.toggle-input:checked + .toggle-label {\\n    opacity: 0.3;\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/index.css?./node_modules/css-loader/dist/cjs.js");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/cjs.js!./src/Gallery/index.css":
+      /*!*********************************************************************!*\
+        !*** ./node_modules/css-loader/dist/cjs.js!./src/Gallery/index.css ***!
+        \*********************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistCjsJsSrcGalleryIndexCss(module, exports, __webpack_require__) {
+        eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".cdx-input-gallery,\\ncdxcarousel-block {\\n    margin-top: 20px !important;\\n    width: 50%;\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Gallery/index.css?./node_modules/css-loader/dist/cjs.js");
+        /***/
+      },
+
+      /***/
+      "./node_modules/css-loader/dist/runtime/api.js":
+      /*!*****************************************************!*\
+        !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+        \*****************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesCssLoaderDistRuntimeApiJs(module, exports, __webpack_require__) {
+        "use strict";
+
+        eval("\n\n/*\n  MIT License http://www.opensource.org/licenses/mit-license.php\n  Author Tobias Koppers @sokra\n*/\n// css base code, injected by the css-loader\n// eslint-disable-next-line func-names\nmodule.exports = function (useSourceMap) {\n  var list = []; // return the list of modules as css string\n\n  list.toString = function toString() {\n    return this.map(function (item) {\n      var content = cssWithMappingToString(item, useSourceMap);\n\n      if (item[2]) {\n        return \"@media \".concat(item[2], \" {\").concat(content, \"}\");\n      }\n\n      return content;\n    }).join('');\n  }; // import a list of modules into the list\n  // eslint-disable-next-line func-names\n\n\n  list.i = function (modules, mediaQuery, dedupe) {\n    if (typeof modules === 'string') {\n      // eslint-disable-next-line no-param-reassign\n      modules = [[null, modules, '']];\n    }\n\n    var alreadyImportedModules = {};\n\n    if (dedupe) {\n      for (var i = 0; i < this.length; i++) {\n        // eslint-disable-next-line prefer-destructuring\n        var id = this[i][0];\n\n        if (id != null) {\n          alreadyImportedModules[id] = true;\n        }\n      }\n    }\n\n    for (var _i = 0; _i < modules.length; _i++) {\n      var item = [].concat(modules[_i]);\n\n      if (dedupe && alreadyImportedModules[item[0]]) {\n        // eslint-disable-next-line no-continue\n        continue;\n      }\n\n      if (mediaQuery) {\n        if (!item[2]) {\n          item[2] = mediaQuery;\n        } else {\n          item[2] = \"\".concat(mediaQuery, \" and \").concat(item[2]);\n        }\n      }\n\n      list.push(item);\n    }\n  };\n\n  return list;\n};\n\nfunction cssWithMappingToString(item, useSourceMap) {\n  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring\n\n  var cssMapping = item[3];\n\n  if (!cssMapping) {\n    return content;\n  }\n\n  if (useSourceMap && typeof btoa === 'function') {\n    var sourceMapping = toComment(cssMapping);\n    var sourceURLs = cssMapping.sources.map(function (source) {\n      return \"/*# sourceURL=\".concat(cssMapping.sourceRoot || '').concat(source, \" */\");\n    });\n    return [content].concat(sourceURLs).concat([sourceMapping]).join('\\n');\n  }\n\n  return [content].join('\\n');\n} // Adapted from convert-source-map (MIT)\n\n\nfunction toComment(sourceMap) {\n  // eslint-disable-next-line no-undef\n  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));\n  var data = \"sourceMappingURL=data:application/json;charset=utf-8;base64,\".concat(base64);\n  return \"/*# \".concat(data, \" */\");\n}\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/css-loader/dist/runtime/api.js?");
+        /***/
+      },
+
+      /***/
+      "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+      /*!****************************************************************************!*\
+        !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+        \****************************************************************************/
+
+      /*! no static exports found */
+
+      /***/
+      function node_modulesStyleLoaderDistRuntimeInjectStylesIntoStyleTagJs(module, exports, __webpack_require__) {
+        "use strict";
+
+        eval("\n\nvar isOldIE = function isOldIE() {\n  var memo;\n  return function memorize() {\n    if (typeof memo === 'undefined') {\n      // Test for IE <= 9 as proposed by Browserhacks\n      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805\n      // Tests for existence of standard globals is to allow style-loader\n      // to operate correctly into non-standard environments\n      // @see https://github.com/webpack-contrib/style-loader/issues/177\n      memo = Boolean(window && document && document.all && !window.atob);\n    }\n\n    return memo;\n  };\n}();\n\nvar getTarget = function getTarget() {\n  var memo = {};\n  return function memorize(target) {\n    if (typeof memo[target] === 'undefined') {\n      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself\n\n      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {\n        try {\n          // This will throw an exception if access to iframe is blocked\n          // due to cross-origin restrictions\n          styleTarget = styleTarget.contentDocument.head;\n        } catch (e) {\n          // istanbul ignore next\n          styleTarget = null;\n        }\n      }\n\n      memo[target] = styleTarget;\n    }\n\n    return memo[target];\n  };\n}();\n\nvar stylesInDom = [];\n\nfunction getIndexByIdentifier(identifier) {\n  var result = -1;\n\n  for (var i = 0; i < stylesInDom.length; i++) {\n    if (stylesInDom[i].identifier === identifier) {\n      result = i;\n      break;\n    }\n  }\n\n  return result;\n}\n\nfunction modulesToDom(list, options) {\n  var idCountMap = {};\n  var identifiers = [];\n\n  for (var i = 0; i < list.length; i++) {\n    var item = list[i];\n    var id = options.base ? item[0] + options.base : item[0];\n    var count = idCountMap[id] || 0;\n    var identifier = \"\".concat(id, \" \").concat(count);\n    idCountMap[id] = count + 1;\n    var index = getIndexByIdentifier(identifier);\n    var obj = {\n      css: item[1],\n      media: item[2],\n      sourceMap: item[3]\n    };\n\n    if (index !== -1) {\n      stylesInDom[index].references++;\n      stylesInDom[index].updater(obj);\n    } else {\n      stylesInDom.push({\n        identifier: identifier,\n        updater: addStyle(obj, options),\n        references: 1\n      });\n    }\n\n    identifiers.push(identifier);\n  }\n\n  return identifiers;\n}\n\nfunction insertStyleElement(options) {\n  var style = document.createElement('style');\n  var attributes = options.attributes || {};\n\n  if (typeof attributes.nonce === 'undefined') {\n    var nonce =  true ? __webpack_require__.nc : undefined;\n\n    if (nonce) {\n      attributes.nonce = nonce;\n    }\n  }\n\n  Object.keys(attributes).forEach(function (key) {\n    style.setAttribute(key, attributes[key]);\n  });\n\n  if (typeof options.insert === 'function') {\n    options.insert(style);\n  } else {\n    var target = getTarget(options.insert || 'head');\n\n    if (!target) {\n      throw new Error(\"Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.\");\n    }\n\n    target.appendChild(style);\n  }\n\n  return style;\n}\n\nfunction removeStyleElement(style) {\n  // istanbul ignore if\n  if (style.parentNode === null) {\n    return false;\n  }\n\n  style.parentNode.removeChild(style);\n}\n/* istanbul ignore next  */\n\n\nvar replaceText = function replaceText() {\n  var textStore = [];\n  return function replace(index, replacement) {\n    textStore[index] = replacement;\n    return textStore.filter(Boolean).join('\\n');\n  };\n}();\n\nfunction applyToSingletonTag(style, index, remove, obj) {\n  var css = remove ? '' : obj.media ? \"@media \".concat(obj.media, \" {\").concat(obj.css, \"}\") : obj.css; // For old IE\n\n  /* istanbul ignore if  */\n\n  if (style.styleSheet) {\n    style.styleSheet.cssText = replaceText(index, css);\n  } else {\n    var cssNode = document.createTextNode(css);\n    var childNodes = style.childNodes;\n\n    if (childNodes[index]) {\n      style.removeChild(childNodes[index]);\n    }\n\n    if (childNodes.length) {\n      style.insertBefore(cssNode, childNodes[index]);\n    } else {\n      style.appendChild(cssNode);\n    }\n  }\n}\n\nfunction applyToTag(style, options, obj) {\n  var css = obj.css;\n  var media = obj.media;\n  var sourceMap = obj.sourceMap;\n\n  if (media) {\n    style.setAttribute('media', media);\n  } else {\n    style.removeAttribute('media');\n  }\n\n  if (sourceMap && typeof btoa !== 'undefined') {\n    css += \"\\n/*# sourceMappingURL=data:application/json;base64,\".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), \" */\");\n  } // For old IE\n\n  /* istanbul ignore if  */\n\n\n  if (style.styleSheet) {\n    style.styleSheet.cssText = css;\n  } else {\n    while (style.firstChild) {\n      style.removeChild(style.firstChild);\n    }\n\n    style.appendChild(document.createTextNode(css));\n  }\n}\n\nvar singleton = null;\nvar singletonCounter = 0;\n\nfunction addStyle(obj, options) {\n  var style;\n  var update;\n  var remove;\n\n  if (options.singleton) {\n    var styleIndex = singletonCounter++;\n    style = singleton || (singleton = insertStyleElement(options));\n    update = applyToSingletonTag.bind(null, style, styleIndex, false);\n    remove = applyToSingletonTag.bind(null, style, styleIndex, true);\n  } else {\n    style = insertStyleElement(options);\n    update = applyToTag.bind(null, style, options);\n\n    remove = function remove() {\n      removeStyleElement(style);\n    };\n  }\n\n  update(obj);\n  return function updateStyle(newObj) {\n    if (newObj) {\n      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {\n        return;\n      }\n\n      update(obj = newObj);\n    } else {\n      remove();\n    }\n  };\n}\n\nmodule.exports = function (list, options) {\n  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>\n  // tags it will allow on a page\n\n  if (!options.singleton && typeof options.singleton !== 'boolean') {\n    options.singleton = isOldIE();\n  }\n\n  list = list || [];\n  var lastIdentifiers = modulesToDom(list, options);\n  return function update(newList) {\n    newList = newList || [];\n\n    if (Object.prototype.toString.call(newList) !== '[object Array]') {\n      return;\n    }\n\n    for (var i = 0; i < lastIdentifiers.length; i++) {\n      var identifier = lastIdentifiers[i];\n      var index = getIndexByIdentifier(identifier);\n      stylesInDom[index].references--;\n    }\n\n    var newLastIdentifiers = modulesToDom(newList, options);\n\n    for (var _i = 0; _i < lastIdentifiers.length; _i++) {\n      var _identifier = lastIdentifiers[_i];\n\n      var _index = getIndexByIdentifier(_identifier);\n\n      if (stylesInDom[_index].references === 0) {\n        stylesInDom[_index].updater();\n\n        stylesInDom.splice(_index, 1);\n      }\n    }\n\n    lastIdentifiers = newLastIdentifiers;\n  };\n};\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js?");
+        /***/
+      },
+
+      /***/
+      "./src/Abstract/AbstractToggleTool.js":
+      /*!********************************************!*\
+        !*** ./src/Abstract/AbstractToggleTool.js ***!
+        \********************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcAbstractAbstractToggleToolJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return AbstractToggleTool; });\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./src/Abstract/index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Abstract/Make */ \"./src/Abstract/Make.js\");\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\n\n\n\nvar AbstractToggleTool = /*#__PURE__*/function () {\n  _createClass(AbstractToggleTool, [{\n    key: \"validate\",\n    value: function validate() {\n      return Object.keys(this.data).length;\n    }\n  }, {\n    key: \"defaultCSSClass\",\n    get: function get() {\n      return {\n        inputClass: [this.api.styles.input, 'cdx-input-editable'],\n        hide: 'hiden',\n        previewWrapper: 'preview-wrapper'\n      };\n    }\n  }, {\n    key: \"defaultData\",\n    get: function get() {\n      return {};\n    }\n  }, {\n    key: \"defaultConfig\",\n    get: function get() {\n      return {};\n    }\n  }, {\n    key: \"data\",\n    get: function get() {\n      console.log(this._data);\n      return this._data;\n    },\n    set: function set(data) {\n      this._data = Object.assign({}, data);\n    }\n  }, {\n    key: \"STATE\",\n    get: function get() {\n      return {\n        EDIT: 0,\n        VIEW: 1\n      };\n    }\n  }], [{\n    key: \"toolbox\",\n    get: function get() {\n      throw 'You must implement toolbox';\n    }\n  }, {\n    key: \"isReadOnlySupported\",\n    get: function get() {\n      return true;\n    }\n  }, {\n    key: \"enableLineBreaks\",\n    get: function get() {\n      return false;\n    }\n  }]);\n\n  function AbstractToggleTool(_ref) {\n    var data = _ref.data,\n        config = _ref.config,\n        api = _ref.api,\n        readOnly = _ref.readOnly;\n\n    _classCallCheck(this, AbstractToggleTool);\n\n    //super();\n    this.api = api;\n    this.readOnly = readOnly;\n    this.nodes = {};\n    this.config = Object.assign(this.defaultConfig, config);\n    this.CSS = Object.assign(this.defaultCSSClass, config.css || {});\n    this.data = Object.assign(this.defaultData, data);\n  }\n\n  _createClass(AbstractToggleTool, [{\n    key: \"render\",\n    value: function render() {\n      var _this = this;\n\n      this.nodes.wrapper = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('div', this.api.styles.block);\n      this.nodes.preview = this.createPreview();\n      this.nodes.wrapper.appendChild(this.nodes.preview);\n      this.createEditBtn();\n      this.nodes.wrapper.appendChild(this.nodes.editBtn);\n      this.nodes.inputs = this.createInputs();\n      this.nodes.wrapper.appendChild(this.nodes.inputs);\n      this.init();\n      this.nodes.editInput.addEventListener('change', function (event) {\n        if (_this.nodes.editInput.checked) {\n          _this.updateData();\n\n          _this.show(_this.STATE.VIEW);\n        } else {\n          _this.show(_this.STATE.EDIT);\n        }\n      });\n      return this.nodes.wrapper;\n    }\n    /**\n     * onloadShowViewOrEdit\n     */\n\n  }, {\n    key: \"init\",\n    value: function init() {\n      if (this.validate()) {\n        this.updateData();\n        this.show(this.STATE.VIEW);\n      } else {\n        this.show(this.STATE.EDIT);\n      }\n    }\n  }, {\n    key: \"createInputs\",\n    value: function createInputs() {\n      throw 'You must implement createInputs()';\n    }\n  }, {\n    key: \"updateData\",\n    value: function updateData() {\n      throw 'You must implement updateData()';\n    }\n  }, {\n    key: \"createPreview\",\n    value: function createPreview() {\n      var previewHolder = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('div', [this.CSS.hide, this.CSS.previewWrapper]);\n      return previewHolder;\n    }\n  }, {\n    key: \"save\",\n    value: function save() {\n      this.updateData(); // permit to save data even if user does'nt toggle\n\n      return this._data;\n    }\n  }, {\n    key: \"show\",\n    value: function show(state) {\n      if (state === this.STATE.VIEW) {\n        this.nodes.preview.classList.remove(this.CSS.hide);\n        this.nodes.inputs.classList.add(this.CSS.hide);\n        this.showEditBtn();\n      } else {\n        this.nodes.preview.classList.add(this.CSS.hide);\n        this.nodes.inputs.classList.remove(this.CSS.hide);\n        this.showEditBtn(0);\n      }\n    }\n  }, {\n    key: \"createEditBtn\",\n    value: function createEditBtn() {\n      var id = Math.random().toString(36).substring(7);\n      this.nodes.editBtn = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('div', 'toggle-wrapper');\n      this.nodes.editInput = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('input', ['toggle-input'], {\n        type: 'checkbox',\n        id: 'toggle_' + id\n      });\n      var label = _Abstract_Make__WEBPACK_IMPORTED_MODULE_1__[\"default\"].element('label', ['toggle-label'], {\n        \"for\": 'toggle_' + id\n      });\n      this.nodes.editBtn.appendChild(this.nodes.editInput);\n      this.nodes.editBtn.appendChild(label);\n      return this.nodes.editBtn;\n    }\n  }, {\n    key: \"showEditBtn\",\n    value: function showEditBtn() {\n      var show = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;\n      if (typeof this.nodes.editBtn === 'undefined') throw 'must createEditBtn before';\n      this.nodes.editInput.checked = show ? 1 : 0;\n    }\n  }]);\n\n  return AbstractToggleTool;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/AbstractToggleTool.js?");
+        /***/
+      },
+
+      /***/
+      "./src/Abstract/Make.js":
+      /*!******************************!*\
+        !*** ./src/Abstract/Make.js ***!
+        \******************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcAbstractMakeJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return make; });\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar make = /*#__PURE__*/function () {\n  function make() {\n    _classCallCheck(this, make);\n  }\n\n  _createClass(make, [{\n    key: \"createPaginateCheckbox\",\n\n    /** I just keep this here in case i need a checkbox */\n    value: function createPaginateCheckbox() {\n      var checkboxWrapper = make.element(\"div\", [\"checkbox\", \"cdx-checkbox\"]);\n      var label = make.element(\"label\");\n      label.textContent = \"Paginate\";\n      this.nodes.paginateCheckbox = document.createElement(\"input\");\n      this.nodes.paginateCheckbox.type = \"checkbox\";\n      this.nodes.paginateCheckbox.value = this._data.display || 0;\n      checkboxWrapper.appendChild(this.nodes.paginateCheckbox);\n      checkboxWrapper.appendChild(label);\n      return checkboxWrapper;\n    }\n  }], [{\n    key: \"element\",\n    value: function element(tagName) {\n      var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;\n      var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n      var el = document.createElement(tagName);\n\n      if (Array.isArray(classNames)) {\n        var _el$classList;\n\n        (_el$classList = el.classList).add.apply(_el$classList, _toConsumableArray(classNames));\n      } else if (classNames) {\n        el.classList.add(classNames);\n      }\n\n      for (var attrName in attributes) {\n        el.setAttribute(attrName, attributes[attrName]);\n      }\n\n      return el;\n    }\n  }, {\n    key: \"input\",\n    value: function input(tool, inputClass, placeHolder) {\n      var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : \"\";\n      var input = make.element(\"div\", inputClass, {\n        contentEditable: !tool.readOnly\n      });\n      input.dataset.placeholder = tool.api.i18n.t(placeHolder);\n      if (value) input.textContent = value;\n      return input;\n    }\n  }, {\n    key: \"option\",\n    value: function option(element, value) {\n      var text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;\n      var option = document.createElement(\"option\");\n      option.text = text ? text : value;\n      option.value = value;\n      element.add(option);\n    }\n  }, {\n    key: \"options\",\n    value: function options(element, values) {\n      values.forEach(function (value) {\n        return make.option(element, value);\n      });\n    }\n  }]);\n\n  return make;\n}();\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/Make.js?");
+        /***/
+      },
+
+      /***/
+      "./src/Abstract/index.css":
+      /*!********************************!*\
+        !*** ./src/Abstract/index.css ***!
+        \********************************/
+
+      /*! no static exports found */
+
+      /***/
+      function srcAbstractIndexCss(module, exports, __webpack_require__) {
+        eval("var api = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!./index.css */ \"./node_modules/css-loader/dist/cjs.js!./src/Abstract/index.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\n\n\nmodule.exports = content.locals || {};\n\n//# sourceURL=webpack://%5Bname%5D/./src/Abstract/index.css?");
+        /***/
+      },
+
+      /***/
+      "./src/Gallery/Gallery.js":
+      /*!********************************!*\
+        !*** ./src/Gallery/Gallery.js ***!
+        \********************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcGalleryGalleryJs(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Gallery; });\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./src/Gallery/index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @editorjs/image/src/index.css */ \"./node_modules/@editorjs/image/src/index.css\");\n/* harmony import */ var _editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_editorjs_image_src_index_css__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _toolbox_icon_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./toolbox-icon.svg */ \"./src/Gallery/toolbox-icon.svg\");\n/* harmony import */ var _Abstract_AbstractToggleTool_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Abstract/AbstractToggleTool.js */ \"./src/Abstract/AbstractToggleTool.js\");\n/* harmony import */ var _editorjs_image_src_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @editorjs/image/src/ui */ \"./node_modules/@editorjs/image/src/ui.js\");\n/* harmony import */ var _editorjs_image_src_uploader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @editorjs/image/src/uploader */ \"./node_modules/@editorjs/image/src/uploader.js\");\n/* harmony import */ var _upload_svg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./upload.svg */ \"./src/Gallery/upload.svg\");\n/* harmony import */ var _folder_svg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./folder.svg */ \"./src/Gallery/folder.svg\");\n/* harmony import */ var _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Abstract/Make */ \"./src/Abstract/Make.js\");\n/* harmony import */ var _vietlongn_editorjs_carousel_src_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @vietlongn/editorjs-carousel/src/index.js */ \"./node_modules/@vietlongn/editorjs-carousel/src/index.js\");\n/* harmony import */ var _vietlongn_editorjs_carousel_src_svg_button_icon_svg__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @vietlongn/editorjs-carousel/src/svg/button-icon.svg */ \"./node_modules/@vietlongn/editorjs-carousel/src/svg/button-icon.svg\");\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === \"undefined\" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === \"number\") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError(\"Invalid attempt to iterate non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it[\"return\"] != null) it[\"return\"](); } finally { if (didErr) throw err; } } }; }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _get(target, property, receiver) { if (typeof Reflect !== \"undefined\" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }\n\nfunction _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\n\n\n\n\n\n\n\n\n\n\n\n\nvar Gallery = /*#__PURE__*/function (_Carousel) {\n  _inherits(Gallery, _Carousel);\n\n  var _super = _createSuper(Gallery);\n\n  function Gallery(_ref) {\n    var _thisSuper, _this;\n\n    var data = _ref.data,\n        config = _ref.config,\n        api = _ref.api,\n        readOnly = _ref.readOnly;\n\n    _classCallCheck(this, Gallery);\n\n    _this = _super.call(this, {\n      data: data,\n      config: config,\n      api: api,\n      readOnly: readOnly\n    });\n    _this.config.onSelectFile = config.onSelectFile || _get((_thisSuper = _assertThisInitialized(_this), _getPrototypeOf(Gallery.prototype)), \"onSelectFile\", _thisSuper);\n    _this.config.onUploadFile = config.onUploadFile || null;\n    _this.nodes = {};\n    return _this;\n  }\n\n  _createClass(Gallery, [{\n    key: \"onSelectFile\",\n    value: function onSelectFile() {\n      this.config.onSelectFile(this);\n    }\n  }, {\n    key: \"createAddButton\",\n    value: function createAddButton() {\n      return this.createImageInput();\n    }\n  }, {\n    key: \"createAddButton2\",\n    value: function createAddButton2() {\n      var _this2 = this;\n\n      var addButton = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [this.CSS.button, this.CSS.addButton]);\n      var block = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [this.CSS.block]);\n      addButton.innerHTML = \"\".concat(_vietlongn_editorjs_carousel_src_svg_button_icon_svg__WEBPACK_IMPORTED_MODULE_10__[\"default\"], \" Add Image\");\n      addButton.addEventListener(\"click\", function () {\n        _this2.onSelectFile();\n      });\n      block.appendChild(addButton);\n      return block;\n    }\n  }, {\n    key: \"createImageInput\",\n    value: function createImageInput() {\n      this.nodes.imagePreloader = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", \"image-tool__image-preloader\");\n      this.nodes.imagePreloader.style.display = \"none\";\n      this.nodes.fileButton = this.createFileButton();\n      this.nodes.fileButton.appendChild(this.nodes.imagePreloader); //if (this._data.image) this.fillImage(this._data.image.url);\n\n      return this.nodes.fileButton;\n    }\n  }, {\n    key: \"onUpload\",\n    value: function onUpload(response) {\n      _get(_getPrototypeOf(Gallery.prototype), \"onUpload\", this).call(this, response);\n\n      this.list.childNodes[this.list.childNodes.length - 2].firstChild.firstChild.dataset.file = JSON.stringify(response.file);\n    } // eslint-disable-next-line require-jsdoc\n\n  }, {\n    key: \"save\",\n    value: function save(blockContent) {\n      var list = blockContent.getElementsByClassName(this.CSS.item);\n      var data = [];\n\n      if (list.length > 0) {\n        var _iterator = _createForOfIteratorHelper(list),\n            _step;\n\n        try {\n          for (_iterator.s(); !(_step = _iterator.n()).done;) {\n            var item = _step.value;\n\n            if (item.firstChild.value) {\n              data.push({\n                file: item.firstChild.dataset.file ? JSON.parse(item.firstChild.dataset.file) : {},\n                url: item.firstChild.value,\n                caption: item.lastChild.value\n              });\n            }\n          }\n        } catch (err) {\n          _iterator.e(err);\n        } finally {\n          _iterator.f();\n        }\n      }\n\n      return data;\n    }\n  }, {\n    key: \"createFileButton\",\n    value: function createFileButton() {\n      var _this3 = this;\n\n      var buttonWrapper = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [\"flex\", \"cdx-input-labeled-embed-preview\", \"cdx-input-labeled\", this.api.styles.input, \"cdx-input-editable\", \"cdx-input-gallery\"]);\n      var buttonSelect = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [this.api.styles.button]);\n      buttonSelect.innerHTML = \"\".concat(_folder_svg__WEBPACK_IMPORTED_MODULE_7__[\"default\"], \" \").concat(this.api.i18n.t(\"Select\"));\n      buttonSelect.addEventListener(\"click\", function () {\n        _this3.onSelectFile();\n      });\n      buttonWrapper.appendChild(buttonSelect);\n\n      if (this.config.onUploadFile) {\n        var buttonUpload = _Abstract_Make__WEBPACK_IMPORTED_MODULE_8__[\"default\"].element(\"div\", [this.api.styles.button]);\n        buttonUpload.innerHTML = \"\".concat(_upload_svg__WEBPACK_IMPORTED_MODULE_6__[\"default\"], \" \").concat(this.api.i18n.t(\"Upload\"));\n        buttonUpload.style.marginLeft = \"-2px\";\n        buttonUpload.addEventListener(\"click\", function () {\n          _this3.config.onUploadFile(_this3);\n        });\n        buttonWrapper.appendChild(buttonUpload);\n      }\n\n      return buttonWrapper;\n    }\n  }, {\n    key: \"onFileLoading\",\n    value: function onFileLoading(src) {\n      var newItem = this.creteNewItem(\"\", \"\"); //newItem.firstChild.lastChild.style.backgroundImage = `url(${src})`;\n\n      this.list.insertBefore(newItem, this.addButton);\n    }\n  }]);\n\n  return Gallery;\n}(_vietlongn_editorjs_carousel_src_index_js__WEBPACK_IMPORTED_MODULE_9__[\"default\"]);\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/Gallery/Gallery.js?");
+        /***/
+      },
+
+      /***/
+      "./src/Gallery/folder.svg":
+      /*!********************************!*\
+        !*** ./src/Gallery/folder.svg ***!
+        \********************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcGalleryFolderSvg(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" class=\\\"bi bi-folder2-open\\\" viewBox=\\\"0 0 16 16\\\">\\n  <path d=\\\"M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14V3.5zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5V6zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7H1.633z\\\"/>\\n</svg>\");\n\n//# sourceURL=webpack://%5Bname%5D/./src/Gallery/folder.svg?");
+        /***/
+      },
+
+      /***/
+      "./src/Gallery/index.css":
+      /*!*******************************!*\
+        !*** ./src/Gallery/index.css ***!
+        \*******************************/
+
+      /*! no static exports found */
+
+      /***/
+      function srcGalleryIndexCss(module, exports, __webpack_require__) {
+        eval("var api = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!./index.css */ \"./node_modules/css-loader/dist/cjs.js!./src/Gallery/index.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\n\n\nmodule.exports = content.locals || {};\n\n//# sourceURL=webpack://%5Bname%5D/./src/Gallery/index.css?");
+        /***/
+      },
+
+      /***/
+      "./src/Gallery/toolbox-icon.svg":
+      /*!**************************************!*\
+        !*** ./src/Gallery/toolbox-icon.svg ***!
+        \**************************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcGalleryToolboxIconSvg(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" viewBox=\\\"0 0 16 16\\\">\\n  <path d=\\\"M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.122C.002 7.343.01 6.6.064 5.78l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z\\\"/>\\n</svg>\");\n\n//# sourceURL=webpack://%5Bname%5D/./src/Gallery/toolbox-icon.svg?");
+        /***/
+      },
+
+      /***/
+      "./src/Gallery/upload.svg":
+      /*!********************************!*\
+        !*** ./src/Gallery/upload.svg ***!
+        \********************************/
+
+      /*! exports provided: default */
+
+      /***/
+      function srcGalleryUploadSvg(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+
+        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=\\\"16\\\" height=\\\"16\\\" fill=\\\"currentColor\\\" class=\\\"bi bi-upload\\\" viewBox=\\\"0 0 16 16\\\">\\n  <path d=\\\"M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z\\\"/>\\n  <path d=\\\"M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z\\\"/>\\n</svg>\");\n\n//# sourceURL=webpack://%5Bname%5D/./src/Gallery/upload.svg?");
         /***/
       }
       /******/
@@ -2672,7 +3300,10 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.js */ "./src/assets/editor.js");
+/* harmony import */ var _editorJsHelper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./editorJsHelper.js */ "./src/assets/editorJsHelper.js");
 
+
+window.editorJsHelper = new _editorJsHelper_js__WEBPACK_IMPORTED_MODULE_1__["editorJsHelper"]();
 window.addEventListener("load", function () {
   new _editor_js__WEBPACK_IMPORTED_MODULE_0__["editorJs"]();
 });
@@ -2728,8 +3359,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(editorjs_drag_drop__WEBPACK_IMPORTED_MODULE_18__);
 /* harmony import */ var editorjs_undo__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! editorjs-undo */ "./node_modules/editorjs-undo/dist/bundle.js");
 /* harmony import */ var editorjs_undo__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(editorjs_undo__WEBPACK_IMPORTED_MODULE_19__);
-/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @codexteam/ajax */ "./node_modules/@codexteam/ajax/dist/main.js");
-/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(_codexteam_ajax__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var _pushword_editorjs_tools_dist_Gallery_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @pushword/editorjs-tools/dist/Gallery.js */ "../admin-block-editor-tools/dist/Gallery.js");
+/* harmony import */ var _pushword_editorjs_tools_dist_Gallery_js__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(_pushword_editorjs_tools_dist_Gallery_js__WEBPACK_IMPORTED_MODULE_21__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -2766,84 +3397,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
  //import Button from "editorjs-button"; // this one break sonata design
 
+ //"@vietlongn/editorjs-carousel";
 
-window.editorJsTool = {};
-
-window.editorJsTool.onSelectFile = function () {
-  var Tool = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-  //if (!typeof this instanceof Image) throw "Bad context";
-  Tool = Tool ? Tool : this;
-  var inlineImageField = document.querySelector('div[id*="inline_image"] a');
-  inlineImageField.click();
-  var id = document.querySelector("input[id*=inline_image]").getAttribute("id");
-  jQuery("#" + id).one("change", function (event) {
-    console.log("call onChange select file");
-    var id = jQuery(this).val();
-    var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.post({
-      url: "/admin/media/block",
-      data: Object.assign({
-        id: id
-      }),
-      type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.contentType.JSON
-    }).then(function (response) {
-      //Tool.ui.showPreloader(response.body.file.url);
-      //Tool.ui.fillImage(response.body.file.url);
-      console.log(response);
-      Tool.onUpload(response.body);
-    })["catch"](function (error) {
-      console.log(Tool);
-      Tool.uploadingFailed(error);
-    });
-  });
-};
-
-window.editorJsTool.onUploadFile = function () {
-  //if (!typeof this instanceof Image) throw "Bad context";
-  var Tool = this;
-  var inlineImageField = document.querySelector('div[id*="inline_image"] a:nth-child(2)');
-  inlineImageField.click();
-  var id = document.querySelector("input[id*=inline_image]").getAttribute("id");
-  jQuery("#" + id).one("change", function (event) {
-    var id = jQuery(this).val();
-    var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.post({
-      url: "/admin/media/block",
-      data: Object.assign({
-        id: id
-      }),
-      type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_20___default.a.contentType.JSON
-    }).then(function (response) {
-      Tool.onUpload(response);
-    })["catch"](function (error) {
-      Tool.uploadingFailed(error);
-    });
-  });
-};
-
-window.toggleEditorJs = function (editorId) {
-  var editorJsInput = document.querySelector("input[data-editorjs]");
-  var textareaInput = document.querySelector("textarea[data-editorjs]");
-  var elementToReplace = editorJsInput ? editorJsInput : textareaInput;
-  console.log(document.getElementById(editorId));
-  document.getElementById(editorId).style.display = editorJsInput ? "none" : "block";
-  var replaceElement = document.createElement(editorJsInput ? "textarea" : "input");
-
-  for (var i = 0, l = elementToReplace.attributes.length; i < l; ++i) {
-    var nodeName = elementToReplace.attributes.item(i).nodeName;
-    var nodeValue = elementToReplace.attributes.item(i).nodeValue;
-    replaceElement.setAttribute(nodeName, nodeValue);
-  }
-
-  if (editorJsInput) {
-    replaceElement.innerHTML = editorJsInput.value;
-    replaceElement.classList.add("form-control");
-    replaceElement.style.border = 0;
-  } //else replaceElement.setAttribute("value", replaceElement.innerHTML); // useless because editor.js doesn't listen value content
-
-
-  elementToReplace.parentNode.replaceChild(replaceElement, elementToReplace);
-};
 /** Was initially design to permit multiple editor.js in one page */
-
 
 var editorJs = /*#__PURE__*/function () {
   function editorJs() {
@@ -2870,7 +3426,8 @@ var editorJs = /*#__PURE__*/function () {
       Paragraph: editorjs_paragraph_with_alignment__WEBPACK_IMPORTED_MODULE_13___default.a,
       Table: _editorjs_table__WEBPACK_IMPORTED_MODULE_14___default.a,
       Embed: _pushword_editorjs_tools_dist_Embed_js__WEBPACK_IMPORTED_MODULE_15___default.a,
-      PagesList: _pushword_editorjs_tools_dist_PagesList_js__WEBPACK_IMPORTED_MODULE_16___default.a //Button: Button,
+      PagesList: _pushword_editorjs_tools_dist_PagesList_js__WEBPACK_IMPORTED_MODULE_16___default.a,
+      Carousel: _pushword_editorjs_tools_dist_Gallery_js__WEBPACK_IMPORTED_MODULE_21___default.a //Button: Button,
 
     };
     this.initEditor(editorjsConfig);
@@ -2967,6 +3524,116 @@ var editorJs = /*#__PURE__*/function () {
   }]);
 
   return editorJs;
+}();
+
+/***/ }),
+
+/***/ "./src/assets/editorJsHelper.js":
+/*!**************************************!*\
+  !*** ./src/assets/editorJsHelper.js ***!
+  \**************************************/
+/*! exports provided: editorJsHelper */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editorJsHelper", function() { return editorJsHelper; });
+/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @codexteam/ajax */ "./node_modules/@codexteam/ajax/dist/main.js");
+/* harmony import */ var _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_codexteam_ajax__WEBPACK_IMPORTED_MODULE_0__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var editorJsHelper = /*#__PURE__*/function () {
+  function editorJsHelper() {
+    _classCallCheck(this, editorJsHelper);
+  }
+
+  _createClass(editorJsHelper, [{
+    key: "onSelectFile",
+    value: function onSelectFile() {
+      var Tool = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      //if (!typeof this instanceof Image) throw "Bad context";
+      Tool = Tool ? Tool : this;
+      var inlineImageField = document.querySelector('div[id*="inline_image"] a');
+      inlineImageField.click();
+      var id = document.querySelector("input[id*=inline_image]").getAttribute("id");
+      jQuery("#" + id).one("change", function (event) {
+        console.log("call onChange select file");
+        var id = jQuery(this).val();
+        var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.post({
+          url: "/admin/media/block",
+          data: Object.assign({
+            id: id
+          }),
+          type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.contentType.JSON
+        }).then(function (response) {
+          //Tool.ui.showPreloader(response.body.file.url);
+          //Tool.ui.fillImage(response.body.file.url);
+          if (Tool.onFileLoading) Tool.onFileLoading();
+          Tool.onUpload(response.body);
+        })["catch"](function (error) {
+          console.log(Tool);
+          Tool.uploadingFailed(error);
+        });
+      });
+    }
+  }, {
+    key: "onUploadFile",
+    value: function onUploadFile() {
+      var Tool = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      //if (!typeof this instanceof Image) throw "Bad context";
+      Tool = Tool ? Tool : this;
+      var inlineImageField = document.querySelector('div[id*="inline_image"] a:nth-child(2)');
+      inlineImageField.click();
+      var id = document.querySelector("input[id*=inline_image]").getAttribute("id");
+      jQuery("#" + id).one("change", function (event) {
+        var id = jQuery(this).val();
+        var upload = _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.post({
+          url: "/admin/media/block",
+          data: Object.assign({
+            id: id
+          }),
+          type: _codexteam_ajax__WEBPACK_IMPORTED_MODULE_0___default.a.contentType.JSON
+        }).then(function (response) {
+          if (Tool.onFileLoading) Tool.onFileLoading();
+          Tool.onUpload(response.body);
+        })["catch"](function (error) {
+          Tool.uploadingFailed(error);
+        });
+      });
+    }
+  }, {
+    key: "toggleEditorJs",
+    value: function toggleEditorJs(editorId) {
+      var editorJsInput = document.querySelector("input[data-editorjs]");
+      var textareaInput = document.querySelector("textarea[data-editorjs]");
+      var elementToReplace = editorJsInput ? editorJsInput : textareaInput;
+      console.log(document.getElementById(editorId));
+      document.getElementById(editorId).style.display = editorJsInput ? "none" : "block";
+      var replaceElement = document.createElement(editorJsInput ? "textarea" : "input");
+
+      for (var i = 0, l = elementToReplace.attributes.length; i < l; ++i) {
+        var nodeName = elementToReplace.attributes.item(i).nodeName;
+        var nodeValue = elementToReplace.attributes.item(i).nodeValue;
+        replaceElement.setAttribute(nodeName, nodeValue);
+      }
+
+      if (editorJsInput) {
+        replaceElement.innerHTML = editorJsInput.value;
+        replaceElement.classList.add("form-control");
+        replaceElement.style.border = 0;
+      } //else replaceElement.setAttribute("value", replaceElement.innerHTML); // useless because editor.js doesn't listen value content
+
+
+      elementToReplace.parentNode.replaceChild(replaceElement, elementToReplace);
+    }
+  }]);
+
+  return editorJsHelper;
 }();
 
 /***/ })
