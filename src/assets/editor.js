@@ -9,7 +9,7 @@ import Quote from "@editorjs/quote";
 import Marker from "@editorjs/marker";
 import Code from "@editorjs/code";
 import InlineCode from "@editorjs/inline-code";
-import { StyleInlineTool } from "editorjs-style";
+//import { StyleInlineTool } from "editorjs-style";
 import Hyperlink from "editorjs-hyperlink";
 import Paragraph from "editorjs-paragraph-with-alignment";
 import Table from "@editorjs/table";
@@ -45,13 +45,13 @@ export class editorJs {
                       Hyperlink: Hyperlink,
                       Code: Code,
                       InlineCode: InlineCode,
-                      StyleInlineTool: StyleInlineTool,
                       Paragraph: Paragraph,
                       Table: Table,
                       Embed: Embed,
                       PagesList: PagesList,
                       Carousel: Carousel,
                       //Button: Button,
+                      //StyleInlineTool: StyleInlineTool,
                   };
 
         this.initEditor(editorjsConfig);
