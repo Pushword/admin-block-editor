@@ -10,7 +10,7 @@
     <a href="#" onclick="editorJsHelper.toggleEditorJs('{{ editor_id }}')">{{ svg('unlock', {'style': 'width:12px', fill: 'currentColor'}) }}</a>
 </div>
     <script>
-
+{% block editorjs_config %}
 var editorjsConfig = {
     name: "default",
     initialBlock: "paragraph",
@@ -138,10 +138,12 @@ var editorjsConfig = {
                 preview: "/admin/page/block/{{ attr.page_id }}",
             }
         },
+        {% block editorjs_block_to_add_new_plugin %}{% endblock %}
     },
     data: {{ (value ? value : "{}")|raw }},
     logLevel: "ERROR",
     holder: "{{ editor_id }}",
 };
+{% endblock %}
     </script>
 {% endblock %}
