@@ -16,6 +16,7 @@ var editorjsConfig = {
     initialBlock: "paragraph",
     placeholder: "...",
     tools: {
+        {% block editorjs_tools %}
         header: {
             name: "header",
             className: "Header",
@@ -138,6 +139,7 @@ var editorjsConfig = {
                 preview: "/admin/page/block/{{ attr.page_id }}",
             }
         },
+        {% endblock %}
         {% block editorjs_block_to_add_new_plugin %}{% endblock %}
     },
     data: {{ (value ? value : "{}")|raw }},

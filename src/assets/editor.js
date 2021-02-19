@@ -18,13 +18,14 @@ import Undo from "editorjs-undo";
 import Attaches from "@pushword/editorjs-tools/dist/Attaches.js"; //@editorjs/attaches";
 import Image from "@pushword/editorjs-tools/dist/Image.js"; // "@editorjs/image";
 import Embed from "@pushword/editorjs-tools/dist/Embed.js"; //"@editorjs/embed";
-import PagesList from "@pushword/editorjs-tools/dist/PagesList.js"; //"@editorjs/embed";
+import PagesList from "@pushword/editorjs-tools/dist/PagesList.js";
 import Gallery from "@pushword/editorjs-tools/dist/Gallery.js"; //"@vietlongn/editorjs-carousel";
 import Button from "@pushword/editorjs-tools/dist/Button.js"; //import Button from "editorjs-button";
 
 /** Was initially design to permit multiple editor.js in one page */
 export class editorJs {
     constructor() {
+        console.log(PagesList);
         if (typeof editorjsConfig === "undefined") return;
 
         this.editors = [];
@@ -38,8 +39,6 @@ export class editorJs {
                       Header: Header,
                       List: List,
                       Raw: Raw,
-                      Attaches: Attaches,
-                      Image: Image,
                       Delimiter: Delimiter,
                       Quote: Quote,
                       Marker: Marker,
@@ -48,6 +47,8 @@ export class editorJs {
                       InlineCode: InlineCode,
                       Paragraph: Paragraph,
                       Table: Table,
+                      Attaches: Attaches,
+                      Image: Image,
                       Embed: Embed,
                       PagesList: PagesList,
                       Gallery: Gallery,
