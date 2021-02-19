@@ -2,8 +2,6 @@ import EditorJS from "@editorjs/editorjs";
 import Header from "editorjs-header-with-anchor"; //from "@editorjs/header";
 import List from "@editorjs/list";
 import Raw from "@editorjs/raw";
-import Attaches from "@pushword/editorjs-tools/dist/Attaches.js"; //@editorjs/attaches";
-import Image from "@pushword/editorjs-tools/dist/Image.js"; // "@editorjs/image";
 import Delimiter from "@editorjs/delimiter";
 import Quote from "@editorjs/quote";
 import Marker from "@editorjs/marker";
@@ -13,13 +11,16 @@ import InlineCode from "@editorjs/inline-code";
 import Hyperlink from "editorjs-hyperlink";
 import Paragraph from "editorjs-paragraph-with-alignment";
 import Table from "@editorjs/table";
-import Embed from "@pushword/editorjs-tools/dist/Embed.js"; //"@editorjs/embed";
-import PagesList from "@pushword/editorjs-tools/dist/PagesList.js"; //"@editorjs/embed";
 import { ItalicInlineTool, UnderlineInlineTool, StrongInlineTool } from "editorjs-inline-tool";
 import DragDrop from "editorjs-drag-drop";
 import Undo from "editorjs-undo";
-//import Button from "editorjs-button"; // this one break sonata design
-import Carousel from "@pushword/editorjs-tools/dist/Gallery.js"; //"@vietlongn/editorjs-carousel";
+
+import Attaches from "@pushword/editorjs-tools/dist/Attaches.js"; //@editorjs/attaches";
+import Image from "@pushword/editorjs-tools/dist/Image.js"; // "@editorjs/image";
+import Embed from "@pushword/editorjs-tools/dist/Embed.js"; //"@editorjs/embed";
+import PagesList from "@pushword/editorjs-tools/dist/PagesList.js"; //"@editorjs/embed";
+import Gallery from "@pushword/editorjs-tools/dist/Gallery.js"; //"@vietlongn/editorjs-carousel";
+import Button from "@pushword/editorjs-tools/dist/Button.js"; //import Button from "editorjs-button";
 
 /** Was initially design to permit multiple editor.js in one page */
 export class editorJs {
@@ -49,8 +50,8 @@ export class editorJs {
                       Table: Table,
                       Embed: Embed,
                       PagesList: PagesList,
-                      Carousel: Carousel,
-                      //Button: Button,
+                      Gallery: Gallery,
+                      Button: Button,
                       //StyleInlineTool: StyleInlineTool,
                   };
 

@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /home/robin/.yarn/releases/yarn-1.22.4.js add editorjs-carousel --dev
+  /usr/local/bin/node /home/robin/.yarn/releases/yarn-1.22.4.js
 
 PATH: 
   /home/robin/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
@@ -14,17 +14,12 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/editorjs-carousel: Not found
-      at Request.params.callback [as _callback] (/home/robin/.yarn/releases/yarn-1.22.4.js:78517:18)
-      at Request.self.callback (/home/robin/.yarn/releases/yarn-1.22.4.js:135159:22)
-      at Request.emit (events.js:315:20)
-      at Request.<anonymous> (/home/robin/.yarn/releases/yarn-1.22.4.js:136131:10)
-      at Request.emit (events.js:315:20)
-      at IncomingMessage.<anonymous> (/home/robin/.yarn/releases/yarn-1.22.4.js:136053:12)
-      at Object.onceWrapper (events.js:421:28)
-      at IncomingMessage.emit (events.js:327:22)
-      at endReadableNT (_stream_readable.js:1221:12)
-      at processTicksAndRejections (internal/process/task_queues.js:84:21)
+  SyntaxError: /media/robin/area2/localhost/Pushword/packages/admin-block-editor-tools/package.json: Unexpected token ' in JSON at position 83
+      at JSON.parse (<anonymous>)
+      at /home/robin/.yarn/releases/yarn-1.22.4.js:1098:57
+      at Generator.next (<anonymous>)
+      at step (/home/robin/.yarn/releases/yarn-1.22.4.js:310:30)
+      at /home/robin/.yarn/releases/yarn-1.22.4.js:321:13
 
 npm manifest: 
   {

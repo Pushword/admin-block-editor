@@ -17,6 +17,5 @@ class ControllerTest extends AbstractAdminTest
         // poor test
 
         //$client->waitFor('.ce-toolbar__plus');
-
     }
 }
