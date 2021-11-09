@@ -21,8 +21,6 @@ final class BlockEditorFilter extends AbstractFilter
     /** @var array */
     private $appBlocks;
 
-    private bool $proseOpen = true;
-
     /**
      * @return string
      */
@@ -41,31 +39,10 @@ final class BlockEditorFilter extends AbstractFilter
         foreach ($blocks as $block) {
             $classBlock = $this->getBlockManager($block->type);
             $blockRendered = $classBlock->render($block->data);
-            //$renderValue .= $this->mayProse($block->type); // duplicate the % unprose %
             $renderValue .= $blockRendered."\n";
         }
 
-        //$renderValue = '<div>'.$renderValue.'</div>'; // Avoid markdown bug
         return $renderValue;
-        //.(!$this->proseOpen ? "\n".'<div'.$this->getHtmlClass($this->getEntity(), 'prose').'>'."\n" : '');
-        //"\n".'</div>'."\n" : '');
-    }
-
-    private function mayProse(string $type): string
-    {
-        if ($this->proseOpen && ! \in_array($type, $this->app->get('admin_block_editor_type_to_prose'))) {
-            $this->proseOpen = false;
-
-            return "\n".'</div>'."\n";
-        }
-
-        if (! $this->proseOpen && \in_array($type, $this->app->get('admin_block_editor_type_to_prose'))) {
-            $this->proseOpen = true;
-
-            return "\n".'<div'.$this->getHtmlClass($this->getEntity(), 'prose').'>'."\n";
-        }
-
-        return '';
     }
 
     private function loadBlockManager(BlockInterface $blockManager): BlockInterface
