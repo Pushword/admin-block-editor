@@ -21,9 +21,6 @@ final class BlockEditorFilter extends AbstractFilter
     /** @var array */
     private $appBlocks;
 
-    /**
-     * @noRector
-     */
     private bool $proseOpen = true;
 
     /**
@@ -54,9 +51,6 @@ final class BlockEditorFilter extends AbstractFilter
         //"\n".'</div>'."\n" : '');
     }
 
-    /**
-     * @noRector
-     */
     private function mayProse(string $type): string
     {
         if ($this->proseOpen && ! \in_array($type, $this->app->get('admin_block_editor_type_to_prose'))) {
@@ -74,16 +68,15 @@ final class BlockEditorFilter extends AbstractFilter
         return '';
     }
 
-    /**
-     * @noRector
-     */
     private function loadBlockManager(BlockInterface $blockManager): BlockInterface
     {
-        return $blockManager
+        $blockManager
             ->setApp($this->app)
             ->setEntity($this->getEntity())
             ->setTwig($this->getTwig())
         ;
+
+        return $blockManager;
     }
 
     private function getBlockManager(string $type): BlockInterface
