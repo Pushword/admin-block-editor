@@ -8,9 +8,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class PageMainContentFormField extends AbstractField
 {
-    public function formField(FormMapper $formMapper): FormMapper
+    public function formField(FormMapper $form): FormMapper
     {
-        return $formMapper->add('mainContent', EditorjsType::class, [
+        return $form->add('mainContent', EditorjsType::class, [
             'required' => false,
             'label' => ' ',
             'help_html' => true,

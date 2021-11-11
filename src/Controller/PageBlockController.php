@@ -25,9 +25,9 @@ final class PageBlockController extends AbstractController
 
     private Twig $twig;
 
-    public function __construct(EntityManagerInterface $em, Twig $twig)
+    public function __construct(EntityManagerInterface $entityManager, Twig $twig)
     {
-        $this->em = $em;
+        $this->em = $entityManager;
         $this->twig = $twig;
     }
 

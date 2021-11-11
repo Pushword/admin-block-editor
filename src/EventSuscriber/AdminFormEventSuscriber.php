@@ -24,38 +24,38 @@ class AdminFormEventSuscriber extends AbstractEventSuscriber
         ];
     }
 
-    public function setMainContent(PersistenceEvent $event): void
+    public function setMainContent(PersistenceEvent $persistenceEvent): void
     {
-        if (! $event->getAdmin() instanceof PageAdminInterface) {
+        if (! $persistenceEvent->getAdmin() instanceof PageAdminInterface) {
             return;
         }
 
-        $returnValues = $event->getAdmin()->getRequest()->get($event->getAdmin()->getRequest()->get('uniqid'));
+        $returnValues = $persistenceEvent->getAdmin()->getRequest()->get($persistenceEvent->getAdmin()->getRequest()->get('uniqid'));
         //dd($returnValues);
         if (isset($returnValues['mainContent'])) {
             // sanitize with https://github.com/editor-js/editorjs-php
-            $event->getAdmin()->getSubject()->setMainContent($returnValues['mainContent']);
+            $persistenceEvent->getAdmin()->getSubject()->setMainContent($returnValues['mainContent']);
         }
     }
 
     /** @psalm-suppress  NoInterfaceProperties */
-    public function replaceFields(FormEvent $event): void
+    public function replaceFields(FormEvent $formEvent): void
     {
-        if (! $event->getAdmin() instanceof PageAdminInterface || ! $this->mayUseEditorBlock($event->getAdmin()->getSubject())) {
+        if (! $formEvent->getAdmin() instanceof PageAdminInterface || ! $this->mayUseEditorBlock($formEvent->getAdmin()->getSubject())) {
             return;
         }
 
-        $fields = $event->getFields();
+        $fields = $formEvent->getFields();
 
         $fields = (new FormFieldReplacer())->run(PageMainContentField::class, PageMainContentFormField::class, $fields);
         $fields = (new FormFieldReplacer())->run(PageH1Field::class, PageH1FormField::class, $fields);
 
         $fields[0][PageImageFormField::class] = PageImageFormField::class;
 
-        $event->setFields($fields);
+        $formEvent->setFields($fields);
 
         /** @var PageInterface $page */
-        $page = $event->getAdmin()->getSubject();
+        $page = $formEvent->getAdmin()->getSubject();
         $page->jsMainContent = $this->transformMainContent($page->getMainContent());
     }
 

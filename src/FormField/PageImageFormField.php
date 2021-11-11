@@ -7,9 +7,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class PageImageFormField extends AbstractField
 {
-    public function formField(FormMapper $formMapper): FormMapper
+    public function formField(FormMapper $form): FormMapper
     {
-        $formMapper->add('inline_image', \Sonata\AdminBundle\Form\Type\ModelListType::class, [
+        $form->add('inline_image', \Sonata\AdminBundle\Form\Type\ModelListType::class, [
             'required' => false,
             'class' => $this->admin->getMediaClass(),
             //'label' => 'admin.page.mainImage.label',
@@ -20,7 +20,7 @@ class PageImageFormField extends AbstractField
             'admin_code' => 'pushword.admin.media',
         ]);
 
-        return $formMapper->add('inline_attaches', \Sonata\AdminBundle\Form\Type\ModelListType::class, [
+        return $form->add('inline_attaches', \Sonata\AdminBundle\Form\Type\ModelListType::class, [
             'required' => false,
             'class' => $this->admin->getMediaClass(),
             //'label' => 'admin.page.mainImage.label',

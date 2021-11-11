@@ -25,9 +25,9 @@ final class MediaBlockController extends AbstractController
 
     private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->em = $entityManager;
     }
 
     public function manage(Request $request, ImageManager $imageManager, string $publicMediaDir): Response

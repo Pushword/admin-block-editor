@@ -20,22 +20,22 @@ class EnityFilterSuscriber extends AbstractEventSuscriber
         ];
     }
 
-    public function convertJsBlockToHtml(FilterEvent $event): void
+    public function convertJsBlockToHtml(FilterEvent $filterEvent): void
     {
-        $page = $event->getManager()->getEntity();
-        $app = $this->apps->get($page->getHost());
+        $page = $filterEvent->getManager()->getEntity();
+        $appConfig = $this->apps->get($page->getHost());
 
         if (! $page instanceof PageInterface
-            || 'MainContent' != $event->getProperty()
+            || 'MainContent' != $filterEvent->getProperty()
             || ! $this->mayUseEditorBlock($page)
-            || true === $app->get('admin_block_editor_disable_listener')) {
+            || true === $appConfig->get('admin_block_editor_disable_listener')) {
             return;
         }
 
-        $this->removeMarkdownFilter($app);
+        $this->removeMarkdownFilter($appConfig);
 
         $blockEditorFilter = (new BlockEditorFilter())
-            ->setApp($app)
+            ->setApp($appConfig)
             ->setEntity($page)
             ->setTwig($this->twig)
         ;
@@ -44,10 +44,10 @@ class EnityFilterSuscriber extends AbstractEventSuscriber
         //dump($page->getMainContent());
     }
 
-    private function removeMarkdownFilter(AppConfig $app): void
+    private function removeMarkdownFilter(AppConfig $appConfig): void
     {
-        $filters = $app->getFilters();
+        $filters = $appConfig->getFilters();
         $filters['main_content'] = str_replace(',markdown', '', $filters['main_content']);
-        $app->setFilters($filters);
+        $appConfig->setFilters($filters);
     }
 }
