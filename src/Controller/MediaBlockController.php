@@ -52,7 +52,7 @@ final class MediaBlockController extends AbstractController
         $url = ! $imageManager->isImage($media) ? '/'.$publicMediaDir.'/'.$media->getMedia()
              : $imageManager->getBrowserPath($media->getMedia());
 
-        return new Response(json_encode([
+        return new Response(\Safe\json_encode([
             'success' => 1,
             'file' => $this->exportMedia($media, $url),
         ]));
@@ -81,7 +81,7 @@ final class MediaBlockController extends AbstractController
      */
     private function getMediaFrom($content)
     {
-        $content = json_decode($content, true);
+        $content = \Safe\json_decode($content, true);
 
         if (! isset($content['url']) && ! isset($content['id'])) {
             throw new LogicException('URL not sent by editor.js ?!');
@@ -92,7 +92,7 @@ final class MediaBlockController extends AbstractController
         }
 
         if (0 === strpos($content['url'], '/media/default/')) {
-            return $this->getMediaFromMedia(substr($content['url'], \strlen('/media/default/')));
+            return $this->getMediaFromMedia(\Safe\substr($content['url'], \strlen('/media/default/')));
         }
 
         return $this->getMediaFileFromUrl($content['url']);
@@ -112,22 +112,22 @@ final class MediaBlockController extends AbstractController
      */
     private function getMediaFileFromUrl(string $url): UploadedFile
     {
-        if (! preg_match('#/([^/]*)$#', $url, $matches)) {
+        if (! \Safe\preg_match('#/([^/]*)$#', $url, $matches)) {
             throw new LogicException("URL doesn't contain file name");
         }
 
-        if (! $fileContent = file_get_contents($url)) {
+        if (! $fileContent = \Safe\file_get_contents($url)) {
             throw new LogicException('URL unreacheable');
         }
 
         $originalName = $matches[1];
         $filename = md5($matches[1]);
         $filePath = sys_get_temp_dir().'/'.$filename;
-        if (! file_put_contents($filePath, $fileContent)) {
+        if (! \Safe\file_put_contents($filePath, $fileContent)) {
             throw new LogicException('Storing in tmp folder filed');
         }
 
-        $mimeType = mime_content_type($filePath);
+        $mimeType = \Safe\mime_content_type($filePath);
 
         return new UploadedFile($filePath, $originalName, $mimeType, null, true);
     }

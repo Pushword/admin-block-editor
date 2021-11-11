@@ -51,7 +51,7 @@ final class PageBlockController extends AbstractController
             ['page' => $currentPage ?? null, 'data' => $content]
         );
 
-        return new Response(json_encode([
+        return new Response(\Safe\json_encode([
             'success' => 1,
             'content' => $htmlContent,
         ]));
