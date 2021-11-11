@@ -33,7 +33,7 @@ final class MediaBlockController extends AbstractController
     public function manage(Request $request, ImageManager $imageManager, string $publicMediaDir): Response
     {
         /** @var File $mediaFile */
-        $mediaFile = $request->getContent() ? $this->getMediaFrom($request->getContent())
+        $mediaFile = '' !== $request->getContent() && '0' !== $request->getContent() ? $this->getMediaFrom($request->getContent())
             : $request->files->get('image');
 
         //if (false === strpos($mediaFile->getMimeType(), 'image/')) { return new Response(json_encode(['error' => 'media sent is not an image'])); }
@@ -49,8 +49,8 @@ final class MediaBlockController extends AbstractController
             $this->em->flush();
         }
 
-        $url = ! $imageManager->isImage($media) ? '/'.$publicMediaDir.'/'.$media->getMedia()
-             : $imageManager->getBrowserPath($media->getMedia());
+        $url = $imageManager->isImage($media) ? $imageManager->getBrowserPath($media->getMedia())
+             : '/'.$publicMediaDir.'/'.$media->getMedia();
 
         return new Response(\Safe\json_encode([
             'success' => 1,
@@ -64,7 +64,7 @@ final class MediaBlockController extends AbstractController
 
         $data = [];
         foreach ($properties as $property) {
-            if (\in_array($property, ['id'])) {
+            if ('id' == $property) {
                 continue;
             }
             $getter = 'get'.ucfirst($property);
@@ -100,7 +100,7 @@ final class MediaBlockController extends AbstractController
 
     private function getMediaFromMedia(string $media): MediaInterface
     {
-        if (! $media = Repository::getMediaRepository($this->em, $this->mediaClass)->findOneBy(['media' => $media])) {
+        if (($media = Repository::getMediaRepository($this->em, $this->mediaClass)->findOneBy(['media' => $media])) === null) {
             throw new LogicException('Media not found');
         }
 
@@ -112,18 +112,16 @@ final class MediaBlockController extends AbstractController
      */
     private function getMediaFileFromUrl(string $url): UploadedFile
     {
-        if (! \Safe\preg_match('#/([^/]*)$#', $url, $matches)) {
+        if (0 === \Safe\preg_match('#/([^/]*)$#', $url, $matches)) {
             throw new LogicException("URL doesn't contain file name");
         }
 
-        if (! $fileContent = \Safe\file_get_contents($url)) {
-            throw new LogicException('URL unreacheable');
-        }
+        $fileContent = \Safe\file_get_contents($url);
 
         $originalName = $matches[1];
         $filename = md5($matches[1]);
         $filePath = sys_get_temp_dir().'/'.$filename;
-        if (! \Safe\file_put_contents($filePath, $fileContent)) {
+        if (0 === \Safe\file_put_contents($filePath, $fileContent)) {
             throw new LogicException('Storing in tmp folder filed');
         }
 
@@ -135,7 +133,7 @@ final class MediaBlockController extends AbstractController
     private function getMediaFileFromId(string $id): MediaInterface
     {
         $id = (int) $id;
-        if (! $media = Repository::getMediaRepository($this->em, $this->mediaClass)->findOneBy(['id' => $id])) {
+        if (($media = Repository::getMediaRepository($this->em, $this->mediaClass)->findOneBy(['id' => $id])) === null) {
             throw new LogicException('Media not found');
         }
 

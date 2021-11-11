@@ -40,7 +40,7 @@ final class PageBlockController extends AbstractController
 
         if ($id) {
             $currentPage = Repository::getPageRepository($this->em, $this->pageClass)->findOneBy(['id' => $id]);
-            if (! $currentPage) {
+            if (null === $currentPage) {
                 throw new Exception('Page not found');
             }
             $this->apps->switchCurrentApp($currentPage);
