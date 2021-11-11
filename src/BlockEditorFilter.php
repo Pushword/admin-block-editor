@@ -18,8 +18,7 @@ final class BlockEditorFilter extends AbstractFilter
     use RequiredEntityTrait;
     use RequiredTwigTrait;
 
-    /** @var array */
-    private $appBlocks;
+    private ?array $appBlocks = null;
 
     /**
      * @return string
@@ -67,6 +66,10 @@ final class BlockEditorFilter extends AbstractFilter
         return $blocks[$type];
     }
 
+    /**
+     * @psalm-suppress NullableReturnStatement
+     * @psalm-suppress InvalidNullableReturnType
+     */
     private function getAppBlocks(): array
     {
         if (\is_array($this->appBlocks)) {
