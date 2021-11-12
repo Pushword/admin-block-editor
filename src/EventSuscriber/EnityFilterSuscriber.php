@@ -13,6 +13,9 @@ class EnityFilterSuscriber extends AbstractEventSuscriber
     /** @required */
     public Twig $twig;
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [

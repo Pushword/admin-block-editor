@@ -15,6 +15,9 @@ use Sonata\AdminBundle\Event\PersistenceEvent;
 
 class AdminFormEventSuscriber extends AbstractEventSuscriber
 {
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -59,7 +62,10 @@ class AdminFormEventSuscriber extends AbstractEventSuscriber
         $page->jsMainContent = $this->transformMainContent($page->getMainContent());
     }
 
-    private function transformMainContent($content)
+    /**
+     * @return string
+     */
+    private function transformMainContent(string $content)
     {
         // We never come to false here because we ever checked before with mayUseEditorBlock
         /*

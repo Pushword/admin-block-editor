@@ -18,16 +18,21 @@ final class BlockEditorFilter extends AbstractFilter
     use RequiredEntityTrait;
     use RequiredTwigTrait;
 
+    /**
+     * @var BlockInterface[]|null
+     */
     private ?array $appBlocks = null;
 
     /**
-     * @return string
+     * @return mixed|string
      */
     public function apply($propertyValue)
     {
-        $json = json_decode($propertyValue);
-
-        if (false === $json || null === $json) {
+        if (
+            ! \is_string($propertyValue)
+            || ! \is_object($json = json_decode($propertyValue))
+            || ! property_exists($json, 'blocks')
+        ) {
             return $propertyValue;
         }
 
@@ -69,6 +74,8 @@ final class BlockEditorFilter extends AbstractFilter
     /**
      * @psalm-suppress NullableReturnStatement
      * @psalm-suppress InvalidNullableReturnType
+     *
+     * @return BlockInterface[]
      */
     private function getAppBlocks(): array
     {

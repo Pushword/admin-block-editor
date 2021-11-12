@@ -8,6 +8,8 @@ class EditorjsType extends TextType
 {
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     public function getBlockPrefix()
     {

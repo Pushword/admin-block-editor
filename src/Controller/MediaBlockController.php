@@ -58,6 +58,9 @@ final class MediaBlockController extends AbstractController
         ]));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function exportMedia(MediaInterface $media, string $url): array
     {
         $properties = Entity::getProperties($media);
