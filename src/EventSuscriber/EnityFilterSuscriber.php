@@ -42,8 +42,7 @@ class EnityFilterSuscriber extends AbstractEventSuscriber
             ->setTwig($this->twig)
         ;
 
-        $page->setMainContent($blockEditorFilter->apply($page->getMainContent()));
-        //dump($page->getMainContent());
+        $page->setMainContent($blockEditorFilter->apply($page->getMainContent())); // @phpstan-ignore-line
     }
 
     private function removeMarkdownFilter(AppConfig $appConfig): void
