@@ -8,10 +8,8 @@ class EditorjsType extends TextType
 {
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'editorjs';
     }

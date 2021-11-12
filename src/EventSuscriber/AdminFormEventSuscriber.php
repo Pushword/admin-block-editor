@@ -62,10 +62,7 @@ class AdminFormEventSuscriber extends AbstractEventSuscriber
         $page->jsMainContent = $this->transformMainContent($page->getMainContent());
     }
 
-    /**
-     * @return string
-     */
-    private function transformMainContent(string $content)
+    private function transformMainContent(string $content): string
     {
         // We never come to false here because we ever checked before with mayUseEditorBlock
         /*

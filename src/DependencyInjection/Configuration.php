@@ -24,10 +24,7 @@ class Configuration implements ConfigurationInterface
      */
     public const DEFAULT_TYPE_TO_PROSE = ['paragraph', 'image', 'list', 'blockquote', 'code', 'delimiter', 'header'];
 
-    /**
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('admin_block_editor');
         $treeBuilder->getRootNode()->children()
