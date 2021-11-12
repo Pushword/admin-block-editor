@@ -67,6 +67,7 @@ final class MediaBlockController extends AbstractController
             if ('id' == $property) {
                 continue;
             }
+
             $getter = 'get'.ucfirst($property);
             $data[$property] = $media->$getter();
         }

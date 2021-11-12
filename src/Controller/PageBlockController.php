@@ -43,6 +43,7 @@ final class PageBlockController extends AbstractController
             if (null === $currentPage) {
                 throw new Exception('Page not found');
             }
+
             $this->apps->switchCurrentApp($currentPage);
         }
 
