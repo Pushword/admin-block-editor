@@ -49,7 +49,7 @@ final class MediaBlockController extends AbstractController
             $this->em->flush();
         }
 
-        $url = $imageManager->isImage($media) ? $imageManager->getBrowserPath($media->getMedia())
+        $url = $imageManager->isImage($media) ? $imageManager->getBrowserPath((string) $media->getMedia())
              : '/'.$publicMediaDir.'/'.$media->getMedia();
 
         return new Response(\Safe\json_encode([
@@ -72,7 +72,7 @@ final class MediaBlockController extends AbstractController
             }
 
             $getter = 'get'.ucfirst($property);
-            $data[$property] = $media->$getter();
+            $data[$property] = $media->$getter(); // @phpstan-ignore-line
         }
 
         $data['url'] = $url;
@@ -87,7 +87,7 @@ final class MediaBlockController extends AbstractController
     {
         $content = \Safe\json_decode($content, true);
 
-        if (! isset($content['url']) && ! isset($content['id'])) {
+        if (! \is_array($content) || (! isset($content['url']) && ! isset($content['id']))) {
             throw new LogicException('URL not sent by editor.js ?!');
         }
 

@@ -33,5 +33,7 @@ class DefaultBlock extends AbstractBlock
         }
 
         $this->name = $name;
+
+        parent::__construct($name);
     }
 }
