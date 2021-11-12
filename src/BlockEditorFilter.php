@@ -3,6 +3,8 @@
 namespace Pushword\AdminBlockEditor;
 
 use Exception;
+use LogicException;
+use Pushword\AdminBlockEditor\Block\AbstractBlock;
 use Pushword\AdminBlockEditor\Block\BlockInterface;
 use Pushword\AdminBlockEditor\Block\DefaultBlock;
 use Pushword\Core\AutowiringTrait\RequiredAppTrait;
@@ -75,6 +77,8 @@ final class BlockEditorFilter extends AbstractFilter
      * @psalm-suppress NullableReturnStatement
      * @psalm-suppress InvalidNullableReturnType
      *
+     * @noRector
+     *
      * @return BlockInterface[]
      */
     private function getAppBlocks(): array
@@ -84,23 +88,26 @@ final class BlockEditorFilter extends AbstractFilter
         }
 
         $blocks = $this->app->get('admin_block_editor_blocks');
+        if (! \is_array($blocks)) {
+            throw new LogicException();
+        }
 
         foreach ($blocks as $block) {
-            if (class_exists($block)) {
-                $this->appBlocks[$block::NAME] = $this->loadBlockManager(new $block());
+            if (class_exists($block) && ($block = new $block()) instanceof AbstractBlock) {
+                $this->appBlocks[$block::NAME] = $this->loadBlockManager($block);
 
                 continue;
             }
 
-            if (\in_array($block, DefaultBlock::AVAILABLE_BLOCKS)) {
+            if (\in_array($block, DefaultBlock::AVAILABLE_BLOCKS, true)) {
                 $this->appBlocks[$block] = $this->loadBlockManager(new DefaultBlock($block));
 
                 continue;
             }
 
             $class = '\Pushword\AdminBlockEditor\Block\\'.ucfirst($block).'Block';
-            if (class_exists($class)) {
-                $this->appBlocks[$block] = $this->loadBlockManager(new $class());
+            if (class_exists($class) && ($class = new $class()) instanceof BlockInterface) {
+                $this->appBlocks[$block] = $this->loadBlockManager($class);
 
                 continue;
             }
@@ -108,6 +115,6 @@ final class BlockEditorFilter extends AbstractFilter
             throw new Exception('Block Manager for `'.$block.'` not found.');
         }
 
-        return $this->appBlocks;
+        return $this->appBlocks; // @phpstan-ignore-line
     }
 }
