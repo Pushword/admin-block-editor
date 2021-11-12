@@ -80,7 +80,7 @@ final class MediaBlockController extends AbstractController
     /**
      * @return UploadedFile|MediaInterface
      */
-    private function getMediaFrom($content)
+    private function getMediaFrom(string $content)
     {
         $content = \Safe\json_decode($content, true);
 
