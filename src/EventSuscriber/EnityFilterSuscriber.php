@@ -8,6 +8,9 @@ use Pushword\Core\Component\EntityFilter\FilterEvent;
 use Pushword\Core\Entity\PageInterface;
 use Twig\Environment as Twig;
 
+/**
+ * @template T of object
+ */
 class EnityFilterSuscriber extends AbstractEventSuscriber
 {
     /** @required */
@@ -23,6 +26,9 @@ class EnityFilterSuscriber extends AbstractEventSuscriber
         ];
     }
 
+    /**
+     * @param FilterEvent<T> $filterEvent
+     */
     public function convertJsBlockToHtml(FilterEvent $filterEvent): void
     {
         $page = $filterEvent->getManager()->getEntity();
