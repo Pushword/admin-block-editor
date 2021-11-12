@@ -3,10 +3,19 @@
 namespace Pushword\AdminBlockEditor\FormField;
 
 use Pushword\Admin\FormField\AbstractField;
+use Pushword\Core\Entity\PageInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 
+/**
+ * @extends AbstractField<PageInterface>
+ */
 class PageImageFormField extends AbstractField
 {
+    /**
+     * @param FormMapper<PageInterface> $form
+     *
+     * @return FormMapper<PageInterface>
+     */
     public function formField(FormMapper $form): FormMapper
     {
         $form->add('inline_image', \Sonata\AdminBundle\Form\Type\ModelListType::class, [

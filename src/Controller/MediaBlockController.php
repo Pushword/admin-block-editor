@@ -42,7 +42,6 @@ final class MediaBlockController extends AbstractController
             $media = $mediaFile;
         } else {
             $mediaClass = $this->mediaClass;
-            /** @var MediaInterface $media */
             $media = new $mediaClass();
             $media->setMediaFile($mediaFile);
             $this->em->persist($media);

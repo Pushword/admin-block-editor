@@ -2,6 +2,7 @@
 
 namespace Pushword\AdminBlockEditor\EventSuscriber;
 
+use LogicException;
 use Pushword\Admin\FormField\Event as FormEvent;
 use Pushword\Admin\FormField\PageH1Field;
 use Pushword\Admin\FormField\PageMainContentField;
@@ -13,6 +14,9 @@ use Pushword\AdminBlockEditor\FormField\PageMainContentFormField;
 use Pushword\Core\Entity\PageInterface;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 
+/**
+ * @template T of object
+ */
 class AdminFormEventSuscriber extends AbstractEventSuscriber
 {
     /**
@@ -27,21 +31,29 @@ class AdminFormEventSuscriber extends AbstractEventSuscriber
         ];
     }
 
+    /**
+     * @param PersistenceEvent<PageInterface> $persistenceEvent
+     */
     public function setMainContent(PersistenceEvent $persistenceEvent): void
     {
         if (! $persistenceEvent->getAdmin() instanceof PageAdminInterface) {
             return;
         }
 
-        $returnValues = $persistenceEvent->getAdmin()->getRequest()->get($persistenceEvent->getAdmin()->getRequest()->get('uniqid'));
-        //dd($returnValues);
-        if (isset($returnValues['mainContent'])) {
+        $requestUniqId = \strval($persistenceEvent->getAdmin()->getRequest()->get('uniqid'));
+        $returnValues = $persistenceEvent->getAdmin()->getRequest()->get($requestUniqId);
+
+        if (\is_array($returnValues) && isset($returnValues['mainContent'])) {
             // sanitize with https://github.com/editor-js/editorjs-php
             $persistenceEvent->getAdmin()->getSubject()->setMainContent($returnValues['mainContent']);
         }
     }
 
-    /** @psalm-suppress  NoInterfaceProperties */
+    /**
+     * @psalm-suppress  NoInterfaceProperties
+     *
+     * @param FormEvent<T> $formEvent
+     */
     public function replaceFields(FormEvent $formEvent): void
     {
         if (! $formEvent->getAdmin() instanceof PageAdminInterface || ! $this->mayUseEditorBlock($formEvent->getAdmin()->getSubject())) {
@@ -53,25 +65,12 @@ class AdminFormEventSuscriber extends AbstractEventSuscriber
         $fields = (new FormFieldReplacer())->run(PageMainContentField::class, PageMainContentFormField::class, $fields);
         $fields = (new FormFieldReplacer())->run(PageH1Field::class, PageH1FormField::class, $fields);
 
+        if (! \is_array($fields[0])) {
+            throw new LogicException();
+        }
+
         $fields[0][PageImageFormField::class] = PageImageFormField::class;
 
         $formEvent->setFields($fields);
-
-        /** @var PageInterface $page */
-        $page = $formEvent->getAdmin()->getSubject();
-        $page->jsMainContent = $this->transformMainContent($page->getMainContent());
-    }
-
-    private function transformMainContent(string $content): string
-    {
-        // We never come to false here because we ever checked before with mayUseEditorBlock
-        /*
-        $jsonContent = json_decode($content);
-        if (false === $jsonContent) {
-            // we just start to use editor.js for this page... try parsing raw content and creating a JS
-            return json_encode(['blocks' => [['type' => 'raw', 'data' => ['html' => $content]]]]);
-        }*/
-
-        return $content;
     }
 }

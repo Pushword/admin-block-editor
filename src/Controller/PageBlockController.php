@@ -31,14 +31,17 @@ final class PageBlockController extends AbstractController
         $this->twig = $twig;
     }
 
-    public function manage($id, Request $request): Response
+    /**
+     * @param int|string $id
+     */
+    public function manage(Request $request, $id = ''): Response
     {
         $content = $request->toArray();
 
         $request->attributes->set('_route', 'pushword_page'); //'custom_host_pushword_page'
         // TODO: sanitize
 
-        if ($id) {
+        if ('' !== $id) {
             $currentPage = Repository::getPageRepository($this->em, $this->pageClass)->findOneBy(['id' => $id]);
             if (null === $currentPage) {
                 throw new Exception('Page not found');
