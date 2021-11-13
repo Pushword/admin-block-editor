@@ -13,6 +13,9 @@ abstract class AbstractBlock implements BlockInterface
     use RequiredEntityTrait;
     use RequiredTwigTrait;
 
+    /**
+     * @var string
+     */
     public const NAME = 'NotDefined!';
 
     public string $name;
