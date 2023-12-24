@@ -20,8 +20,7 @@ final class EditorJsPurifier
 
         foreach ($data->blocks as $k => $block) {
             if (\in_array($block->type, ['header', 'paragraph'], true)) {
-                if (! property_exists($data->blocks[$k], 'data') || ! \is_object($data->blocks[$k]->data)
-                    || ! \is_string($data->blocks[$k]->data->text ?? 0)) {
+                if (! \is_string($data->blocks[$k]->data->text ?? 0)) {
                     return $raw;
                 }
 
@@ -29,8 +28,7 @@ final class EditorJsPurifier
             }
 
             if ('list' === $block->type) {
-                if (! property_exists($data->blocks[$k], 'data') || ! \is_object($data->blocks[$k]->data)
-                    || ! \is_array($data->blocks[$k]->data->items ?? 0)) {
+                if (! \is_array($data->blocks[$k]->data->items ?? 0)) {
                     return $raw;
                 }
 
