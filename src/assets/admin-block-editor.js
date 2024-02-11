@@ -1,4 +1,4 @@
-import css from './admin.scss'
+require('./admin.css')
 
 import { editorJs } from './editor.js'
 import { editorJsHelper } from './editorJsHelper.js'
