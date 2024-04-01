@@ -87,13 +87,20 @@ final class MediaBlockController extends AbstractController
     {
         $content = json_decode($content, true);
 
-        if (! \is_array($content) || ! isset($content['url']) || ! isset($content['id'])
-            || ! \is_string($content['url']) || ! \is_string($content['id'])) {
+        if (! \is_array($content) || (! isset($content['url']) && ! isset($content['id']))) {
             throw new \LogicException('URL not sent by editor.js ?!');
         }
 
         if (isset($content['id'])) {
-            return $this->getMediaFileFromId($content['id']);
+            if (! \is_scalar($content['id'])) {
+                throw new \Exception();
+            }
+
+            return $this->getMediaFileFromId((string) $content['id']);
+        }
+
+        if (! \is_string($content['url'])) {
+            throw new \Exception();
         }
 
         if (str_starts_with($content['url'], '/media/default/')) {
