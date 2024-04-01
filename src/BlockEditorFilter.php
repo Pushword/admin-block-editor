@@ -27,7 +27,7 @@ final class BlockEditorFilter extends AbstractFilter
     /**
      * @return ($propertyValue is string ? string : mixed)
      */
-    public function apply(mixed $propertyValue)
+    public function apply(mixed $propertyValue): mixed
     {
         if (! \is_string($propertyValue)) {
             return $propertyValue;

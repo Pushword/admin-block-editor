@@ -29,7 +29,7 @@ final class EditorJsHelper
         }
 
         foreach ($data->blocks as $block) {
-            if (! property_exists($block, 'type') || ! \is_string($block->type)) {
+            if (! \is_object($block) || ! property_exists($block, 'type') || ! \is_string($block->type)) {
                 throw new \Exception('Block must have a type (string)');
             }
         }

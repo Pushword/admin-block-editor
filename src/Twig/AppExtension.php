@@ -45,6 +45,8 @@ class AppExtension extends AbstractExtension
     /**
      * @param array<mixed>|\stdClass $blockData
      * @param array<mixed>           $attributes
+     *
+     * @psalm-suppress all
      */
     public function blockWrapperAttr(array|\stdClass $blockData, array $attributes = []): string
     {

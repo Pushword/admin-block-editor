@@ -44,7 +44,6 @@ final readonly class EditorJsPurifier
         return json_encode($data);
     }
 
-    /** @psalm-suppress UndefinedConstant */
     private function getFixer(): Fixer
     {
         $fixer = new Fixer(['Ellipsis', 'Dimension', 'Unit', 'Dash', 'SmartQuotes', 'FrenchNoBreakSpace', 'NoSpaceBeforeComma', 'CurlyQuote', 'Trademark']);
