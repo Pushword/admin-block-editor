@@ -4,8 +4,7 @@ namespace Pushword\AdminBlockEditor\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Pushword\Core\Component\App\AppPool;
-use Pushword\Core\Entity\PageInterface;
-use Pushword\Core\Repository\Repository;
+use Pushword\Core\Entity\Page;
 
 use function Safe\json_encode;
 
@@ -18,14 +17,10 @@ use Twig\Environment as Twig;
 #[IsGranted('ROLE_EDITOR')]
 final class PageBlockController extends AbstractController
 {
-    /**
-     * @param class-string<PageInterface> $pageClass
-     */
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly Twig $twig,
         private readonly AppPool $apps,
-        private readonly string $pageClass,
     ) {
     }
 
@@ -38,8 +33,8 @@ final class PageBlockController extends AbstractController
         // TODO: sanitize
 
         if (0 !== $id) {
-            $currentPage = Repository::getPageRepository($this->em, $this->pageClass)->findOneBy(['id' => $id]);
-            if (! $currentPage instanceof PageInterface) {
+            $currentPage = $this->em->getRepository(Page::class)->findOneBy(['id' => $id]);
+            if (! $currentPage instanceof Page) {
                 throw new \Exception('Page not found');
             }
 

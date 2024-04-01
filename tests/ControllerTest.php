@@ -2,8 +2,8 @@
 
 namespace Pushword\AdminBlockEditor\Tests;
 
-use App\Entity\Page;
 use Pushword\Admin\Tests\AbstractAdminTestClass;
+use Pushword\Core\Entity\Page;
 
 class ControllerTest extends AbstractAdminTestClass
 {
@@ -15,7 +15,7 @@ class ControllerTest extends AbstractAdminTestClass
 
         $id = $this->createNewPage();
 
-        $client->request('GET', '/admin/app/page/'.$id.'/edit');
+        $client->request('GET', '/admin/page/'.$id.'/edit');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // does'nt throw error = good start, can do better ?
 

@@ -6,12 +6,13 @@ use Pushword\Admin\FormField\Event as FormEvent;
 use Pushword\Admin\PageAdmin;
 use Pushword\Admin\PageCheatSheetAdmin;
 use Pushword\Core\Component\App\AppPool;
-use Pushword\Core\Entity\PageInterface;
+use Pushword\Core\Entity\Page;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractEventSuscriber implements EventSubscriberInterface
 {
+    /** @psalm-suppress PropertyNotSetInConstructor */
     #[Required]
     public AppPool $apps;
 
@@ -20,9 +21,9 @@ abstract class AbstractEventSuscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FormEvent<PageInterface> $event
+     * @param FormEvent<Page> $event
      */
-    protected function mayUseEditorBlock(?PageInterface $page, ?FormEvent $event = null): bool
+    protected function mayUseEditorBlock(?Page $page, ?FormEvent $event = null): bool
     {
         if (null !== $event
             && ! $event->getAdmin() instanceof PageAdmin
@@ -34,8 +35,8 @@ abstract class AbstractEventSuscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (null !== $page && '' !== $page->getHost() && \is_bool($this->apps->get($page->getHost())->get('admin_block_editor'))) {
-            return $this->apps->get($page->getHost())->get('admin_block_editor');
+        if (null !== $page && '' !== $page->getHost()) {
+            return $this->apps->get($page->getHost())->getBoolean('admin_block_editor', false);
         }
 
         return $this->editorBlockForNewPage;

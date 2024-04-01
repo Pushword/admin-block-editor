@@ -3,9 +3,7 @@
 namespace Pushword\AdminBlockEditor\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Pushword\Core\AutowiringTrait\RequiredMediaClass;
-use Pushword\Core\Entity\MediaInterface;
-use Pushword\Core\Repository\Repository;
+use Pushword\Core\Entity\Media;
 use Pushword\Core\Service\ImageManager;
 use Pushword\Core\Utils\Entity;
 
@@ -26,29 +24,27 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_EDITOR')]
 final class MediaBlockController extends AbstractController
 {
-    use RequiredMediaClass;
-
-    public function __construct(private readonly EntityManagerInterface $em)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
     }
 
     public function manage(Request $request, ImageManager $imageManager, string $publicMediaDir): Response
     {
-        /** @var File $mediaFile */
+        /** @var File|Media $mediaFile */
         $mediaFile = '' !== $request->getContent() && '0' !== $request->getContent() ? $this->getMediaFrom($request->getContent())
             : $request->files->get('image');
 
         // if (false === strpos($mediaFile->getMimeType(), 'image/')) { return new Response(json_encode(['error' => 'media sent is not an image'])); }
 
-        if ($mediaFile instanceof MediaInterface) {
+        if ($mediaFile instanceof Media) {
             $media = $mediaFile;
         } else {
-            $mediaClass = $this->mediaClass;
-            $media = new $mediaClass();
+            $media = new Media();
             $media->setMediaFile($mediaFile);
 
-            $duplicate = Repository::getMediaRepository($this->em, $this->mediaClass)->findOneBy(['hash' => $media->getHash()]);
-            if (! $duplicate instanceof MediaInterface) {
+            $duplicate = $this->em->getRepository(Media::class)->findOneBy(['hash' => $media->getHash()]);
+            if (! $duplicate instanceof Media) {
                 $this->em->persist($media);
                 $this->em->flush();
             } else {
@@ -68,7 +64,7 @@ final class MediaBlockController extends AbstractController
     /**
      * @return array<string, mixed>
      */
-    private function exportMedia(MediaInterface $media, string $url): array
+    private function exportMedia(Media $media, string $url): array
     {
         $properties = Entity::getProperties($media);
 
@@ -87,7 +83,7 @@ final class MediaBlockController extends AbstractController
         return $data;
     }
 
-    private function getMediaFrom(string $content): MediaInterface|UploadedFile
+    private function getMediaFrom(string $content): Media|UploadedFile
     {
         $content = json_decode($content, true);
 
@@ -106,9 +102,9 @@ final class MediaBlockController extends AbstractController
         return $this->getMediaFileFromUrl($content['url']);
     }
 
-    private function getMediaFromMedia(string $media): MediaInterface
+    private function getMediaFromMedia(string $media): Media
     {
-        if (($media = Repository::getMediaRepository($this->em, $this->mediaClass)->findOneBy(['media' => $media])) === null) {
+        if (($media = $this->em->getRepository(Media::class)->findOneBy(['media' => $media])) === null) {
             throw new \LogicException('Media not found');
         }
 
@@ -138,10 +134,10 @@ final class MediaBlockController extends AbstractController
         return new UploadedFile($filePath, $originalName, $mimeType, null, true);
     }
 
-    private function getMediaFileFromId(string $id): MediaInterface
+    private function getMediaFileFromId(string $id): Media
     {
         $id = (int) $id;
-        if (($media = Repository::getMediaRepository($this->em, $this->mediaClass)->findOneBy(['id' => $id])) === null) {
+        if (($media = $this->em->getRepository(Media::class)->findOneBy(['id' => $id])) === null) {
             throw new \LogicException('Media not found');
         }
 

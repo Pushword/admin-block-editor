@@ -5,16 +5,19 @@ namespace Pushword\AdminBlockEditor;
 use Pushword\AdminBlockEditor\Block\AbstractBlock;
 use Pushword\AdminBlockEditor\Block\BlockInterface;
 use Pushword\AdminBlockEditor\Block\DefaultBlock;
-use Pushword\Core\AutowiringTrait\RequiredAppTrait;
-use Pushword\Core\AutowiringTrait\RequiredEntityTrait;
-use Pushword\Core\AutowiringTrait\RequiredTwigTrait;
+use Pushword\Core\Component\App\AppConfig;
 use Pushword\Core\Component\EntityFilter\Filter\AbstractFilter;
+use Pushword\Core\Entity\Page;
+use Twig\Environment as Twig;
 
+/** @psalm-suppress MissingConstructor */
 final class BlockEditorFilter extends AbstractFilter
 {
-    use RequiredAppTrait;
-    use RequiredEntityTrait;
-    use RequiredTwigTrait;
+    public AppConfig $app;
+
+    public Page $page;
+
+    public Twig $twig;
 
     /**
      * @var BlockInterface[]|null
@@ -22,7 +25,7 @@ final class BlockEditorFilter extends AbstractFilter
     private ?array $appBlocks = null;
 
     /**
-     * @return mixed|string
+     * @return ($propertyValue is string ? string : mixed)
      */
     public function apply(mixed $propertyValue)
     {
@@ -53,13 +56,11 @@ final class BlockEditorFilter extends AbstractFilter
         return $renderValue;
     }
 
-    private function loadBlockManager(BlockInterface $block): BlockInterface
+    private function loadBlockManager(AbstractBlock $block): AbstractBlock
     {
-        $block
-            ->setApp($this->app)
-            ->setEntity($this->getEntity())
-            ->setTwig($this->getTwig())
-        ;
+        $block->app = $this->app;
+        $block->page = $this->page;
+        $block->twig = $this->twig;
 
         return $block;
     }
@@ -94,9 +95,11 @@ final class BlockEditorFilter extends AbstractFilter
             throw new \LogicException();
         }
 
+        /** @var string[] $blocks */
         foreach ($blocks as $block) {
+            /** @psalm-suppress MixedMethodCall */
             if (class_exists($block) && ($blockClass = new $block()) instanceof AbstractBlock) {
-                $this->appBlocks[$blockClass::NAME] = $this->loadBlockManager($blockClass);
+                $this->appBlocks[$blockClass->getName()] = $this->loadBlockManager($blockClass);
 
                 continue;
             }
@@ -107,7 +110,8 @@ final class BlockEditorFilter extends AbstractFilter
                 continue;
             }
 
-            $class = '\Pushword\AdminBlockEditor\Block\\'.ucfirst((string) $block).'Block';
+            $class = '\Pushword\AdminBlockEditor\Block\\'.ucfirst($block).'Block';
+            /** @psalm-suppress MixedMethodCall */
             if (class_exists($class) && ($blockClass = new $class()) instanceof BlockInterface) {
                 /** @var AbstractBlock $blockClass */
                 $this->appBlocks[$block] = $this->loadBlockManager($blockClass);
