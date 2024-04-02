@@ -5,9 +5,15 @@ namespace Pushword\AdminBlockEditor\Tests;
 use Pushword\Admin\Tests\AbstractAdminTestClass;
 use Pushword\Core\Entity\Page;
 
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+use function Safe\json_encode;
+
+use Symfony\Component\HttpFoundation\Response;
+
 class ControllerTest extends AbstractAdminTestClass
 {
-    public function testBasics()
+    public function testBasics(): void
     {
         $client = $this->loginUser(
             // static::createPantherClient([            'webServerDir' => __DIR__.'/../../skeleton/public'        ])
@@ -16,18 +22,18 @@ class ControllerTest extends AbstractAdminTestClass
         $id = $this->createNewPage();
 
         $client->request('GET', '/admin/page/'.$id.'/edit');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode(), (string) $client->getResponse()->getContent());
         // does'nt throw error = good start, can do better ?
 
         $client->request('GET', '/admin-block-editor.test/test');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode(), (string) $client->getResponse()->getContent());
         // does'nt throw error = every filters are working (well ?)
         // if bug encouter, test them via BlockEditorFilterTest
     }
 
-    private function createNewPage()
+    private function createNewPage(): ?int
     {
-        $em = self::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+        $em = self::getContainer()->get('doctrine.orm.default_entity_manager');
 
         $page = (new Page())
             ->setH1('Test editorJsPage')
@@ -42,7 +48,7 @@ class ControllerTest extends AbstractAdminTestClass
         return $page->getId();
     }
 
-    public function testPageController()
+    public function testPageController(): void
     {
         $client = $this->loginUser(
             // static::createPantherClient([            'webServerDir' => __DIR__.'/../../skeleton/public'        ])
@@ -56,12 +62,17 @@ class ControllerTest extends AbstractAdminTestClass
             json_encode(['kw' => 'content:fun', 'display' => 'list', 'order' => 'priority ↓', 'max' => '', 'maxPages' => ''])
         );
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        // dd(str_replace([' ', '\n'], '', $client->getResponse()->getContent()));
-        $this->assertStringStartsWith(
-            '{"success":1,"content":"<ul><li><ahref=\"',
-            str_replace([' ', '\n'], '', $client->getResponse()->getContent())
+        self::assertSame(
+            Response::HTTP_OK,
+            $client->getResponse()->getStatusCode(),
+            (string) $client->getResponse()->getContent()
         );
+
+        self::assertStringStartsWith('{"success":1,"content":"<ul><li><ahref=\"', str_replace(
+            [' ', '\n'],
+            '',
+            (string) $client->getResponse()->getContent()
+        ));
 
         $client->request(
             'POST',
@@ -71,10 +82,10 @@ class ControllerTest extends AbstractAdminTestClass
             [],
             json_encode(['kw' => 'fun', 'display' => 'list', 'order' => 'priority ↓,publishedAt ↓', 'max' => '', 'maxPages' => ''])
         );
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode(), (string) $client->getResponse()->getContent());
     }
 
-    public function testMediaController()
+    public function testMediaController(): void
     {
         $client = $this->loginUser(
             // static::createPantherClient([            'webServerDir' => __DIR__.'/../../skeleton/public'        ])
@@ -87,8 +98,8 @@ class ControllerTest extends AbstractAdminTestClass
             [],
             json_encode(['url' => 'https://github.com/fluidicon.png'])
         );
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode(), (string) $client->getResponse()->getContent());
 
-        $this->assertSame('image/png', json_decode($client->getResponse()->getContent())->file->mimeType);
+        self::assertSame('image/png', json_decode((string) $client->getResponse()->getContent())->file->mimeType); // @phpstan-ignore-line
     }
 }
