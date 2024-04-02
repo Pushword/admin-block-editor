@@ -11,6 +11,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure()
         ->bind('$editorBlockForNewPage', '%pw.pushword_admin_block_editor.new_page%')
+        ->bind('$mediaClass', '%pw.entity_media%')
+        ->bind('$pageClass', '%pw.entity_page%')
         ->bind('$publicMediaDir', '%pw.public_media_dir%');
 
     $services->load('Pushword\AdminBlockEditor\\', __DIR__.'/../*')

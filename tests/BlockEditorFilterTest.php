@@ -4,50 +4,41 @@ declare(strict_types=1);
 
 namespace Pushword\AdminBlockEditor\Tests;
 
-use DateTime;
 use Pushword\AdminBlockEditor\BlockEditorFilter;
-use Pushword\Core\Component\App\AppPool;
 use Pushword\Core\Entity\Page;
-
-use function Safe\file_get_contents;
-
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class BlockEditorFilterTest extends KernelTestCase
 {
-    public function testIt(): void
+    public function testIt()
     {
         $filter = $this->getEditorFilterTest();
-        $mainContentFiltered = $filter->apply($filter->page->getMainContent());
+        $mainContentFiltered = $filter->apply($filter->getEntity()->getMainContent());
 
-        self::assertStringContainsString('</div>', $mainContentFiltered);
-        self::assertStringContainsString('&test&', $mainContentFiltered);
+        $this->assertStringContainsString('</div>', $mainContentFiltered);
+        $this->assertStringContainsString('&test&', $mainContentFiltered);
     }
 
-    private function getEditorFilterTest(): BlockEditorFilter
+    private function getEditorFilterTest()
     {
+        self::bootKernel();
         $filter = new BlockEditorFilter();
-        /** @var AppPool */
-        $apps = static::getContainer()->get(AppPool::class);
-        $filter->app = $apps->get();
-        $filter->twig = static::getContainer()->get('test.service_container')->get('twig'); // @phpstan-ignore-line
-        $filter->page = $this->getPage();
+        $filter->setApp(self::$kernel->getContainer()->get(\Pushword\Core\Component\App\AppPool::class)->get());
+        $filter->setTwig(static::getContainer()->get('test.service_container')->get('twig'));
+        $filter->setEntity($this->getPage());
 
         return $filter;
     }
 
-    private function getPage(?string $content = null): Page
+    private function getPage($content = null)
     {
-        $page = (new Page())
+        return (new Page())
                 ->setH1('Demo Page - Kitchen Sink  Markdown + Twig')
                 ->setSlug('kitchen-sink')
                 ->setLocale('en')
-                ->setCreatedAt(new DateTime('1 day ago'))
-                ->setUpdatedAt(new DateTime('1 day ago'))
+                ->setCustomProperty('toc', true)
+                ->setCreatedAt(new \DateTime('1 day ago'))
+                ->setUpdatedAt(new \DateTime('1 day ago'))
                 ->setMainContent(file_get_contents(__DIR__.'/content/content.json'));
-
-        $page->setCustomProperty('toc', true);
-
-        return $page;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Pushword\AdminBlockEditor;
 
-use Exception;
 use JoliTypo\Fixer;
 
 use function Safe\json_encode;
@@ -17,28 +16,27 @@ final readonly class EditorJsPurifier
     {
         try {
             $data = EditorJsHelper::decode($raw);
-        } catch (Exception) {
+        } catch (\Exception) {
             return $raw;
         }
 
         foreach ($data->blocks as $k => $block) {
             if (\in_array($block->type, ['header', 'paragraph'], true)) {
                 if (! property_exists($data->blocks[$k], 'data') || ! \is_object($data->blocks[$k]->data)
-                    || ! \is_string($text = $data->blocks[$k]->data->text ?? 0)) {
+                    || ! \is_string($data->blocks[$k]->data->text ?? 0)) {
                     return $raw;
                 }
 
-                $data->blocks[$k]->data->text = self::htmlPurifier($text);
+                $data->blocks[$k]->data->text = self::htmlPurifier($data->blocks[$k]->data->text);
             }
 
             if ('list' === $block->type) {
                 if (! property_exists($data->blocks[$k], 'data') || ! \is_object($data->blocks[$k]->data)
-                    || ! \is_array($text = $data->blocks[$k]->data->items ?? 0)) {
+                    || ! \is_array($data->blocks[$k]->data->items ?? 0)) {
                     return $raw;
                 }
 
-                /** @psalm-suppress MixedArgumentTypeCoercion */
-                $data->blocks[$k]->data->items = self::htmlPurifierForList($text);
+                $data->blocks[$k]->data->items = self::htmlPurifierForList($data->blocks[$k]->data->items);
             }
         }
 
@@ -62,7 +60,7 @@ final readonly class EditorJsPurifier
     {
         $text = str_replace("\u{a0}", ' ', $text);
         $text = str_replace('&shy;', '', $text);
-        $text = preg_replace('# </([a-z]+)>#i', '</$1> ', $text) ?? throw new Exception($text);
+        $text = preg_replace('# </([a-z]+)>#i', '</$1> ', $text) ?? throw new \Exception($text);
 
         if (! str_contains($text, '{{')) { // for now, we skip when there is a twig inside the text because it's convert the quote
             $text = $this->getFixer()->fix($text);
@@ -80,8 +78,7 @@ final readonly class EditorJsPurifier
     {
         foreach ($items as $k => $item) {
             $items[$k]->content = self::htmlPurifier($item->content); // @phpstan-ignore-line
-            /** @psalm-suppress MixedArgumentTypeCoercion @phpstan-ignore-next-line*/
-            $items[$k]->items = [] !== $item->items ? self::htmlPurifierForList($item->items) : [];
+            $items[$k]->items = [] !== $item->items ? self::htmlPurifierForList($item->items) : []; // @phpstan-ignore-line
         }
 
         return $items;

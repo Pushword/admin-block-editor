@@ -7,7 +7,8 @@
   "license": "MIT",
   "require": {
     "jolicode/jolitypo": "^1.4",
-    "pushword/core": "^0"
+    "pushword/core": "^0",
+    "pushword/svg": "^0"
   },
   "extra": {
     "branch-alias": {

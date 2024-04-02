@@ -1,17 +1,15 @@
 {% block editorjs_widget %}
 
-<div style="padding: 10px 10px 0px;">
-    {% set editor_id = 'editorjs_' ~ id %}
+    <div style="padding: 10px 10px 0px;">
+  {% set editor_id = 'editorjs_' ~ id %}
     <input type="hidden" data-editorjs="{{ editor_id }}" {{ block('widget_attributes') }} value="{{ value }}">
     <div id="{{ editor_id }}" data-input-id="{{ id }}" class="editorjs-holder"></div>
-</div>
+  </div>
 
-<div style="padding-top:10px; text-align:center">
+  <div style="padding-top:10px; text-align:center">
     <a href="#" onclick="toggleEditor()" style="color:#4b5563">{{ svg('unlock', {'style': 'width:12px', fill: 'currentColor'}) }}</a>
 </div>
-<script>
-window.pagesUriList = {{ page_uri_list()|json_encode|raw }};
-
+    <script>
 function toggleEditor() {
     editorJsHelper.toggleEditorJs('{{ editor_id }}');
     var textarea = document.querySelector('textarea[data-editorjs]');

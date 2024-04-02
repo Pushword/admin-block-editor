@@ -4,11 +4,11 @@ namespace Pushword\AdminBlockEditor\FormField;
 
 use Pushword\Admin\FormField\AbstractField;
 use Pushword\AdminBlockEditor\Form\EditorjsType;
-use Pushword\Core\Entity\Page;
+use Pushword\Core\Entity\PageInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * @extends AbstractField<Page>
+ * @extends AbstractField<PageInterface>
  */
 class PageMainContentFormField extends AbstractField
 {

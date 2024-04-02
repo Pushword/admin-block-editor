@@ -9,7 +9,6 @@ use Pushword\Core\Router\PushwordRouteGenerator;
 use function Safe\json_decode;
 use function Safe\json_encode;
 
-use stdClass;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -44,12 +43,10 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * @param array<mixed>|stdClass $blockData
-     * @param array<mixed>          $attributes
-     *
-     * @psalm-suppress all
+     * @param array<mixed>|\stdClass $blockData
+     * @param array<mixed>           $attributes
      */
-    public function blockWrapperAttr(array|stdClass $blockData, array $attributes = []): string
+    public function blockWrapperAttr(array|\stdClass $blockData, array $attributes = []): string
     {
         $blockData = (array) json_decode(json_encode($blockData), true);
 
@@ -79,9 +76,9 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * @param array<mixed>|stdClass $blockData
+     * @param array<mixed>|\stdClass $blockData
      */
-    public function needBlockWrapper(array|stdClass $blockData): bool
+    public function needBlockWrapper(array|\stdClass $blockData): bool
     {
         return '' !== trim($this->blockWrapperAttr($blockData));
     }
