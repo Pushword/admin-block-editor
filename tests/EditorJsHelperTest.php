@@ -9,11 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EditorJsHelperTest extends KernelTestCase
 {
-    public function testIt()
+    public function testIt(): void
     {
         $text = " <a href=\"#test\">test\u{a0}</A>test : test";
         $expected = '<a href="#test">test</a> test&nbsp;: test';
 
-        $this->assertSame($expected, (new EditorJsPurifier('fr'))->htmlPurifier($text));
+        self::assertSame($expected, (new EditorJsPurifier('fr'))->htmlPurifier($text));
     }
 }

@@ -10,7 +10,7 @@ use Pushword\AdminBlockEditor\EditorJsPurifier;
 use Pushword\AdminBlockEditor\FormField\PageH1FormField;
 use Pushword\AdminBlockEditor\FormField\PageImageFormField;
 use Pushword\AdminBlockEditor\FormField\PageMainContentFormField;
-use Pushword\Core\Entity\PageInterface;
+use Pushword\Core\Entity\Page;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 
 /**
@@ -33,10 +33,10 @@ class AdminFormEventSuscriber extends AbstractEventSuscriber
     /**
      * @param PersistenceEvent<T>|FormEvent<T> $event
      */
-    private function getPage(PersistenceEvent|FormEvent $event): ?PageInterface
+    private function getPage(PersistenceEvent|FormEvent $event): ?Page
     {
         $subject = $event->getAdmin()->getSubject();
-        if ($subject instanceof PageInterface) { //  $event->getAdmin() instanceof PageAdmin || $event->getAdmin() instanceof PageCheatSheetAdmin
+        if ($subject instanceof Page) { //  $event->getAdmin() instanceof PageAdmin || $event->getAdmin() instanceof PageCheatSheetAdmin
             return $subject;
         }
 
@@ -81,7 +81,7 @@ class AdminFormEventSuscriber extends AbstractEventSuscriber
             return;
         }
 
-        /** @var FormEvent<PageInterface> */
+        /** @var FormEvent<Page> */
         $formEventPage = $formEvent;
 
         if (! $this->mayUseEditorBlock($page, $formEventPage)) {

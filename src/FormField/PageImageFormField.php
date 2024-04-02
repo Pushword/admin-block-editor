@@ -4,12 +4,13 @@ namespace Pushword\AdminBlockEditor\FormField;
 
 use Pushword\Admin\FormField\AbstractField;
 use Pushword\Admin\MediaAdmin;
-use Pushword\Core\Entity\PageInterface;
+use Pushword\Core\Entity\Media;
+use Pushword\Core\Entity\Page;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 
 /**
- * @extends AbstractField<PageInterface>
+ * @extends AbstractField<Page>
  */
 class PageImageFormField extends AbstractField
 {
@@ -17,7 +18,7 @@ class PageImageFormField extends AbstractField
     {
         $form->add('inline_image', ModelListType::class, [
             'required' => false,
-            'class' => $this->formFieldManager->mediaClass,
+            'class' => Media::class,
             // 'label' => 'admin.page.mainImage.label',
             'btn_edit' => false,
             'mapped' => false,
@@ -28,7 +29,7 @@ class PageImageFormField extends AbstractField
 
         $form->add('inline_attaches', ModelListType::class, [
             'required' => false,
-            'class' => $this->formFieldManager->mediaClass,
+            'class' => Media::class,
             // 'label' => 'admin.page.mainImage.label',
             'btn_edit' => false,
             'mapped' => false,

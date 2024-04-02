@@ -5,12 +5,13 @@ namespace Pushword\AdminBlockEditor\EventSuscriber;
 use Pushword\AdminBlockEditor\BlockEditorFilter;
 use Pushword\Core\Component\App\AppConfig;
 use Pushword\Core\Component\EntityFilter\FilterEvent;
-use Pushword\Core\Entity\PageInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Twig\Environment as Twig;
 
 /**
  * @template T of object
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class EnityFilterSuscriber extends AbstractEventSuscriber
 {
@@ -27,17 +28,11 @@ class EnityFilterSuscriber extends AbstractEventSuscriber
         ];
     }
 
-    /**
-     * @param FilterEvent<T> $filterEvent
-     */
     public function convertJsBlockToHtml(FilterEvent $filterEvent): void
     {
-        $page = $filterEvent->getManager()->getEntity();
-        if (! $page instanceof PageInterface) {
-            return;
-        }
+        $page = $filterEvent->getManager()->page;
 
-        if ('MainContent' != $filterEvent->getProperty()) {
+        if ('MainContent' !== $filterEvent->getProperty()) {
             return;
         }
 
@@ -51,13 +46,12 @@ class EnityFilterSuscriber extends AbstractEventSuscriber
 
         $this->removeMarkdownFilter($appConfig);
 
-        $blockEditorFilter = (new BlockEditorFilter())
-            ->setApp($appConfig)
-            ->setEntity($page)
-            ->setTwig($this->twig)
-        ;
+        $blockEditorFilter = new BlockEditorFilter();
+        $blockEditorFilter->app = $appConfig;
+        $blockEditorFilter->page = $page;
+        $blockEditorFilter->twig = $this->twig;
 
-        $page->setMainContent($blockEditorFilter->apply($page->getMainContent())); // @phpstan-ignore-line
+        $page->setMainContent($blockEditorFilter->apply($page->getMainContent()));
     }
 
     private function removeMarkdownFilter(AppConfig $appConfig): void
