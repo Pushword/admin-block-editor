@@ -2,6 +2,8 @@
 
 namespace Pushword\AdminBlockEditor\Block;
 
+use Exception;
+
 class DefaultBlock extends AbstractBlock
 {
     /**
@@ -27,7 +29,7 @@ class DefaultBlock extends AbstractBlock
     public function __construct(string $name)
     {
         if (! \in_array($name, self::AVAILABLE_BLOCKS, true)) {
-            throw new \Exception('Not a default block `'.$name.'`');
+            throw new Exception('Not a default block `'.$name.'`');
         }
 
         $this->name = $name;

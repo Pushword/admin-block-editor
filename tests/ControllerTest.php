@@ -53,7 +53,7 @@ class ControllerTest extends AbstractAdminTestClass
             [],
             [],
             [],
-            json_encode(['kw' => 'fun', 'display' => 'list', 'order' => 'priority ↓,publishedAt ↓', 'max' => '', 'maxPages' => ''])
+            json_encode(['kw' => 'content:fun', 'display' => 'list', 'order' => 'priority ↓', 'max' => '', 'maxPages' => ''])
         );
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

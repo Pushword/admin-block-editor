@@ -2,6 +2,8 @@
 
 namespace Pushword\AdminBlockEditor;
 
+use Exception;
+use LogicException;
 use Pushword\AdminBlockEditor\Block\AbstractBlock;
 use Pushword\AdminBlockEditor\Block\BlockInterface;
 use Pushword\AdminBlockEditor\Block\DefaultBlock;
@@ -35,7 +37,7 @@ final class BlockEditorFilter extends AbstractFilter
 
         try {
             $json = EditorJsHelper::decode($propertyValue);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             if (isset($_GET['showException'])) {
                 throw $exception;
             }
@@ -70,7 +72,7 @@ final class BlockEditorFilter extends AbstractFilter
         $blocks = $this->getAppBlocks();
 
         if (! isset($blocks[$type])) {
-            throw new \Exception('Block `'.$type.'` not configured to be used.');
+            throw new Exception('Block `'.$type.'` not configured to be used.');
         }
 
         return $blocks[$type];
@@ -92,7 +94,7 @@ final class BlockEditorFilter extends AbstractFilter
 
         $blocks = $this->app->get('admin_block_editor_blocks');
         if (! \is_array($blocks)) {
-            throw new \LogicException();
+            throw new LogicException();
         }
 
         /** @var string[] $blocks */
@@ -119,7 +121,7 @@ final class BlockEditorFilter extends AbstractFilter
                 continue;
             }
 
-            throw new \Exception('Block Manager for `'.$block.'` not found.');
+            throw new Exception('Block Manager for `'.$block.'` not found.');
         }
 
         return $this->appBlocks; // @phpstan-ignore-line

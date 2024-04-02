@@ -2,6 +2,8 @@
 
 namespace Pushword\AdminBlockEditor\Block;
 
+use Exception;
+use LogicException;
 use Pushword\Core\Component\App\AppConfig;
 use Pushword\Core\Entity\Page;
 use Twig\Environment as Twig;
@@ -25,13 +27,13 @@ abstract class AbstractBlock implements BlockInterface
     public function __construct(string $name)
     {
         if ($name !== $this->name) {
-            throw new \Exception('Name not concorde');
+            throw new Exception('Name not concorde');
         }
     }
 
     public function getName(): string
     {
-        return $this->name ?? throw new \LogicException();
+        return $this->name ?? throw new LogicException();
     }
 
     public function render(object $block, int $pos = 0): string
