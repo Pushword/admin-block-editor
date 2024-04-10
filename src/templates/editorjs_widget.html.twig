@@ -203,7 +203,7 @@ var editorjsConfig = {
 <script>
 (function disableBackWithKeyboard(global) {
     global.onload = function () {
-		document.body.onkeydown = function (e) {
+        document.body.onkeydown = function (e) {
             var elm = e.target.nodeName.toLowerCase();
             if (e.which === 8 && (elm !== 'input' && elm  !== 'textarea' && !e.target.hasAttribute('contenteditable'))) {
                 e.preventDefault();
