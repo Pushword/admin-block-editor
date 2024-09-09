@@ -28,6 +28,7 @@
   padding-top: 2rem;
 }
 
+a[rel='obfuscate']:not(.link-btn),
 a[rel='encrypt']:not(.link-btn) {
   color: #059669;
 }
@@ -37,6 +38,10 @@ a[rel='encrypt']:not(.link-btn) {
   .ce-toolbar__content {
     margin-left: 60px;
   }
+}
+
+.ce-popover__items {
+  overflow-x: hidden;
 }
 
 /** editorjs quote ui inspired by https://github.com/editor-js/quote/pull/23 */
