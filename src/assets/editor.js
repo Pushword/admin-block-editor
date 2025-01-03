@@ -1,5 +1,6 @@
 import EditorJS from '@editorjs/editorjs'
-import Header from '@editorjs/header'
+import Header from '@pushword/editorjs-tools/dist/Header.js'
+import Small from '@pushword/editorjs-tools/dist/Small.js'
 import List from '@editorjs/nested-list'
 //import Raw from '@editorjs/raw';
 import Raw from '@pushword/editorjs-tools/dist/Raw.js'
@@ -10,7 +11,7 @@ import Code from '@editorjs/code'
 import InlineCode from '@editorjs/inline-code'
 //import { StyleInlineTool } from "editorjs-style";
 import Hyperlink from '@pushword/editorjs-tools/dist/Hyperlink.js'
-import Paragraph from 'editorjs-paragraph-with-alignment' // '@pushword/editorjs-tools/dist/Paragraph.js'
+import Paragraph from '@editorjs/paragraph' // '@pushword/editorjs-tools/dist/Paragraph.js'
 import Table from '@editorjs/table'
 import DragDrop from 'editorjs-drag-drop'
 import Undo from 'editorjs-undo'
@@ -60,6 +61,7 @@ export class editorJs {
             Gallery: Gallery,
             Strikethrough: Strikethrough,
             CodeBlock: CodeBlock,
+            Small: Small,
             //StyleInlineTool: StyleInlineTool,
           }
 
