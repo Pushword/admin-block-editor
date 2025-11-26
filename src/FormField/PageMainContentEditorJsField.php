@@ -2,21 +2,21 @@
 
 namespace Pushword\AdminBlockEditor\FormField;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use Pushword\Admin\FormField\AbstractField;
 use Pushword\AdminBlockEditor\Form\EditorjsType;
 use Pushword\Core\Entity\Page;
-use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * @extends AbstractField<Page>
  */
-class PageMainContentFormField extends AbstractField
+class PageMainContentEditorJsField extends AbstractField
 {
-    public function formField(FormMapper $form): void
+    public function getEasyAdminField(): ?FieldInterface
     {
         $page = $this->admin->getSubject();
 
-        $form->add('mainContent', EditorjsType::class, [
+        return $this->buildEasyAdminField('mainContent', EditorjsType::class, [
             'required' => false,
             'label' => ' ',
             'help_html' => true,
