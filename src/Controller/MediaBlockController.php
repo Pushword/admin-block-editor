@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -67,6 +68,20 @@ final class MediaBlockController extends AbstractController
             'success' => 1,
             'file' => $this->exportMedia($media, $url),
         ]));
+    }
+
+    #[Route('/admin/media/resolve/{fileName}', name: 'admin_media_resolve', requirements: ['fileName' => '.+'], methods: ['GET'])]
+    public function resolve(string $fileName): JsonResponse
+    {
+        $fileName = urldecode($fileName);
+
+        $media = $this->em->getRepository(Media::class)->findOneByFileNameOrHistory($fileName);
+
+        if (null === $media) {
+            throw $this->createNotFoundException();
+        }
+
+        return new JsonResponse(['fileName' => $media->getFileName()]);
     }
 
     /**

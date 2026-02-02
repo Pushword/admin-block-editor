@@ -10,7 +10,12 @@ export class MediaUtils {
   static extractMediaName(url?: string): string {
     if (!url) return ''
     const urlParts = url.split('/')
-    return urlParts[urlParts.length - 1] || ''
+    const name = urlParts[urlParts.length - 1] || ''
+    try {
+      return decodeURIComponent(name)
+    } catch {
+      return name
+    }
   }
 
   /**
@@ -61,11 +66,22 @@ export class MediaUtils {
   }
 
   /**
-   * Construit l'URL complète depuis un objet de données
-   * @param dataItem - Objet de données qui peut contenir media, fileName, url, ou être une string
-   * @param basePath - Chemin de base pour les médias
-   * @returns URL complète
+   * Resolves a media name via the server-side fileNameHistory fallback.
+   * Returns the current fileName if found, or null.
    */
+  static async resolveMediaName(mediaName: string): Promise<string | null> {
+    try {
+      const response = await fetch(
+        `/admin/media/resolve/${encodeURIComponent(mediaName)}`,
+      )
+      if (!response.ok) return null
+      const data = await response.json()
+      return data.fileName || null
+    } catch {
+      return null
+    }
+  }
+
   static buildFullUrlFromData(dataItem: any, basePath: string = '/media/md/'): string {
     if (typeof dataItem === 'string') {
       return this.buildFullUrl(dataItem, basePath)
