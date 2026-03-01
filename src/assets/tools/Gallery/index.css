@@ -38,12 +38,7 @@
   width: 50%;
 }
 
-.cdx-input-gallery {
-  margin-top: 10px !important;
-  width: auto;
-  flex-wrap: wrap;
-}
-
+.cdx-input-gallery,
 .cdxcarousel-block {
   margin-top: 10px !important;
   width: 50%;
