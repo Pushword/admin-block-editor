@@ -16,8 +16,10 @@ const RemoveImageIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="14" heig
 const ToggleIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>`
 // Eye-slash icon for obfuscate
 const ObfuscateIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+const InfoIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>`
 
 export interface CardListItem {
+  id?: string
   page?: string
   title?: string
   image?: string
@@ -26,6 +28,8 @@ export interface CardListItem {
   description?: string
   buttonLink?: string
   buttonLinkLabel?: string
+  showInfoButton?: boolean
+  infoLinkLabel?: string
 }
 
 export interface CardListData extends BlockToolData {
@@ -34,6 +38,7 @@ export interface CardListData extends BlockToolData {
 
 interface CardListItemNodes {
   wrapper: HTMLElement
+  idInput: HTMLInputElement
   pageInput: HTMLInputElement
   titleInput: HTMLElement
   imageContainer: HTMLElement
@@ -43,6 +48,8 @@ interface CardListItemNodes {
   descriptionInput: HTMLElement
   buttonLinkInput: HTMLInputElement
   buttonLinkLabelInput: HTMLInputElement
+  showInfoButtonInput: HTMLInputElement
+  infoLinkLabelInput: HTMLInputElement
 }
 
 const MoveUpIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`
@@ -121,7 +128,9 @@ export default class CardList extends BaseTool {
       item.obfuscateLink ||
       item.description ||
       item.buttonLink ||
-      item.buttonLinkLabel
+      item.buttonLinkLabel ||
+      item.showInfoButton ||
+      item.infoLinkLabel
     )
   }
 
@@ -290,17 +299,45 @@ export default class CardList extends BaseTool {
       'input',
     ) as HTMLInputElement
 
+    // Info button row (checkbox + custom label)
+    const infoRow = make.element('div', 'cardlist-info-row')
+    const showInfoButtonField = this.createIconCheckboxField(
+      InfoIcon,
+      'showInfoButton',
+      item.showInfoButton || false,
+      'Show info button',
+    )
+    const showInfoButtonInput = showInfoButtonField.querySelector('input') as HTMLInputElement
+
+    const infoLinkLabelField = this.createField(
+      'Info Label',
+      'infoLinkLabel',
+      item.infoLinkLabel || '',
+    )
+    infoLinkLabelField.classList.add('cardlist-info-field')
+    const infoLinkLabelInput = infoLinkLabelField.querySelector('input') as HTMLInputElement
+    infoLinkLabelInput.placeholder = 'En savoir plus'
+
+    infoRow.appendChild(showInfoButtonField)
+    infoRow.appendChild(infoLinkLabelField)
+
     // Button fields in a row (label first, then link)
     const buttonRow = make.element('div', 'cardlist-button-row')
     buttonRow.appendChild(buttonLinkLabelField)
     buttonRow.appendChild(buttonLinkField)
+
+    // ID field
+    const idField = this.createField('ID (anchor)', 'id', item.id || '')
+    const idInput = idField.querySelector('input') as HTMLInputElement
 
     // Add custom fields
     customFields.appendChild(titleField)
     customFields.appendChild(imageField)
     customFields.appendChild(linkRow)
     customFields.appendChild(descriptionField)
+    customFields.appendChild(infoRow)
     customFields.appendChild(buttonRow)
+    customFields.appendChild(idField)
 
     // Toggle button click handler
     toggleBtn.addEventListener('click', () => {
@@ -314,6 +351,7 @@ export default class CardList extends BaseTool {
 
     return {
       wrapper,
+      idInput,
       pageInput,
       titleInput,
       imageContainer,
@@ -323,6 +361,8 @@ export default class CardList extends BaseTool {
       descriptionInput,
       buttonLinkInput,
       buttonLinkLabelInput,
+      showInfoButtonInput,
+      infoLinkLabelInput,
     }
   }
 
@@ -586,6 +626,7 @@ export default class CardList extends BaseTool {
   private updateDataFromNodes(): void {
     this.data.items = this.itemNodes.map((nodes): CardListItem => {
       const item: CardListItem = {}
+      if (nodes.idInput.value) item.id = nodes.idInput.value
       if (nodes.pageInput.value) item.page = nodes.pageInput.value
       // Get HTML content from title (contenteditable)
       const titleHtml = nodes.titleInput.innerHTML?.trim()
@@ -604,6 +645,9 @@ export default class CardList extends BaseTool {
       if (nodes.buttonLinkInput.value) item.buttonLink = nodes.buttonLinkInput.value
       if (nodes.buttonLinkLabelInput.value)
         item.buttonLinkLabel = nodes.buttonLinkLabelInput.value
+      if (nodes.showInfoButtonInput.checked) item.showInfoButton = true
+      if (nodes.infoLinkLabelInput.value)
+        item.infoLinkLabel = nodes.infoLinkLabelInput.value
       return item
     })
   }
