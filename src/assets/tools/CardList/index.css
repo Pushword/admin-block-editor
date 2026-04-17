@@ -365,6 +365,17 @@
   display: none;
 }
 
+/* Info button row */
+.cardlist-info-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.cardlist-info-field {
+  flex: 1;
+}
+
 /* Button fields in 2 columns */
 .cardlist-button-row {
   display: grid;
@@ -398,6 +409,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 8px !important;
   width: 32px;
   height: 32px;
   border: 1px solid #ddd;
