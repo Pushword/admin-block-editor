@@ -451,23 +451,11 @@ const _MarkdownUtils = class _MarkdownUtils {
     }
     return result;
   }
-  static formatAttributes(tunes) {
-    return _MarkdownUtils.getAttributes(tunes).replace(/\s+/g, " ").trim();
-  }
   static addAttributes(markdown, tunes) {
-    const attrs = _MarkdownUtils.formatAttributes(tunes);
-    if (attrs !== "") {
-      return `{${attrs}}
-${markdown}`;
-    }
-    return markdown;
-  }
-  static addInlineAttributes(markdown, tunes) {
-    const attrs = _MarkdownUtils.formatAttributes(tunes);
-    if (attrs !== "") {
-      const lines = markdown.split("\n");
-      lines[0] = `${lines[0].trimEnd()} {${attrs}}`;
-      return lines.join("\n");
+    let result = _MarkdownUtils.getAttributes(tunes);
+    result = result.replace(/\s+/g, " ").trim();
+    if (result !== "") {
+      return "{" + result + "}\n" + markdown;
     }
     return markdown;
   }
@@ -479,7 +467,7 @@ ${markdown}`;
   }
   static parseAttributes(attributeLine) {
     const tunes = {};
-    const anchorMatch = attributeLine.match(/#([a-zA-Z0-9_-]+)/) ?? attributeLine.match(/id=([a-zA-Z0-9_-]+)/);
+    const anchorMatch = attributeLine.match(/#([a-zA-Z0-9_-]+)/);
     if (anchorMatch) {
       tunes.anchor = anchorMatch[1];
     }
@@ -940,20 +928,12 @@ class Header {
     let markdown = `${hashes} ${data.text}`;
     markdown = MarkdownUtils.convertInlineHtmlToMarkdown(markdown);
     const formattedMarkdown = await MarkdownUtils.formatMarkdownWithPrettier(markdown);
-    return MarkdownUtils.addInlineAttributes(formattedMarkdown, tunes);
+    return MarkdownUtils.addAttributes(formattedMarkdown, tunes);
   }
   static importFromMarkdown(editor, markdown) {
-    let tunes = {};
-    let markdownWithoutTunes = markdown.trim();
-    const inlineAttrMatch = markdownWithoutTunes.match(/^(#{2,6}\s.+?)\s+\{([^}]+)\}\s*$/);
-    if (inlineAttrMatch) {
-      tunes = MarkdownUtils.parseAttributes(inlineAttrMatch[2]);
-      markdownWithoutTunes = inlineAttrMatch[1];
-    } else {
-      const result = MarkdownUtils.parseTunesFromMarkdown(markdown);
-      tunes = result.tunes;
-      markdownWithoutTunes = result.markdown;
-    }
+    const result = MarkdownUtils.parseTunesFromMarkdown(markdown);
+    const tunes = result.tunes;
+    let markdownWithoutTunes = result.markdown;
     markdownWithoutTunes = MarkdownUtils.convertInlineMarkdownToHtml(markdownWithoutTunes);
     const levelMatch = markdownWithoutTunes.trim().match(/^#{2,6}\s/);
     if (!levelMatch) {
@@ -3761,13 +3741,11 @@ const codeNewline = 10;
 const codeTab = 9;
 const codeReturn = 13;
 const codeNonBreakingSpace = 160;
-const codeMongolianVowelSeparator = 6158;
 const codeEnQuad = 8192;
-const codeZeroWidthSpace = 8203;
+const codeHairSpace = 8202;
 const codeNarrowNoBreakSpace = 8239;
 const codeMediumMathematicalSpace = 8287;
 const codeIdeographicSpace = 12288;
-const codeZeroWidthNoBreakSpace = 65279;
 function isHex(char) {
   return /^[0-9A-Fa-f]$/.test(char);
 }
@@ -3808,7 +3786,7 @@ function isWhitespaceExceptNewline(text, index) {
 }
 function isSpecialWhitespace(text, index) {
   const code = text.charCodeAt(index);
-  return code === codeNonBreakingSpace || code === codeMongolianVowelSeparator || code >= codeEnQuad && code <= codeZeroWidthSpace || code === codeNarrowNoBreakSpace || code === codeMediumMathematicalSpace || code === codeIdeographicSpace || code === codeZeroWidthNoBreakSpace;
+  return code === codeNonBreakingSpace || code >= codeEnQuad && code <= codeHairSpace || code === codeNarrowNoBreakSpace || code === codeMediumMathematicalSpace || code === codeIdeographicSpace;
 }
 function isQuote(char) {
   return isDoubleQuoteLike(char) || isSingleQuoteLike(char);
@@ -6314,15 +6292,12 @@ function exportCardListToMarkdown(data, tunes) {
   }
   const items = data.items.map((item) => {
     const obj = {};
-    if (item.id) obj.id = item.id;
     if (item.page) obj.page = item.page;
     if (item.title) obj.title = item.title;
     if (item.image) obj.image = item.image;
     if (item.link) obj.link = item.link;
     if (item.obfuscateLink) obj.obfuscateLink = item.obfuscateLink;
     if (item.description) obj.description = item.description;
-    if (item.showInfoButton) obj.showInfoButton = item.showInfoButton;
-    if (item.infoLinkLabel) obj.infoLinkLabel = item.infoLinkLabel;
     if (item.buttonLink) obj.buttonLink = item.buttonLink;
     if (item.buttonLinkLabel) obj.buttonLinkLabel = item.buttonLinkLabel;
     return obj;

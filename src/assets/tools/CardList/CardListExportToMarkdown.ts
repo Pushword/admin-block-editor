@@ -15,15 +15,12 @@ export function exportCardListToMarkdown(
 
   const items = data.items.map((item) => {
     const obj: Record<string, string | boolean> = {}
-    if (item.id) obj.id = item.id
     if (item.page) obj.page = item.page
     if (item.title) obj.title = item.title
     if (item.image) obj.image = item.image
     if (item.link) obj.link = item.link
     if (item.obfuscateLink) obj.obfuscateLink = item.obfuscateLink
     if (item.description) obj.description = item.description
-    if (item.showInfoButton) obj.showInfoButton = item.showInfoButton
-    if (item.infoLinkLabel) obj.infoLinkLabel = item.infoLinkLabel
     if (item.buttonLink) obj.buttonLink = item.buttonLink
     if (item.buttonLinkLabel) obj.buttonLinkLabel = item.buttonLinkLabel
     return obj

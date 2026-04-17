@@ -300,23 +300,13 @@ export default class Header {
     let markdown = `${hashes} ${data.text}`
     markdown = MarkdownUtils.convertInlineHtmlToMarkdown(markdown)
     const formattedMarkdown = await MarkdownUtils.formatMarkdownWithPrettier(markdown)
-    return MarkdownUtils.addInlineAttributes(formattedMarkdown, tunes)
+    return MarkdownUtils.addAttributes(formattedMarkdown, tunes)
   }
 
   static importFromMarkdown(editor: API, markdown: string): void {
-    let tunes: BlockTuneData = {}
-    let markdownWithoutTunes = markdown.trim()
-
-    const inlineAttrMatch = markdownWithoutTunes.match(/^(#{2,6}\s.+?)\s+\{([^}]+)\}\s*$/)
-    if (inlineAttrMatch) {
-      tunes = MarkdownUtils.parseAttributes(inlineAttrMatch[2])
-      markdownWithoutTunes = inlineAttrMatch[1]
-    } else {
-      const result = MarkdownUtils.parseTunesFromMarkdown(markdown)
-      tunes = result.tunes
-      markdownWithoutTunes = result.markdown
-    }
-
+    const result = MarkdownUtils.parseTunesFromMarkdown(markdown)
+    const tunes: BlockTuneData = result.tunes
+    let markdownWithoutTunes = result.markdown
     markdownWithoutTunes = MarkdownUtils.convertInlineMarkdownToHtml(markdownWithoutTunes)
 
     const levelMatch = markdownWithoutTunes.trim().match(/^#{2,6}\s/)

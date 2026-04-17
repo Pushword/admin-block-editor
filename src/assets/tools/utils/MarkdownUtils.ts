@@ -63,25 +63,14 @@ export class MarkdownUtils {
     return result
   }
 
-  private static formatAttributes(tunes: BlockTuneDataPushword): string {
-    return MarkdownUtils.getAttributes(tunes).replace(/\s+/g, ' ').trim()
-  }
-
   static addAttributes(markdown: string, tunes: BlockTuneDataPushword): string {
-    const attrs = MarkdownUtils.formatAttributes(tunes)
-    if (attrs !== '') {
-      return `{${attrs}}\n${markdown}`
-    }
-    return markdown
-  }
+    let result = MarkdownUtils.getAttributes(tunes)
 
-  static addInlineAttributes(markdown: string, tunes: BlockTuneDataPushword): string {
-    const attrs = MarkdownUtils.formatAttributes(tunes)
-    if (attrs !== '') {
-      const lines = markdown.split('\n')
-      lines[0] = `${lines[0].trimEnd()} {${attrs}}`
-      return lines.join('\n')
+    result = result.replace(/\s+/g, ' ').trim()
+    if (result !== '') {
+      return '{' + result + '}\n' + markdown
     }
+
     return markdown
   }
 
@@ -101,7 +90,7 @@ export class MarkdownUtils {
   static parseAttributes(attributeLine: string): BlockTuneDataPushword {
     const tunes: BlockTuneData = {}
 
-    const anchorMatch = attributeLine.match(/#([a-zA-Z0-9_-]+)/) ?? attributeLine.match(/id=([a-zA-Z0-9_-]+)/)
+    const anchorMatch = attributeLine.match(/#([a-zA-Z0-9_-]+)/)
     if (anchorMatch) {
       tunes.anchor = anchorMatch[1]
     }
