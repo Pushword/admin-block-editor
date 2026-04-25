@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pushword\AdminBlockEditor\Tests;
 
 use PHPUnit\Framework\Attributes\Group;
@@ -16,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[Group('integration')]
-class ControllerTest extends AbstractAdminTestClass
+final class ControllerTest extends AbstractAdminTestClass
 {
     public function testBasics(): void
     {
