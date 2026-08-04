@@ -1,3 +1,7 @@
+:root {
+  --pw-outline-width: clamp(260px, 16vw, 400px);
+}
+
 /* Left rail: fixed to the viewport, over the EasyAdmin sidebar. z-index sits
    above Bootstrap's fixed chrome (1030) and below its offcanvas/modals (1040+).
    Widens with the viewport: the title field is capped to the editor's content
@@ -7,7 +11,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: clamp(260px, 16vw, 400px);
+  width: var(--pw-outline-width);
   z-index: 1035;
   display: flex;
   flex-direction: column;
@@ -23,6 +27,28 @@
 
 .pw-outline--off {
   display: none !important;
+}
+
+/* While the rail is open it takes real layout space: the EasyAdmin sidebar it
+   covers is dropped (the pw-inline-window precedent) and the whole admin shifts
+   right, so the form recenters instead of leaving a dead gutter on the right. */
+body.pw-outline-open {
+  padding-left: var(--pw-outline-width);
+}
+
+/* The EasyAdmin wrapper is a two-column grid (sidebar | content): with the
+   sidebar gone, one full-width track — or the content falls into the 230px
+   sidebar track. */
+body.pw-outline-open .sidebar-wrapper {
+  display: none;
+}
+
+body.pw-outline-open .wrapper {
+  grid-template-columns: 1fr;
+}
+
+body.pw-outline-open .content-wrapper {
+  margin-inline: auto;
 }
 
 .pw-outline button {
@@ -100,8 +126,14 @@
   width: 18px;
   height: 24px;
   justify-content: center;
+  border-radius: 4px;
   color: #94a3b8;
   flex: none;
+}
+
+.pw-outline-caret:not(.pw-outline-caret--none):hover {
+  background: #e2e8f0;
+  color: #334155;
 }
 
 .pw-outline-caret svg {
@@ -130,7 +162,7 @@
 }
 
 .pw-outline-text--type {
-  color: #94a3b8;
+  color: #64748b;
   font-style: italic;
 }
 
@@ -168,11 +200,6 @@
   background: #fee2e2;
 }
 
-.pw-outline-action--span svg {
-  width: 18px;
-  height: 18px;
-}
-
 .pw-outline-handle {
   padding: 3px;
   border-radius: 4px;
@@ -180,9 +207,29 @@
   cursor: grab;
 }
 
+.pw-outline-handle:active {
+  cursor: grabbing;
+}
+
 .pw-outline-handle:hover {
   background: #e2e8f0;
   color: #334155;
+}
+
+/* A hairline sets the section pair apart from the heading pair. */
+.pw-outline-action + .pw-outline-handle.pw-outline-action--span {
+  margin-left: 7px;
+  position: relative;
+}
+
+.pw-outline-action + .pw-outline-handle.pw-outline-action--span::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: #e2e8f0;
 }
 
 /* Drop indicator: a line above or below the hovered row. */
@@ -194,31 +241,40 @@
   box-shadow: inset 0 -2px 0 #3b82f6;
 }
 
-/* Opener, shown while the rail is collapsed: pinned top-left where the rail's
-   own collapse chevron sits when open (the Gutenberg list-view spot), so the
-   two buttons visually swap in place. */
-.pw-outline-opener {
-  position: fixed;
-  left: 10px;
-  top: 10px;
-  z-index: 1035;
-  width: 36px;
-  height: 36px;
+/* Hovering a whole-span action (move/delete section or group) surrounds
+   everything the action covers: the row and its nested children. */
+.pw-outline-item:has(> .pw-outline-row .pw-outline-action--span:hover) {
+  background: #eff6ff;
+  box-shadow: inset 0 0 0 1px #bfdbfe;
   border-radius: 6px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
+/* Opener, shown while the rail is collapsed: docked at the top right of the
+   EasyAdmin menu, clear of the logo, gone when the menu is. */
+.sidebar-wrapper {
+  position: relative;
+}
+
+.pw-outline-opener {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #334155;
+  color: #64748b;
   cursor: pointer;
 }
 
 .pw-outline-opener:hover {
-  background: #0f172a;
-  border-color: #0f172a;
-  color: #fff;
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
 .pw-outline-opener[hidden] {
@@ -230,12 +286,36 @@
   height: 18px;
 }
 
+/* No menu to dock into (inline windows): float where the rail's chevron sits. */
+.pw-outline-opener--floating {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: auto;
+  z-index: 1035;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
 /* On block-editor pages, the title column hugs the editor's content column
    (650px — its container already opens at the same x) instead of the full
    form width, so a widened rail never sits over anything. */
 .mainFields:has(.editorjs-holder) .h1Field {
   display: block;
   max-width: 650px;
+}
+
+.pw-outline-row,
+.pw-outline-caret,
+.pw-outline-toggle,
+.pw-outline-action,
+.pw-outline-handle,
+.pw-outline-opener,
+.pw-outline-item {
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out;
 }
 
 /* Transient highlight on the block a panel click navigated to. */
@@ -250,5 +330,21 @@
 
   100% {
     background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pw-outline-row,
+  .pw-outline-caret,
+  .pw-outline-toggle,
+  .pw-outline-action,
+  .pw-outline-handle,
+  .pw-outline-opener,
+  .pw-outline-item {
+    transition: none;
+  }
+
+  .pw-outline-flash {
+    animation: none;
   }
 }

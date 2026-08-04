@@ -88,7 +88,17 @@ export class OutlinePanel {
     this.opener = this.iconButton(IconListBulleted, this.labels.outline, 'pw-outline-opener')
     this.opener.addEventListener('click', () => this.setCollapsed(false, true))
 
-    document.body.append(this.root, this.opener)
+    document.body.appendChild(this.root)
+    // Docked top right of the admin menu, it never covers the logo and leaves
+    // with the menu; without one (inline windows), it floats where the rail's
+    // own chevron sits.
+    const sidebar = document.querySelector('.sidebar-wrapper')
+    if (sidebar === null) {
+      this.opener.classList.add('pw-outline-opener--floating')
+      document.body.appendChild(this.opener)
+    } else {
+      sidebar.appendChild(this.opener)
+    }
     this.setCollapsed(this.initialCollapsed(), false)
     this.followEditorVisibility()
     this.attachListDropTarget()
@@ -149,6 +159,15 @@ export class OutlinePanel {
     this.root.classList.toggle('pw-outline--collapsed', collapsed)
     this.opener.hidden = !collapsed
     if (persist) localStorage.setItem(COLLAPSE_STORAGE_KEY, collapsed ? '1' : '0')
+    this.syncLayout()
+  }
+
+  /** An open rail takes layout space (body shift) so the form recenters beside it. */
+  private syncLayout(): void {
+    const open =
+      !this.root.classList.contains('pw-outline--collapsed') &&
+      !this.root.classList.contains('pw-outline--off')
+    document.body.classList.toggle('pw-outline-open', open)
   }
 
   /**
@@ -183,6 +202,7 @@ export class OutlinePanel {
     const off = next === null
     this.root.classList.toggle('pw-outline--off', off)
     this.opener.classList.toggle('pw-outline--off', off)
+    this.syncLayout()
     if (next === null) return
 
     this.source = next
