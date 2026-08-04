@@ -97,6 +97,7 @@ var editorjsConfig = {
     name: "default",
     initialBlock: "paragraph",
     placeholder: "...",
+    i18n: { messages: {{ editorjs_i18n_messages()|json_encode|raw }} },
     tools: {
         header: {
             name: "header",
@@ -280,7 +281,7 @@ var editorjsConfig = {
 Object.assign(editorjsConfig.tools, {{ editorjs_extra_tools(attr.page_host|default(''))|json_encode|raw }});
 {% endblock %}
 
-window.pageMainContent = "{{ value|default("{}")|raw|e('js') }}"
+window.pageMainContent = "{{ value|default('{}')|raw|e('js') }}"
     </script>
 
 <script>
