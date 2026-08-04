@@ -19,6 +19,7 @@ final readonly class EditorJsMessages
         'Alternative text' => 'editorAlternativeText',
         'An error occurred' => 'editorErrorOccurred',
         'Caption' => 'editorCaption',
+        'Remove the media' => 'editorRemoveMedia',
         'Select' => 'editorSelect',
         'Upload' => 'editorUpload',
     ];
@@ -88,6 +89,7 @@ final readonly class EditorJsMessages
                 'Delimiter' => 'editorDelimiter',
                 'Embed' => 'editorEmbed',
                 'Gallery' => 'editorGallery',
+                'Group' => 'editorGroup',
                 'Heading' => 'editorHeading',
                 'Image' => 'editorImage',
                 'Italic' => 'editorItalic',
@@ -109,12 +111,19 @@ final readonly class EditorJsMessages
                     ...self::MEDIA,
                     'Ce média est déjà présent dans la galerie.' => 'editorMediaAlreadyInGallery',
                 ]),
+                'groupEnd' => $this->translate(['End of group' => 'editorGroupEnd']),
+                'groupStart' => $this->translate([
+                    'Anchor' => 'editorAnchor',
+                    'Class' => 'editorClass',
+                    'Group' => 'editorGroup',
+                ]),
                 'header' => $this->translate(['Heading' => 'editorHeading']),
                 'image' => $this->translate(self::MEDIA),
                 'link' => $this->translate([
                     'Nouvel onglet' => 'editorNewTab',
                     'Obfusquer' => 'editorObfuscate',
                     'Style' => 'editorStyle',
+                    'rel' => 'editorRel',
                 ]),
                 'pages_list' => $this->translate(['No parameters' => 'editorNoParameters']),
                 'snippet' => $this->translate([
