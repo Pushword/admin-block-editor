@@ -15,7 +15,7 @@ export default defineConfig({
     },
     outDir: './src/Command/convert-json-to-markdown-built',
     emptyOutDir: true,
-    rollupOptions: {
+    rolldownOptions: {
       external: [],
       output: {
         banner: '#!/usr/bin/env node',

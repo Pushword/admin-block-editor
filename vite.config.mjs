@@ -23,7 +23,7 @@ function copyPrettierPlugin() {
 export default defineConfig({
   build: {
     sourcemap: false,
-    rollupOptions: {
+    rolldownOptions: {
       input: './src/assets/admin-block-editor.ts',
       external: ['prettier/standalone', 'prettier/plugins/markdown'],
       output: {
