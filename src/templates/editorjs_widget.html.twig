@@ -228,6 +228,7 @@ var editorjsConfig = {
         codeBlock: {
             name: "codeBlock",
             className: "CodeBlock",
+            config: { mermaidUrl: {{ versionedAsset('/bundles/pushwordcore/mermaid/mermaid.js', true)|json_encode|raw }} },
             tunes: ['anchor'],
         },
         paragraph: {
