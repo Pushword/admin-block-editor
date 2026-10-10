@@ -42,6 +42,14 @@ final class ControllerTest extends AbstractAdminTestClass
         self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode(), (string) $client->getResponse()->getContent());
         // does'nt throw error = good start, can do better ?
 
+        // The mode switches are labelled buttons, which EditorModeManager finds by
+        // their data attribute to hide the other mode's switch.
+        self::assertCount(1, $crawler->filter('button[data-pw-editor-mode="json"][aria-label]'));
+        self::assertCount(1, $crawler->filter('button[data-pw-editor-mode="markdown"][aria-label]'));
+        // Their labels and the editor placeholders are translated in the template:
+        // a key missing from the catalogue would render as itself.
+        self::assertDoesNotMatchRegularExpression('/(?:aria-label=|[pP]laceholder: )"editor[A-Z]/', (string) $client->getResponse()->getContent());
+
         // The editor widget ships its own hidden media-picker selects, which the
         // image/gallery/attaches tools look up globally. Exactly one per name:
         // PageInlineMediaField is gone, so the widget is the only source.

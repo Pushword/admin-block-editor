@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { MarkdownUtils } from './MarkdownUtils'
 
 describe('MarkdownUtils.wrapInQuotes', () => {
@@ -269,6 +269,21 @@ describe('MarkdownUtils.extractSnippetCall', () => {
     ).toEqual({ name: 'box', params: { color: 'red', size: 3 } })
   })
 
+  it('reads nested params whose strings hold brackets', () => {
+    expect(
+      MarkdownUtils.extractSnippetCall(
+        "{{ snippet('box', { items: [{ label: 'a }] b' }], size: 3 }) }}",
+      ),
+    ).toEqual({ name: 'box', params: { items: [{ label: 'a }] b' }], size: 3 } })
+  })
+
+  it('gives empty params when the params object never closes', () => {
+    expect(MarkdownUtils.extractSnippetCall("{{ snippet('box', { size: 3")).toEqual({
+      name: 'box',
+      params: {},
+    })
+  })
+
   it('returns null when there is no snippet call', () => {
     expect(MarkdownUtils.extractSnippetCall('just some text')).toBeNull()
   })
@@ -282,6 +297,184 @@ describe('MarkdownUtils.extractSnippetCall', () => {
       name: 'x',
       params: {},
     })
+  })
+})
+
+describe('MarkdownUtils block attributes', () => {
+  it('writes each tune as its own CommonMark token, so an anchor never swallows a class', () => {
+    // `{#top.wide}` renders as id="top.wide" and no class at all.
+    expect(MarkdownUtils.addAttributes('Hello', { anchor: 'top', class: 'wide' })).toBe(
+      '{#top .wide}\nHello',
+    )
+    expect(
+      MarkdownUtils.addInlineAttributes('## Title', {
+        anchor: 'top',
+        textAlign: 'center',
+      }),
+    ).toBe('## Title {#top .text-center}')
+  })
+
+  it('writes every class a class tune lists', () => {
+    expect(MarkdownUtils.addAttributes('Hello', { class: 'grid md:grid-cols-2' })).toBe(
+      '{.grid .md:grid-cols-2}\nHello',
+    )
+  })
+
+  it('reads classes without their dot, Tailwind variants included', () => {
+    expect(MarkdownUtils.parseAttributes('{#top .wide}')).toEqual({
+      anchor: 'top',
+      class: 'wide',
+    })
+    expect(MarkdownUtils.parseAttributes('{.grid .md:grid-cols-2}')).toEqual({
+      class: 'grid md:grid-cols-2',
+    })
+    expect(MarkdownUtils.parseAttributes('{#top .text-center .wide}')).toEqual({
+      anchor: 'top',
+      textAlign: 'center',
+      class: 'wide',
+    })
+  })
+
+  it('reads what earlier exports glued together as an anchor and a class', () => {
+    expect(MarkdownUtils.parseAttributes('{#top.wide}')).toEqual({
+      anchor: 'top',
+      class: 'wide',
+    })
+  })
+
+  it('round-trips an attribute line unchanged', () => {
+    const line = '{#top .text-right .grid .md:grid-cols-2}'
+    expect(
+      MarkdownUtils.addAttributes('Hello', MarkdownUtils.parseAttributes(line)),
+    ).toBe(`${line}\nHello`)
+  })
+})
+
+describe('MarkdownUtils.sanitizeAnchor', () => {
+  it('keeps letters of either case, digits, underscores and dashes', () => {
+    expect(MarkdownUtils.sanitizeAnchor('Top_Section-2')).toBe('Top_Section-2')
+  })
+
+  it('drops spaces, punctuation, dots and accented letters', () => {
+    expect(MarkdownUtils.sanitizeAnchor('My Anchor #2!')).toBe('MyAnchor2')
+    expect(MarkdownUtils.sanitizeAnchor('top.wide')).toBe('topwide')
+    expect(MarkdownUtils.sanitizeAnchor('été')).toBe('t')
+  })
+
+  it('returns an empty string when nothing is kept', () => {
+    expect(MarkdownUtils.sanitizeAnchor('')).toBe('')
+    expect(MarkdownUtils.sanitizeAnchor('#!. ')).toBe('')
+  })
+
+  it('leaves an anchor the attribute line reads back whole', () => {
+    const anchor = MarkdownUtils.sanitizeAnchor('Q&A: -top_1 {.wide}')
+    const line = MarkdownUtils.addAttributes('Hello', { anchor }).split('\n')[0]!
+
+    expect(MarkdownUtils.parseAttributes(line)).toEqual({ anchor })
+  })
+})
+
+describe('MarkdownUtils tune arguments', () => {
+  it.each([
+    [{}, ''],
+    [{ class: 'grid' }, ", 'grid'"],
+    [{ anchor: 'cards' }, ", '', 'cards'"],
+    [{ class: 'grid', anchor: 'cards' }, ", 'grid', 'cards'"],
+  ])('writes %o as %s', (tunes, args) => {
+    expect(MarkdownUtils.tuneArguments(tunes)).toBe(args)
+  })
+
+  it('reads them back over the tunes of an attribute line, which an empty one leaves', () => {
+    expect(
+      MarkdownUtils.parseTuneArguments(['grid', ''], { anchor: 'top', class: 'old' }),
+    ).toEqual({
+      anchor: 'top',
+      class: 'grid',
+    })
+    expect(MarkdownUtils.parseTuneArguments([], { anchor: 'top' })).toEqual({
+      anchor: 'top',
+    })
+  })
+})
+
+describe('MarkdownUtils line helpers', () => {
+  it('cuts contenteditable HTML at every spelling of <br>', () => {
+    expect(MarkdownUtils.htmlLines('a<br>b<br/>c<br />d<BR>e')).toEqual([
+      'a',
+      'b',
+      'c',
+      'd',
+      'e',
+    ])
+  })
+
+  it('quotes each line, an empty one as a bare marker, and reads them back', () => {
+    const quoted = MarkdownUtils.toBlockquote(['One.', '', 'Two.'])
+
+    expect(quoted).toBe('> One.\n>\n> Two.')
+    expect(MarkdownUtils.fromBlockquote(quoted.split('\n'))).toEqual(['One.', '', 'Two.'])
+  })
+})
+
+describe('MarkdownUtils.extractJsonCall', () => {
+  it('parses an object or an array and hands back the arguments after it', () => {
+    expect(
+      MarkdownUtils.extractJsonCall('gallery', '{{ gallery({"a.jpg": "A"}) }}'),
+    ).toEqual({
+      json: { 'a.jpg': 'A' },
+      args: '',
+    })
+    expect(
+      MarkdownUtils.extractJsonCall(
+        'card_list',
+        "{{ card_list([{'title': 'T'}], 'grid', 'cards') }}",
+      ),
+    ).toEqual({ json: [{ title: 'T' }], args: "'grid', 'cards'" })
+  })
+
+  it('reads a named first argument', () => {
+    expect(
+      MarkdownUtils.extractJsonCall(
+        'gallery',
+        '{{ gallery(images: {"a.jpg": ""}, clickable: true) }}',
+      ),
+    ).toEqual({ json: { 'a.jpg': '' }, args: 'clickable: true' })
+  })
+
+  it('does not end the JSON on a bracket or a closing call inside a string', () => {
+    expect(
+      MarkdownUtils.extractJsonCall(
+        'gallery',
+        '{{ gallery({"a.jpg": "x }) }} [y", "b.jpg": "\\"}"}) }}',
+      ),
+    ).toEqual({ json: { 'a.jpg': 'x }) }} [y', 'b.jpg': '"}' }, args: '' })
+  })
+
+  it('returns null unless the block is that one call with a JSON first argument', () => {
+    expect(
+      MarkdownUtils.extractJsonCall('gallery', '{{ gallery({"a.jpg": ""}) }} and text'),
+    ).toBeNull()
+    expect(
+      MarkdownUtils.extractJsonCall('gallery', 'See {{ gallery({"a.jpg": ""}) }}'),
+    ).toBeNull()
+    expect(MarkdownUtils.extractJsonCall('gallery', "{{ gallery('a.jpg') }}")).toBeNull()
+    expect(
+      MarkdownUtils.extractJsonCall('gallery', '{{ gallery({"a.jpg": ""}) x }}'),
+    ).toBeNull()
+    expect(
+      MarkdownUtils.extractJsonCall('gallery', '{{ gallery({"a.jpg": "" }}'),
+    ).toBeNull()
+    expect(MarkdownUtils.extractJsonCall('card_list', '{{ gallery([]) }}')).toBeNull()
+  })
+
+  it('returns null when jsonrepair cannot read the JSON either', () => {
+    expect(MarkdownUtils.extractJsonCall('gallery', '{{ gallery({:}) }}')).toBeNull()
+  })
+
+  it('returns null when text follows the JSON without a comma', () => {
+    expect(
+      MarkdownUtils.extractJsonCall('gallery', '{{ gallery({"a.jpg": ""} \'x\') }}'),
+    ).toBeNull()
   })
 })
 
@@ -639,5 +832,63 @@ describe('MarkdownUtils.normalizeTypography Twig protection', () => {
     expect(MarkdownUtils.normalizeTypography(`{{ l’un puis ${print} et l’autre`)).toBe(
       `{{ l'un puis ${print} et l'autre`,
     )
+  })
+})
+
+describe('MarkdownUtils.formatMarkdownWithPrettier', () => {
+  let Utils: typeof MarkdownUtils
+  let injected: HTMLScriptElement[]
+  const format = vi.fn(async (markdown: string) => `${markdown}\n\n`)
+  const plugin = {}
+
+  beforeEach(async () => {
+    // A fresh module graph, so no Prettier bundle counts as fetched yet.
+    vi.resetModules()
+    ;({ MarkdownUtils: Utils } = await import('./MarkdownUtils'))
+    injected = []
+    vi.spyOn(document.head, 'appendChild').mockImplementation((node) => {
+      injected.push(node as HTMLScriptElement)
+      return node
+    })
+    format.mockClear()
+    ;(window as any).prettier = { format }
+    ;(window as any).prettierPlugins = { markdown: plugin }
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+    delete (window as any).prettier
+    delete (window as any).prettierPlugins
+  })
+
+  it('fetches both Prettier bundles once, then formats with the markdown plugin', async () => {
+    const first = Utils.formatMarkdownWithPrettier('# Title')
+    const second = Utils.formatMarkdownWithPrettier('Text')
+
+    expect(injected.map((script) => script.getAttribute('src'))).toEqual([
+      '/bundles/pushwordadminblockeditor/prettier/standalone.js',
+      '/bundles/pushwordadminblockeditor/prettier/markdown.js',
+    ])
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    expect(format).not.toHaveBeenCalled()
+
+    for (const script of injected) script.dispatchEvent(new Event('load'))
+
+    await expect(first).resolves.toBe('# Title')
+    await expect(second).resolves.toBe('Text')
+    expect(format).toHaveBeenCalledWith(
+      '# Title',
+      expect.objectContaining({ parser: 'markdown', plugins: [plugin] }),
+    )
+  })
+
+  it('returns the markdown untouched when a Prettier bundle fails to load', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const formatted = Utils.formatMarkdownWithPrettier('# Title')
+    injected[1]!.dispatchEvent(new Event('error'))
+
+    await expect(formatted).resolves.toBe('# Title')
+    expect(format).not.toHaveBeenCalled()
   })
 })

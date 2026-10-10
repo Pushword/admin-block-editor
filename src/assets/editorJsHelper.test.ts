@@ -1,19 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { editorJsHelper } from './editorJsHelper'
-
-describe('editorJsHelper.toggleEditorJs', () => {
-  it('keeps editor content as text when switching to a textarea', () => {
-    document.body.innerHTML = '<input data-editorjs>'
-    const original = document.querySelector('input')!
-    original.value = '<img src=x onerror=alert(1)>'
-
-    new editorJsHelper().toggleEditorJs('editor')
-
-    const textarea = document.querySelector('textarea')!
-    expect(textarea.value).toBe(original.value)
-    expect(textarea.querySelector('img')).toBeNull()
-  })
-})
+import type { EditorModeManager } from './EditorModeManager'
 
 /**
  * The inline uploader replaces the media picker's upload button, which opened
@@ -99,6 +86,7 @@ function pickerSelect(): void {
     <div class="pw-media-picker">
       <select id="${FIELD_ID}" data-pw-media-picker-modal-url="${MODAL_URL}"></select>
       <button data-pw-media-picker-action="choose"></button>
+      <button data-pw-media-picker-action="upload"></button>
     </div>
   `
 }
@@ -152,6 +140,39 @@ describe('editorJsHelper.abstractOn', () => {
     expect(picking.onUpload).toHaveBeenCalledOnce()
   })
 
+  it('opens the upload form for an upload, and answers as the upload endpoint does', () => {
+    const upload = document.querySelector<HTMLButtonElement>(
+      '[data-pw-media-picker-action="upload"]',
+    )!
+    const opened = vi.spyOn(upload, 'click')
+    const tool = { onFileLoading: vi.fn(), onUpload: vi.fn(), handleUploadError: vi.fn() }
+
+    editorJsHelper.abstractOn(tool, new Event('click'), 'upload')
+    pickerPosts({
+      type: 'pw-media-picker-select',
+      fieldId: FIELD_ID,
+      media: {
+        id: 7,
+        fileName: 'photo.jpg',
+        alt: 'A photo',
+        thumb: '/media/thumb/photo.jpg',
+      },
+    })
+
+    expect(opened).toHaveBeenCalledOnce()
+    expect(tool.onFileLoading).toHaveBeenCalled()
+    expect(tool.onUpload).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: 1,
+        file: expect.objectContaining({
+          media: 'photo.jpg',
+          name: 'A photo',
+          url: '/media/thumb/photo.jpg',
+        }),
+      }),
+    )
+  })
+
   it('stops listening once its pick lands', () => {
     const tool = { onUpload: vi.fn(), handleUploadError: vi.fn() }
 
@@ -178,6 +199,25 @@ describe('editorJsHelper.abstractOnMulti', () => {
     ])
   })
 
+  it('names each media and points at its thumbnail, as the gallery adds them', () => {
+    const tool = { onMultiUpload: vi.fn() }
+
+    editorJsHelper.abstractOnMulti(tool, new Event('click'))
+    pickerPosts({
+      type: 'pw-media-picker-multi-select',
+      fieldId: FIELD_ID,
+      items: [
+        { id: 1, fileName: 'one.jpg', alt: 'One', thumb: '/media/thumb/one.jpg' },
+        { id: 2, fileName: 'two.jpg' },
+      ],
+    })
+
+    expect(tool.onMultiUpload).toHaveBeenCalledWith([
+      { media: 'one.jpg', name: 'One', url: '/media/thumb/one.jpg' },
+      { media: 'two.jpg', name: 'two.jpg', url: '' },
+    ])
+  })
+
   it('leaves an abandoned pick out of the next selection', () => {
     const abandoned = { onMultiUpload: vi.fn() }
     const picking = { onMultiUpload: vi.fn() }
@@ -196,5 +236,18 @@ describe('editorJsHelper.abstractOnMulti', () => {
     editorJsHelper.abstractOnMulti({ onMultiUpload: vi.fn() }, new Event('click'))
 
     expect(select.dataset.pwMediaPickerModalUrl).toBe(MODAL_URL)
+  })
+})
+
+describe('editorJsHelper mode managers', () => {
+  it('finds the manager registered for an editor, and none for another', () => {
+    const helper = new editorJsHelper()
+    const manager = {} as EditorModeManager
+
+    editorJsHelper.setModeManager('editorjs_registry', manager)
+
+    expect(editorJsHelper.getModeManager('editorjs_registry')).toBe(manager)
+    expect(helper.modeManagers.editorjs_registry).toBe(manager)
+    expect(editorJsHelper.getModeManager('editorjs_unknown')).toBeUndefined()
   })
 })

@@ -1,10 +1,20 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach, vi } from 'vitest'
+import { createRequire } from 'module'
 import ClipboardManager from './ClipboardManager'
+import { MarkdownUtils } from './MarkdownUtils'
+import { BlockSources } from '../../BlockSources'
 import GroupStart from '../Group/GroupStart'
 import GroupEnd from '../Group/GroupEnd'
 import Paragraph from '../Paragraph/Paragraph'
+import List from '../List/List'
 import Raw from '../Raw/Raw'
+import Table from '../Table/plugin'
+import Image from '../Image/Image'
+import Gallery from '../Gallery/Gallery'
+import Attaches from '../Attaches/Attaches'
+import Quote from '../Quote/Quote'
+import CodeBlock from '../CodeBlock/CodeBlock'
 
 /**
  * Unit tests for the copy/paste pipeline. The handlers are private, so we reach
@@ -25,35 +35,24 @@ function newManager(): AnyCm {
 }
 
 /** Build a detached Editor.js-style table block. */
-function buildTableBlock(opts: {
-  rows: string[][]
-  heading?: boolean
-  alignments?: string[]
-  sticky?: boolean
-}): HTMLElement {
+function buildTableBlock(opts: { rows: string[][]; heading?: boolean }): HTMLElement {
   const block = document.createElement('div')
   block.className = 'ce-block'
-  if (opts.sticky) {
-    const sticky = document.createElement('div')
-    sticky.className = 'table-sticky-header'
-    block.appendChild(sticky)
-  }
-  const wrap = opts.sticky ? block.querySelector('.table-sticky-header')! : block
   const table = document.createElement('div')
   table.className = 'tc-table' + (opts.heading ? ' tc-table--heading' : '')
   opts.rows.forEach((cells) => {
     const row = document.createElement('div')
     row.className = 'tc-row'
-    cells.forEach((text, col) => {
+    cells.forEach((text) => {
       const cell = document.createElement('div')
       cell.className = 'tc-cell'
+      cell.setAttribute('contenteditable', 'true')
       cell.innerHTML = text
-      if (opts.alignments?.[col]) cell.style.textAlign = opts.alignments[col]!
       row.appendChild(cell)
     })
     table.appendChild(row)
   })
-  wrap.appendChild(table)
+  block.appendChild(table)
   return block
 }
 
@@ -130,60 +129,7 @@ describe('ClipboardManager – pure helpers', () => {
   })
 })
 
-describe('ClipboardManager – table extraction', () => {
-  let cm: AnyCm
-  beforeEach(() => {
-    document.body.innerHTML = ''
-    cm = newManager()
-  })
-
-  it('exports a heading table with per-column alignment markers', () => {
-    const block = buildTableBlock({
-      rows: [['A', 'B', 'C'], ['1', '2', '3']],
-      heading: true,
-      alignments: ['left', 'center', 'right'],
-    })
-    const result = cm.extractBlockContent(block)
-    expect(result.markdown).toBe('| A | B | C |\n| :--- | :--: | ---: |\n| 1 | 2 | 3 |')
-  })
-
-  it('copies a table without headings under an empty header', () => {
-    const block = buildTableBlock({ rows: [['a', 'b'], ['c', 'd']], alignments: ['center'] })
-    const result = cm.extractBlockContent(block)
-    expect(result.markdown).toBe('|  |  |\n| :--: | --- |\n| a | b |\n| c | d |')
-  })
-
-  it('makes the empty header as wide as the widest row', () => {
-    const block = buildTableBlock({ rows: [['a'], ['b', 'c', 'd']] })
-    const result = cm.extractBlockContent(block)
-    expect(result.markdown).toBe('|  |  |  |\n| --- | --- | --- |\n| a |  |  |\n| b | c | d |')
-  })
-
-  it('prefixes a sticky table with the block attribute', () => {
-    const block = buildTableBlock({
-      rows: [['A', 'B'], ['1', '2']],
-      heading: true,
-      sticky: true,
-    })
-    const result = cm.extractBlockContent(block)
-    expect(result.markdown.startsWith('{.table-sticky-header}\n')).toBe(true)
-  })
-
-  it('escapes pipe characters inside cells', () => {
-    const block = buildTableBlock({ rows: [['a | b', 'c'], ['d', 'e']], heading: true })
-    const result = cm.extractBlockContent(block)
-    expect(result.markdown.split('\n')[0]).toBe('| a \\| b | c |')
-  })
-
-  it('keeps a pipe escaped when the cell already contains a backslash', () => {
-    const block = buildTableBlock({ rows: [['a\\|b', 'c']], heading: true })
-    const result = cm.extractBlockContent(block)
-
-    expect(result.markdown.split('\n')[0]).toBe('| a\\\\\\|b | c |')
-  })
-})
-
-describe('ClipboardManager – isSelectionWithinTableCell', () => {
+describe('ClipboardManager – isSelectionWithinOneField', () => {
   let cm: AnyCm
   beforeEach(() => {
     document.body.innerHTML = ''
@@ -200,7 +146,7 @@ describe('ClipboardManager – isSelectionWithinTableCell', () => {
     const sel = window.getSelection()!
     sel.removeAllRanges()
     sel.addRange(range)
-    expect(cm.isSelectionWithinTableCell(sel)).toBe(true)
+    expect(cm.isSelectionWithinOneField(sel)).toBe(true)
   })
 
   it('is false when the selection spans multiple cells', () => {
@@ -213,18 +159,56 @@ describe('ClipboardManager – isSelectionWithinTableCell', () => {
     const sel = window.getSelection()!
     sel.removeAllRanges()
     sel.addRange(range)
-    expect(cm.isSelectionWithinTableCell(sel)).toBe(false)
+    expect(cm.isSelectionWithinOneField(sel)).toBe(false)
+  })
+
+  it('is true when the selection crosses inline formatting within one field', () => {
+    document.body.innerHTML = '<div contenteditable="true">One <b>two</b> three</div>'
+    const field = document.body.firstElementChild!
+    const range = document.createRange()
+    // From one text node to another: the common ancestor is the field itself.
+    range.setStart(field.firstChild!, 2)
+    range.setEnd(field.lastChild!, 3)
+    const sel = window.getSelection()!
+    sel.removeAllRanges()
+    sel.addRange(range)
+    expect(cm.isSelectionWithinOneField(sel)).toBe(true)
+  })
+
+  it('is false when nothing is selected', () => {
+    const sel = window.getSelection()!
+    sel.removeAllRanges()
+    expect(cm.isSelectionWithinOneField(sel)).toBe(false)
   })
 })
 
-describe('ClipboardManager – handleCopyShortcut (block-selection Ctrl+C)', () => {
-  let cm: AnyCm
-  beforeEach(() => {
-    document.body.innerHTML = ''
-    cm = newManager()
-    window.getSelection()?.removeAllRanges()
+describe('ClipboardManager – copying whole blocks', () => {
+  beforeAll(() => {
+    const require = createRequire(import.meta.url)
+    const prettier = require('../../../Resources/public/prettier/standalone.js')
+    const plugin = require('../../../Resources/public/prettier/markdown.js')
+    vi.spyOn(MarkdownUtils as any, 'loadPrettier').mockResolvedValue({ prettier, plugin })
+    window.pageHost = ''
   })
 
+  let write: ReturnType<typeof vi.fn>
+  beforeEach(() => {
+    document.body.innerHTML = ''
+    window.getSelection()?.removeAllRanges()
+    write = vi.fn(async () => {})
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { write },
+    })
+    vi.stubGlobal(
+      'ClipboardItem',
+      class {
+        constructor(readonly items: Record<string, Blob | Promise<Blob>>) {}
+      },
+    )
+  })
+
+  /** A Ctrl+C keydown on `target`, its handlers spied on. */
   function ctrlC(target: Element): any {
     return {
       ctrlKey: true,
@@ -236,58 +220,475 @@ describe('ClipboardManager – handleCopyShortcut (block-selection Ctrl+C)', () 
     }
   }
 
-  it('copies a selected table as markdown', () => {
-    const holder = document.createElement('div')
-    holder.id = 'editorjs_x'
-    const block = buildTableBlock({ rows: [['A', 'B'], ['1', '2']], heading: true })
-    block.classList.add('ce-block--selected')
-    holder.appendChild(block)
-    document.body.appendChild(holder)
+  interface CopiedBlock {
+    id: string
+    type: string
+    data: any
+    tunes?: any
+    /** What the block shows: a copy must export the saved data, not read this. */
+    dom: string
+  }
 
-    const write = vi.spyOn(cm, 'writeToClipboard').mockImplementation(() => {})
-    const event = ctrlC(block)
-    cm.handleCopyShortcut(event)
-
-    expect(write).toHaveBeenCalledOnce()
-    expect(write.mock.calls[0]![0]).toBe('| A | B |\n| --- | --- |\n| 1 | 2 |')
-    expect(event.preventDefault).toHaveBeenCalled()
+  const paragraph = (id: string, text: string): CopiedBlock => ({
+    id,
+    type: 'paragraph',
+    data: { text },
+    dom: `<div class="ce-paragraph" contenteditable="true">${text}</div>`,
   })
 
-  it('bails when a text selection is present (inline copy handled by copy event)', () => {
+  /** Editor.js holding `blocks`, rendered in its holder and saved by its saver. */
+  function copyingManager(blocks: CopiedBlock[]) {
+    const saved = blocks.map(({ dom: _dom, ...block }) => block)
+    const editor = {
+      saver: { save: async () => ({ blocks: saved }) },
+      tools: {
+        getBlockTools: () => [
+          { name: 'paragraph', constructable: Paragraph },
+          { name: 'list', constructable: List },
+          { name: 'table', constructable: Table },
+          { name: 'image', constructable: Image },
+          { name: 'gallery', constructable: Gallery },
+          { name: 'attaches', constructable: Attaches },
+          { name: 'quote', constructable: Quote },
+          { name: 'code', constructable: CodeBlock },
+        ],
+      },
+    }
     const holder = document.createElement('div')
     holder.id = 'editorjs_x'
-    const block = buildTableBlock({ rows: [['A', 'B'], ['1', '2']], heading: true })
-    block.classList.add('ce-block--selected')
-    holder.appendChild(block)
+    for (const { id, dom } of blocks) {
+      holder.insertAdjacentHTML(
+        'beforeend',
+        `<div class="ce-block" data-id="${id}"><div class="ce-block__content">${dom}</div></div>`,
+      )
+    }
     document.body.appendChild(holder)
-    // a non-collapsed text selection
-    const cell = block.querySelector('.tc-cell')!.firstChild!
-    const range = document.createRange()
-    range.setStart(cell, 0)
-    range.setEnd(cell, 1)
-    const sel = window.getSelection()!
-    sel.removeAllRanges()
-    sel.addRange(range)
+    const cm = new ClipboardManager({ editor } as any) as unknown as AnyCm
 
-    const write = vi.spyOn(cm, 'writeToClipboard').mockImplementation(() => {})
+    return { cm, editor, holder }
+  }
+
+  /** The text the last clipboard write holds once its export has landed. */
+  async function copied(): Promise<string> {
+    const [items] = write.mock.lastCall as [{ items: Record<string, Promise<Blob>> }[]]
+
+    return (await items[0]!.items['text/plain']!).text()
+  }
+
+  /** Select every block, press Ctrl+C, and read the clipboard back. */
+  async function copy(...blocks: CopiedBlock[]): Promise<string> {
+    const { cm, holder } = copyingManager(blocks)
+    for (const block of holder.querySelectorAll('.ce-block')) {
+      block.classList.add('ce-block--selected')
+    }
+    const event = ctrlC(holder.querySelector('.ce-block')!)
+    cm.handleCopyShortcut(event)
+    expect(event.preventDefault).toHaveBeenCalled()
+
+    return copied()
+  }
+
+  it("leaves the copy to Editor.js where the Clipboard API can't take it", () => {
+    vi.stubGlobal('ClipboardItem', undefined)
+    const { cm, holder } = copyingManager([paragraph('p', 'Hello')])
+    holder.querySelector('.ce-block')!.classList.add('ce-block--selected')
+    const event = ctrlC(holder.querySelector('.ce-block')!)
+
+    cm.handleCopyShortcut(event)
+
+    expect(event.preventDefault).not.toHaveBeenCalled()
+    expect(write).not.toHaveBeenCalled()
+  })
+
+  it('reports a refused clipboard write instead of leaving it unhandled', async () => {
+    const error = new Error('Document is not focused')
+    write.mockRejectedValue(error)
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    await copy(paragraph('p', 'Hello')).catch(() => {})
+    await vi.waitFor(() =>
+      expect(logged).toHaveBeenCalledWith('Unable to copy the selected blocks', error),
+    )
+    logged.mockRestore()
+  })
+
+  it('writes a bold table cell as the export does, not as the cell HTML', async () => {
+    const content = [
+      ['<b>Name</b>', 'Status'],
+      ['Alice', 'OK'],
+    ]
+    const dom = buildTableBlock({ rows: content, heading: true }).innerHTML
+    const table = { id: 't', type: 'table', data: { content, withHeadings: true }, dom }
+
+    expect(await copy(table)).toBe(
+      '| **Name** | Status |\n| -------- | ------ |\n| Alice    | OK     |',
+    )
+  })
+
+  it('escapes a pipe in a table cell, which would split the cell otherwise', async () => {
+    const content = [
+      ['Operator', 'Meaning'],
+      ['a | b', 'or'],
+    ]
+    const dom = buildTableBlock({ rows: content, heading: true }).innerHTML
+    const table = { id: 't', type: 'table', data: { content, withHeadings: true }, dom }
+
+    expect(await copy(table)).toBe(
+      '| Operator | Meaning |\n| -------- | ------- |\n| a \\| b   | or      |',
+    )
+  })
+
+  it('writes an image as its media name, not as the preview URL', async () => {
+    const dom =
+      '<div class="image-tool__image"><img src="/media/md/logo.png"></div>' +
+      '<div class="image-tool__caption">Logo</div>'
+    const data = { media: 'logo.png', caption: 'Logo' }
+
+    expect(await copy({ id: 'i', type: 'image', data, dom })).toBe('![Logo](logo.png)')
+  })
+
+  it('keeps a clickable gallery clickable', async () => {
+    const dom =
+      '<div class="cdxcarousel-wrapper"><div class="cdxcarousel-list">' +
+      '<div class="cdxcarousel-item"><img src="/media/md/1.jpg"></div>' +
+      '<div class="cdxcarousel-item"><img src="/media/md/2.jpg">' +
+      '<div class="image-tool__caption">Two</div></div></div></div>'
+    const data = { items: [{ media: '1.jpg' }, { media: '2.jpg', caption: 'Two' }] }
+    const tunes = { clickableTune: { value: true } }
+
+    expect(await copy({ id: 'g', type: 'gallery', data, tunes, dom })).toBe(
+      '{{ gallery({"1.jpg":"","2.jpg":"Two"}, clickable: true) }}',
+    )
+  })
+
+  it('quotes an attachment title holding an apostrophe, its size in bytes', async () => {
+    const dom =
+      '<div class="cdx-attaches"><a href="/media/offre.pdf"></a>' +
+      '<div class="cdx-attaches__title">L\'offre</div>' +
+      '<div class="cdx-attaches__size">12.06 ko</div></div>'
+    // The shape the import gives an attachment: the path as written, the size in bytes.
+    const data = { title: "L'offre", file: { media: '/media/offre.pdf', size: 12345 } }
+
+    expect(await copy({ id: 'a', type: 'attaches', data, dom })).toBe(
+      `{{ attaches("L'offre", '/media/offre.pdf', '12345' ) }}`,
+    )
+  })
+
+  it('keeps every line of a quote and its caption', async () => {
+    const dom =
+      '<div class="cdx-quote"><div class="cdx-quote__text">First line<br>Second line</div>' +
+      '<div class="cdx-quote__caption">Author</div></div>'
+    const data = { text: 'First line<br>Second line', caption: 'Author' }
+
+    expect(await copy({ id: 'q', type: 'quote', data, dom })).toBe(
+      '> First line\n> Second line\n> — <cite>Author</cite>',
+    )
+  })
+
+  it('carries the block tunes', async () => {
+    const tunes = { anchor: 'intro', class: 'lead' }
+
+    expect(await copy({ ...paragraph('p', 'Intro'), tunes })).toBe(
+      '{#intro .lead}\nIntro',
+    )
+  })
+
+  it('copies the whole code of a code block, not the lines Monaco rendered', async () => {
+    const lines = Array.from({ length: 40 }, (_, index) => `echo ${index};`)
+    // Monaco renders the visible lines only; the language picker sits outside its wrapper.
+    const rendered = lines
+      .slice(0, 3)
+      .map((line) => `<div class="view-line">${line}</div>`)
+    const dom =
+      '<div class="pw-code-block"><label>Language<select><option selected>php</option>' +
+      '</select></label><div class="editorjs-monaco-wrapper monaco-codeblock-wrapper">' +
+      rendered.join('') +
+      '</div></div>'
+    const data = { language: 'php', html: lines.join('\n') }
+
+    expect(await copy({ id: 'c', type: 'code', data, dom })).toBe(
+      '```php\n' + lines.join('\n') + '\n```',
+    )
+  })
+
+  it('copies a block left untouched as the markdown it was parsed from', async () => {
+    const { cm, editor, holder } = copyingManager([paragraph('p', 'Intro')])
+    BlockSources.reset(editor).record('p', '<!-- kept -->Intro')
+    holder.querySelector('.ce-block')!.classList.add('ce-block--selected')
+
+    cm.handleCopyShortcut(ctrlC(holder))
+
+    expect(await copied()).toBe('<!-- kept -->Intro')
+  })
+
+  it('copies a block edited since its parse as edited, not as its source', async () => {
+    const { cm, editor, holder } = copyingManager([paragraph('p', 'Intro')])
+    BlockSources.reset(editor).record('p', '<!-- kept -->Intro')
+    const block = holder.querySelector('.ce-block')!
+    block.classList.add('ce-block--selected')
+    cm.handleCopyShortcut(ctrlC(block))
+    expect(await copied()).toBe('<!-- kept -->Intro')
+
+    // Typed in, then Ctrl+C before Editor.js' debounced onChange reported it.
+    editor.saver.save = async () => ({
+      blocks: [{ id: 'p', type: 'paragraph', data: { text: 'Intro edited' } }],
+    })
+    cm.handleCopyShortcut(ctrlC(block))
+
+    expect(await copied()).toBe('Intro edited')
+  })
+
+  it('hands the clipboard its item within the gesture, before the export lands', async () => {
+    const { cm, editor, holder } = copyingManager([paragraph('p', 'Intro')])
+    let land!: () => void
+    const landed = new Promise<void>((resolve) => (land = resolve))
+    const save = editor.saver.save
+    editor.saver.save = async () => {
+      await landed
+      return save()
+    }
+    const block = holder.querySelector('.ce-block')!
+    block.classList.add('ce-block--selected')
+
+    cm.handleCopyShortcut(ctrlC(block))
+
+    expect(write).toHaveBeenCalledOnce()
+    land()
+    expect(await copied()).toBe('Intro')
+  })
+
+  it('copies the blocks a text selection runs across, in order, and those only', async () => {
+    const { cm, holder } = copyingManager([
+      paragraph('a', 'One'),
+      paragraph('b', 'Two'),
+      paragraph('c', 'Three'),
+    ])
+    const [first, second] = holder.querySelectorAll('.ce-paragraph')
+    const range = document.createRange()
+    range.setStart(first!.firstChild!, 1)
+    range.setEnd(second!.firstChild!, 2)
+    window.getSelection()!.addRange(range)
+    const event = { ...ctrlC(first!), clipboardData: { setData: vi.fn() } }
+
+    cm.handleCopy(event)
+
+    expect(event.preventDefault).toHaveBeenCalled()
+    expect(await copied()).toBe('One\n\nTwo')
+  })
+
+  it('copies the selected blocks on the copy event, as plain text only', async () => {
+    const { cm, holder } = copyingManager([
+      paragraph('a', 'One'),
+      paragraph('b', 'Two'),
+      paragraph('c', 'Three'),
+    ])
+    const blocks = holder.querySelectorAll('.ce-block')
+    blocks[0]!.classList.add('ce-block--selected')
+    blocks[2]!.classList.add('ce-block--selected')
+    // A block selection leaves no text range: the event targets the body.
+    const event = { ...ctrlC(document.body), clipboardData: { setData: vi.fn() } }
+
+    cm.handleCopy(event)
+
+    expect(event.stopImmediatePropagation).toHaveBeenCalled()
+    expect(await copied()).toBe('One\n\nThree')
+    const [items] = write.mock.lastCall as [{ items: object }[]]
+    expect(Object.keys(items[0]!.items)).toEqual(['text/plain'])
+  })
+
+  it('copies a word picked out of a paragraph, not the paragraph', () => {
+    const { cm, editor, holder } = copyingManager([paragraph('p', 'One two three')])
+    const save = vi.spyOn(editor.saver, 'save')
+    const field = holder.querySelector('.ce-paragraph')!
+    const range = document.createRange()
+    range.setStart(field.firstChild!, 4)
+    range.setEnd(field.firstChild!, 7)
+    window.getSelection()!.addRange(range)
+    const event = { ...ctrlC(field), clipboardData: { setData: vi.fn() } }
+
+    cm.handleCopy(event)
+
+    expect(save).not.toHaveBeenCalled()
+    expect(event.clipboardData.setData).toHaveBeenCalledWith('text/plain', 'two')
+  })
+
+  it('copies the formatting of a phrase picked out of a paragraph', () => {
+    const { cm, holder } = copyingManager([paragraph('p', 'One <b>two</b> three')])
+    const field = holder.querySelector('.ce-paragraph')!
+    const range = document.createRange()
+    range.setStart(field.firstChild!, 2)
+    range.setEnd(field.lastChild!, 3)
+    window.getSelection()!.addRange(range)
+    const event = { ...ctrlC(field), clipboardData: { setData: vi.fn() } }
+
+    cm.handleCopy(event)
+
+    expect(event.clipboardData.setData).toHaveBeenCalledWith('text/plain', 'e **two** th')
+  })
+
+  it('copies a word picked out of one list item, not the list', () => {
+    const items = ['One two', 'Three'].map((content) => ({
+      content,
+      meta: {},
+      items: [],
+    }))
+    const dom =
+      '<ul class="cdx-list cdx-list-unordered">' +
+      items
+        .map(
+          ({ content }) =>
+            '<li class="cdx-list__item"><div class="cdx-list__item-content" ' +
+            `contenteditable="true">${content}</div></li>`,
+        )
+        .join('') +
+      '</ul>'
+    const list = { id: 'l', type: 'list', data: { style: 'unordered', items }, dom }
+    const { cm, editor, holder } = copyingManager([list])
+    const save = vi.spyOn(editor.saver, 'save')
+    const item = holder.querySelector('.cdx-list__item-content')!
+    const range = document.createRange()
+    range.setStart(item.firstChild!, 4)
+    range.setEnd(item.firstChild!, 7)
+    window.getSelection()!.addRange(range)
+    const event = { ...ctrlC(item), clipboardData: { setData: vi.fn() } }
+
+    cm.handleCopy(event)
+
+    expect(save).not.toHaveBeenCalled()
+    expect(event.clipboardData.setData).toHaveBeenCalledWith('text/plain', 'two')
+  })
+
+  it('copies a table whole when the selection runs across its cells', async () => {
+    const content = [
+      ['Name', 'Status'],
+      ['Alice', 'OK'],
+    ]
+    const dom = buildTableBlock({ rows: content, heading: true }).innerHTML
+    const table = { id: 't', type: 'table', data: { content, withHeadings: true }, dom }
+    const { cm, holder } = copyingManager([table])
+    const cells = holder.querySelectorAll('.tc-cell')
+    const range = document.createRange()
+    range.setStart(cells[2]!.firstChild!, 1)
+    range.setEnd(cells[3]!.firstChild!, 1)
+    window.getSelection()!.addRange(range)
+
+    cm.handleCopy({ ...ctrlC(cells[2]!), clipboardData: { setData: vi.fn() } })
+
+    expect(await copied()).toBe(
+      '| Name  | Status |\n| ----- | ------ |\n| Alice | OK     |',
+    )
+  })
+
+  it('copies a list whole when the selection runs across its items', async () => {
+    const items = ['One', 'Two'].map((content) => ({ content, meta: {}, items: [] }))
+    // As @editorjs/list renders it: each item's text is its own editable field.
+    const dom =
+      '<ul class="cdx-list cdx-list-unordered">' +
+      items
+        .map(
+          ({ content }) =>
+            '<li class="cdx-list__item"><div class="cdx-list__item-content" ' +
+            `contenteditable="true">${content}</div></li>`,
+        )
+        .join('') +
+      '</ul>'
+    const list = { id: 'l', type: 'list', data: { style: 'unordered', items }, dom }
+    const { cm, holder } = copyingManager([list])
+    const [first, second] = holder.querySelectorAll('.cdx-list__item-content')
+    const range = document.createRange()
+    range.setStart(first!.firstChild!, 1)
+    range.setEnd(second!.firstChild!, 1)
+    window.getSelection()!.addRange(range)
+
+    cm.handleCopy({ ...ctrlC(first!), clipboardData: { setData: vi.fn() } })
+
+    expect(await copied()).toBe('- One\n- Two')
+  })
+
+  it('copies a selection inside one table cell as its text, not the whole table', () => {
+    const content = [
+      ['Name', 'Status'],
+      ['Alice', 'OK'],
+    ]
+    const dom = buildTableBlock({ rows: content, heading: true }).innerHTML
+    const table = { id: 't', type: 'table', data: { content, withHeadings: true }, dom }
+    const { cm, editor, holder } = copyingManager([table])
+    const save = vi.spyOn(editor.saver, 'save')
+    const cell = holder.querySelectorAll('.tc-cell')[2]!
+    const range = document.createRange()
+    range.setStart(cell.firstChild!, 0)
+    range.setEnd(cell.firstChild!, 3)
+    window.getSelection()!.addRange(range)
+    const event = { ...ctrlC(cell), clipboardData: { setData: vi.fn() } }
+
+    cm.handleCopy(event)
+
+    expect(save).not.toHaveBeenCalled()
+    expect(event.clipboardData.setData).toHaveBeenCalledWith('text/plain', 'Ali')
+  })
+
+  it.each([
+    ['Cmd+C', { ctrlKey: false, metaKey: true }],
+    ['Ctrl+C with Caps Lock on', { key: 'C' }],
+  ])('copies the selected blocks on %s', async (_name, keys) => {
+    const { cm, holder } = copyingManager([paragraph('p', 'Intro')])
+    const block = holder.querySelector('.ce-block')!
+    block.classList.add('ce-block--selected')
+
+    cm.handleCopyShortcut({ ...ctrlC(block), ...keys })
+
+    expect(await copied()).toBe('Intro')
+  })
+
+  it('copies the selected blocks when the focus sits outside the editor', async () => {
+    const { cm, holder } = copyingManager([paragraph('p', 'Intro')])
+    holder.querySelector('.ce-block')!.classList.add('ce-block--selected')
+
+    cm.handleCopyShortcut(ctrlC(document.body))
+
+    expect(await copied()).toBe('Intro')
+  })
+
+  it('leaves a text selection to the copy event', () => {
+    const { cm, holder } = copyingManager([paragraph('p', 'Intro')])
+    const block = holder.querySelector('.ce-block')!
+    block.classList.add('ce-block--selected')
+    const range = document.createRange()
+    range.selectNodeContents(block.querySelector('.ce-paragraph')!)
+    window.getSelection()!.addRange(range)
     const event = ctrlC(block)
+
     cm.handleCopyShortcut(event)
 
     expect(write).not.toHaveBeenCalled()
     expect(event.preventDefault).not.toHaveBeenCalled()
   })
 
-  it('bails when no block is selected', () => {
-    const holder = document.createElement('div')
-    holder.id = 'editorjs_x'
-    holder.appendChild(buildTableBlock({ rows: [['A', 'B']], heading: true }))
-    document.body.appendChild(holder)
-
-    const write = vi.spyOn(cm, 'writeToClipboard').mockImplementation(() => {})
+  it('leaves Ctrl+C alone when no block is selected', () => {
+    const { cm, holder } = copyingManager([paragraph('p', 'Intro')])
     const event = ctrlC(holder)
+
     cm.handleCopyShortcut(event)
 
     expect(write).not.toHaveBeenCalled()
+    expect(event.preventDefault).not.toHaveBeenCalled()
+  })
+
+  // Other keys act on a block selection too (a paste, typing over it): only the
+  // copy shortcut is taken over.
+  it.each([
+    ['Ctrl+V', { key: 'v' }],
+    ['a C typed without Ctrl', { ctrlKey: false }],
+  ])('leaves %s alone while blocks are selected', (_name, keys) => {
+    const { cm, holder } = copyingManager([paragraph('p', 'Intro')])
+    const block = holder.querySelector('.ce-block')!
+    block.classList.add('ce-block--selected')
+    const event = { ...ctrlC(block), ...keys }
+
+    cm.handleCopyShortcut(event)
+
+    expect(write).not.toHaveBeenCalled()
+    expect(event.preventDefault).not.toHaveBeenCalled()
   })
 })
 
@@ -378,132 +779,6 @@ describe('ClipboardManager – handlePaste routing', () => {
   })
 })
 
-type ListEntry = { content: string; checked?: boolean; children?: ListEntry[] }
-
-/** Build a detached @editorjs/list block. */
-function buildListBlock(
-  style: 'unordered' | 'ordered' | 'checklist',
-  items: ListEntry[],
-): HTMLElement {
-  const block = document.createElement('div')
-  block.className = 'ce-block'
-
-  const buildList = (listStyle: string, entries: ListEntry[]): HTMLElement => {
-    const list = document.createElement(listStyle === 'ordered' ? 'ol' : 'ul')
-    list.className = `cdx-list cdx-list-${listStyle}`
-
-    entries.forEach((entry) => {
-      const item = document.createElement('li')
-      item.className = 'cdx-list__item'
-
-      if (listStyle === 'checklist') {
-        const checkbox = document.createElement('span')
-        checkbox.className =
-          'cdx-list__checkbox' + (entry.checked ? ' cdx-list__checkbox--checked' : '')
-        item.appendChild(checkbox)
-      }
-
-      const content = document.createElement('div')
-      content.className = 'cdx-list__item-content'
-      content.innerHTML = entry.content
-      item.appendChild(content)
-
-      if (entry.children) {
-        const children = buildList(listStyle, entry.children)
-        children.classList.add('cdx-list__item-children')
-        item.appendChild(children)
-      }
-
-      list.appendChild(item)
-    })
-
-    return list
-  }
-
-  block.appendChild(buildList(style, items))
-
-  return block
-}
-
-describe('ClipboardManager – copying a list block', () => {
-  it('copies item text, not the markup @editorjs/list wraps it in', () => {
-    const block = buildListBlock('unordered', [
-      { content: '<a href="/">Homepage</a>' },
-      { content: 'Plain item' },
-    ])
-
-    const result = newManager().extractBlockContent(block)
-
-    expect(result.markdown).toBe('- [Homepage](/)\n- Plain item')
-    expect(result.markdown).not.toContain('cdx-list')
-    expect(result.html).toBe('<ul><li><a href="/">Homepage</a></li><li>Plain item</li></ul>')
-  })
-
-  it('numbers an ordered list instead of bulleting it', () => {
-    const block = buildListBlock('ordered', [{ content: 'One' }, { content: 'Two' }])
-
-    const result = newManager().extractBlockContent(block)
-
-    expect(result.markdown).toBe('1. One\n2. Two')
-    expect(result.html).toBe('<ol><li>One</li><li>Two</li></ol>')
-  })
-
-  it('carries the checked state of a checklist', () => {
-    const block = buildListBlock('checklist', [
-      { content: 'todo', checked: false },
-      { content: 'done', checked: true },
-    ])
-
-    const result = newManager().extractBlockContent(block)
-
-    expect(result.markdown).toBe('- [ ] todo\n- [x] done')
-  })
-
-  it('leaves a checklist parent unchecked when only a child is checked', () => {
-    const block = buildListBlock('checklist', [
-      { content: 'Parent', checked: false, children: [{ content: 'Child', checked: true }] },
-    ])
-
-    const result = newManager().extractBlockContent(block)
-
-    expect(result.markdown).toBe('- [ ] Parent\n  - [x] Child')
-  })
-
-  it('indents nested items', () => {
-    const block = buildListBlock('unordered', [
-      { content: 'Parent', children: [{ content: 'Child' }, { content: 'Child 2' }] },
-      { content: 'Sibling' },
-    ])
-
-    const result = newManager().extractBlockContent(block)
-
-    expect(result.markdown).toBe('- Parent\n  - Child\n  - Child 2\n- Sibling')
-    expect(result.html).toBe(
-      '<ul><li>Parent<ul><li>Child</li><li>Child 2</li></ul></li><li>Sibling</li></ul>',
-    )
-  })
-
-  // Two spaces per level whatever the marker width, the convention
-  // `List._itemsToMarkdown` writes and `List.importFromMarkdown` reads back — so a
-  // copied list pastes at the depth it was cut from.
-  it('restarts numbering inside a nested ordered list', () => {
-    const block = buildListBlock('ordered', [
-      { content: 'One', children: [{ content: 'Nested' }] },
-      { content: 'Two' },
-    ])
-
-    const result = newManager().extractBlockContent(block)
-
-    expect(result.markdown).toBe('1. One\n  1. Nested\n2. Two')
-  })
-
-  it('reports nothing for an empty list', () => {
-    const block = buildListBlock('unordered', [{ content: '' }])
-
-    expect(newManager().extractBlockContent(block)).toBeNull()
-  })
-})
-
 describe('ClipboardManager – pasting markdown as blocks', () => {
   /** Editor stub carrying the tool registry and recording what gets inserted. */
   function pastingManager(): { cm: AnyCm; inserted: string[] } {
@@ -543,5 +818,29 @@ describe('ClipboardManager – pasting markdown as blocks', () => {
     cm.insertMarkdownAsBlocks('<div style="color:red">\n\ntext\n\n</div>')
 
     expect(inserted).toEqual(['raw', 'paragraph', 'raw'])
+  })
+
+  it('pastes an escaped pipe back as the text of its table cell', () => {
+    const updates: any[] = []
+    const editor = {
+      tools: {
+        getBlockTools: () => [
+          { name: 'table', constructable: Table },
+          { name: 'paragraph', constructable: Paragraph },
+        ],
+      },
+      blocks: {
+        insert: () => ({ id: 't' }),
+        update: (_id: string, data: any) => updates.push(data),
+      },
+    }
+    const cm = new ClipboardManager({ editor } as any) as unknown as AnyCm
+
+    cm.insertMarkdownAsBlocks('| Operator | Meaning |\n| --- | --- |\n| a \\| b | or |')
+
+    expect(updates[0].content).toEqual([
+      ['Operator', 'Meaning'],
+      ['a | b', 'or'],
+    ])
   })
 })

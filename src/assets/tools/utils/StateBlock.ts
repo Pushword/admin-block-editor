@@ -1,7 +1,7 @@
 import { API, BlockToolData } from '@editorjs/editorjs'
 import make from './make'
 
-export const BLOCK_STATE = {
+const BLOCK_STATE = {
   EDIT: 0,
   VIEW: 1,
 }
@@ -17,6 +17,8 @@ export interface StateBlockToolInterface {
   createInputs(): HTMLElement
   api: API
   validate(): boolean
+  /** Shown, through `api.i18n.t()`, when validate() refuses the switch to preview. */
+  readonly incompleteMessage: string
   save(): BlockToolData
   updatePreview(): void
 }
@@ -35,7 +37,7 @@ export class StateBlock {
   }
 
   private static createEditBtn(BlockTool: StateBlockToolInterface): HTMLElement {
-    const toggleId = StateBlock.generateRandomId('toggle')
+    const toggleId = make.uniqueId('toggle')
     BlockTool.nodes.editBtn = make.element('div', 'toggle-wrapper')
     BlockTool.nodes.editInput = make.element('input', ['toggle-input'], {
       type: 'checkbox',
@@ -51,12 +53,7 @@ export class StateBlock {
     return BlockTool.nodes.editBtn!
   }
 
-  private static generateRandomId(prefix: string = 'id'): string {
-    const randomString = Math.random().toString(36).substring(2, 9)
-    return `${prefix}_${randomString}`
-  }
-
-  public static show(BlockTool: StateBlockToolInterface, state: number): void {
+  private static show(BlockTool: StateBlockToolInterface, state: number): void {
     if (!BlockTool.nodes.preview) {
       BlockTool.nodes.preview = this.createPreview(BlockTool)
       if (BlockTool.validate()) BlockTool.updatePreview()
@@ -106,10 +103,14 @@ export class StateBlock {
   private static onEditInputChange(BlockTool: StateBlockToolInterface): void {
     if (BlockTool.nodes.editInput!.checked) {
       BlockTool.save()
-      StateBlock.show(BlockTool, BLOCK_STATE.VIEW)
-    } else {
-      StateBlock.show(BlockTool, BLOCK_STATE.EDIT)
+      if (BlockTool.validate()) return StateBlock.show(BlockTool, BLOCK_STATE.VIEW)
+      // Nothing to preview yet: stay in edit mode and say what is missing.
+      BlockTool.api.notifier.show({
+        message: BlockTool.api.i18n.t(BlockTool.incompleteMessage),
+        style: 'error',
+      })
     }
+    StateBlock.show(BlockTool, BLOCK_STATE.EDIT)
   }
 
   private static createPreview(BlockTool: StateBlockToolInterface): HTMLElement {

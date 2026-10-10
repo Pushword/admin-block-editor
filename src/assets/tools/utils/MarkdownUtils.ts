@@ -2,6 +2,7 @@ import { BlockTuneData } from '@editorjs/editorjs/types/block-tunes/block-tune-d
 import { HyperlinkTuneData } from '../HyperlinkTune/HyperlinkTune'
 import * as he from 'he'
 import { jsonrepair } from 'jsonrepair'
+import { loadScriptOnce } from './loadScript'
 
 export interface BlockTuneDataPushword extends BlockTuneData {
   anchor?: string
@@ -175,13 +176,16 @@ export class MarkdownUtils {
     return link
   }
 
+  /**
+   * The tunes as CommonMark attributes, one space-separated token each: an id
+   * runs to the next space, so `#top.wide` would render as `id="top.wide"`.
+   */
   static getAttributes(tunes: BlockTuneDataPushword): string {
-    let result = ''
+    const attributes: string[] = []
 
-    // anchor
     const anchor = tunes?.anchor
     if (anchor && anchor !== '') {
-      result += `#${anchor}`
+      attributes.push(`#${anchor}`)
     }
 
     const alignment = tunes?.textAlign
@@ -189,16 +193,19 @@ export class MarkdownUtils {
       const alignmentClass =
         alignment === 'center' ? 'text-center' : alignment === 'right' ? 'text-right' : ''
       if (alignmentClass) {
-        result += `.${alignmentClass}`
+        attributes.push(`.${alignmentClass}`)
       }
     }
 
     const className = tunes?.class
     if (className && className !== '') {
-      result += `.${className}`
+      className
+        .split(/\s+/)
+        .filter((name) => name !== '')
+        .forEach((name) => attributes.push(`.${name.replace(/^\./, '')}`))
     }
 
-    return result
+    return attributes.join(' ')
   }
 
   private static formatAttributes(tunes: BlockTuneDataPushword): string {
@@ -223,6 +230,49 @@ export class MarkdownUtils {
     return markdown
   }
 
+  /**
+   * The class and anchor tunes as the last arguments of a Twig call, the
+   * `$wrapperClass, $id` of card_list() and pages_list(): `, 'class', 'anchor'`,
+   * cut after the last one set, '' when neither is.
+   */
+  static tuneArguments(tunes?: BlockTuneDataPushword): string {
+    if (tunes?.anchor) {
+      return `, ${MarkdownUtils.wrapInQuotes(tunes.class || '')}, ${MarkdownUtils.wrapInQuotes(tunes.anchor)}`
+    }
+
+    return tunes?.class ? `, ${MarkdownUtils.wrapInQuotes(tunes.class)}` : ''
+  }
+
+  /**
+   * `tunes` with the class and anchor tuneArguments() wrote read back from
+   * `args`; an empty one keeps what an attribute line set.
+   */
+  static parseTuneArguments(
+    [className, anchor]: string[],
+    tunes: BlockTuneDataPushword,
+  ): BlockTuneDataPushword {
+    const parsed = { ...tunes }
+    if (className) parsed.class = className
+    if (anchor) parsed.anchor = anchor
+
+    return parsed
+  }
+
+  /** The lines of contenteditable HTML, cut at each `<br>` however it is spelled. */
+  static htmlLines(html: string): string[] {
+    return html.split(/<br\s*\/?>/i)
+  }
+
+  /** `lines` as a blockquote, an empty one as a bare `>`. */
+  static toBlockquote(lines: string[]): string {
+    return lines.map((line) => (line === '' ? '>' : `> ${line}`)).join('\n')
+  }
+
+  /** The lines of a blockquote without their `>` marker. */
+  static fromBlockquote(lines: string[]): string[] {
+    return lines.map((line) => line.replace(/^>[ \t]?/, ''))
+  }
+
   static startWithAttribute(firstLine: string): boolean {
     const line = firstLine.trim()
     if (line.startsWith('{#') && (line.endsWith('#}') || !line.endsWith('}')))
@@ -234,6 +284,11 @@ export class MarkdownUtils {
       !line.startsWith('{{') &&
       !line.startsWith('{%')
     )
+  }
+
+  /** An anchor kept to the characters parseAttributes() reads back after a `#`. */
+  static sanitizeAnchor(anchor: string): string {
+    return anchor.replace(/[^a-z0-9_-]/gi, '')
   }
 
   static parseAttributes(attributeLine: string): BlockTuneDataPushword {
@@ -250,9 +305,14 @@ export class MarkdownUtils {
       attributeLine = attributeLine.replace(alignmentMatch[0], '')
     }
 
-    const classMatch = attributeLine.match(/\.([a-zA-Z0-9_-]+)/g)
-    if (classMatch) {
-      tunes.class = classMatch.join(' ')
+    // The class grammar of CommonMark's attributes: a dot, then up to the next
+    // space, dot or brace, so `.md:grid-cols-2` stays whole. The tune holds the
+    // names without their dot.
+    const classNames = [...attributeLine.matchAll(/\.(-?[_a-zA-Z][^\s.}#]*)/g)].map(
+      (match) => match[1]!,
+    )
+    if (classNames.length > 0) {
+      tunes.class = classNames.join(' ')
     }
 
     return tunes
@@ -416,48 +476,81 @@ export class MarkdownUtils {
   }
 
   /**
+   * Parse a block that is exactly one `{{ func(<json>, …) }}` call whose first
+   * argument, optionally named (`images: {…}`), is a JSON object or array.
+   * Bracket- and quote-aware, so a caption holding `}) }}` does not end the
+   * call. `args` is the argument text after the JSON, its comma dropped:
+   * `'class', 'anchor'`, `clickable: true`, or '' when there is none.
+   */
+  static extractJsonCall(
+    func: string,
+    markdown: string,
+  ): { json: unknown; args: string } | null {
+    const call = markdown.trim()
+    const open = new RegExp(`^{{\\s*${func}\\(`).exec(call)
+    if (open === null) return null
+
+    const argsEnd = MarkdownUtils.balancedEnd(call, open[0].length - 1)
+    if (argsEnd === null || !/^\s*}}$/.test(call.slice(argsEnd))) return null
+
+    const argList = call.slice(open[0].length, argsEnd - 1)
+    const jsonStart = /^\s*(?:[A-Za-z_]\w*:\s*)?(?=[{[])/.exec(argList)?.[0].length
+    if (jsonStart === undefined) return null
+
+    const jsonEnd = MarkdownUtils.balancedEnd(argList, jsonStart)! // the argument list is balanced
+    const args = /^\s*(?:,\s*([\s\S]*?))?\s*$/.exec(argList.slice(jsonEnd))
+    if (args === null) return null
+
+    const json = MarkdownUtils.parseJson(argList.slice(jsonStart, jsonEnd))
+    if (json === undefined) return null
+
+    return { json, args: args[1] ?? '' }
+  }
+
+  /**
    * Read a brace-balanced object literal starting at `start` and JSON-parse it.
    * Tolerates single quotes / trailing commas via jsonrepair.
    */
   private static parseBalancedObject(input: string, start: number): Record<string, any> {
-    let depth = 0
-    let inStr = false
-    let strCh = ''
-    let end = start
+    const end = MarkdownUtils.balancedEnd(input, start)
+    if (end === null) return {}
 
+    const object = MarkdownUtils.parseJson(input.substring(start, end)) ?? {}
+
+    return object as Record<string, any>
+  }
+
+  /**
+   * The index just past the bracket closing the one at `start`, skipping
+   * quoted strings; null when it never closes.
+   */
+  private static balancedEnd(input: string, start: number): number | null {
+    let depth = 0
     for (let i = start; i < input.length; i++) {
-      const c = input[i]
-      if (inStr) {
-        if (c === '\\') {
-          i++
-          continue
+      const char = input[i]!
+      if (char === '"' || char === "'") {
+        for (i++; i < input.length && input[i] !== char; i++) {
+          if (input[i] === '\\') i++
         }
-        if (c === strCh) inStr = false
-        continue
-      }
-      if (c === '"' || c === "'") {
-        inStr = true
-        strCh = c
-        continue
-      }
-      if (c === '{') depth++
-      else if (c === '}') {
+      } else if ('([{'.includes(char)) {
+        depth++
+      } else if (')]}'.includes(char)) {
         depth--
-        if (depth === 0) {
-          end = i + 1
-          break
-        }
+        if (depth === 0) return i + 1
       }
     }
+    return null
+  }
 
-    const raw = input.substring(start, end)
+  /** JSON.parse, through jsonrepair when strict JSON fails; undefined when both do. */
+  private static parseJson(raw: string): unknown {
     try {
       return JSON.parse(raw)
     } catch {
       try {
         return JSON.parse(jsonrepair(raw))
       } catch {
-        return {}
+        return undefined
       }
     }
   }
@@ -847,40 +940,20 @@ export class MarkdownUtils {
     return restore(html)
   }
 
+  private static async loadPrettier(): Promise<{ prettier: any; plugin: any }> {
+    await Promise.all([
+      loadScriptOnce('/bundles/pushwordadminblockeditor/prettier/standalone.js'),
+      loadScriptOnce('/bundles/pushwordadminblockeditor/prettier/markdown.js'),
+    ])
+    return {
+      prettier: (window as any).prettier,
+      plugin: (window as any).prettierPlugins?.markdown,
+    }
+  }
+
   /**
    * Formate le contenu Markdown avec Prettier
    */
-  private static prettierPromise: Promise<{ prettier: any; plugin: any }> | null = null
-
-  private static loadScript(src: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const existing = document.querySelector(`script[src="${src}"]`)
-      if (existing) {
-        resolve()
-        return
-      }
-      const script = document.createElement('script')
-      script.src = src
-      script.async = true
-      script.onload = () => resolve()
-      script.onerror = () => reject(new Error(`Failed to load ${src}`))
-      document.head.appendChild(script)
-    })
-  }
-
-  private static loadPrettier(): Promise<{ prettier: any; plugin: any }> {
-    if (!MarkdownUtils.prettierPromise) {
-      MarkdownUtils.prettierPromise = Promise.all([
-        MarkdownUtils.loadScript('/bundles/pushwordadminblockeditor/prettier/standalone.js'),
-        MarkdownUtils.loadScript('/bundles/pushwordadminblockeditor/prettier/markdown.js'),
-      ]).then(() => ({
-        prettier: (window as any).prettier,
-        plugin: (window as any).prettierPlugins?.markdown,
-      }))
-    }
-    return MarkdownUtils.prettierPromise
-  }
-
   public static async formatMarkdownWithPrettier(
     markdownContent: string,
   ): Promise<string> {

@@ -7,7 +7,8 @@
 }
 
 .cdx-input-labeled-preview {
-  background-image: url('data:image/svg+xml,<svg width="16" height="16" viewBox="0 0 20 20" fill="%23707684" xmlns="http://www.w3.org/2000/svg">    <path d="M3.15 13.628A7.749 7.749 0 0 0 10 17.75a7.74 7.74 0 0 0 6.305-3.242l-2.387-2.127-2.765 2.244-4.389-4.496-3.614 3.5zm-.787-2.303l4.446-4.371 4.52 4.63 2.534-2.057 3.533 2.797c.23-.734.354-1.514.354-2.324a7.75 7.75 0 1 0-15.387 1.325zM10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z"></path></svg>');
+  --pw-media-icon: url('data:image/svg+xml,<svg width="16" height="16" viewBox="0 0 20 20" fill="%23707684" xmlns="http://www.w3.org/2000/svg">    <path d="M3.15 13.628A7.749 7.749 0 0 0 10 17.75a7.74 7.74 0 0 0 6.305-3.242l-2.387-2.127-2.765 2.244-4.389-4.496-3.614 3.5zm-.787-2.303l4.446-4.371 4.52 4.63 2.534-2.057 3.533 2.797c.23-.734.354-1.514.354-2.324a7.75 7.75 0 1 0-15.387 1.325zM10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z"></path></svg>');
+  background-image: var(--pw-media-icon);
 }
 
 .cdx-input-labeled,
@@ -19,6 +20,31 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+/* An empty media block is an invitation, not a form field: a dashed drop zone
+   with the two ways in centred under the icon. The icon moves into the flow, on
+   a row of its own, so icon and buttons stay centred together at any height. */
+.ce-block__content .cdx-input-labeled-preview.cdx-input-gallery {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  row-gap: 8px;
+  min-height: 112px;
+  padding: 16px;
+  border: 1px dashed #cbd5e1; /* slate-300 */
+  border-radius: var(--pw-radius-md, 8px);
+  background-color: #f8fafc; /* slate-50 */
+  background-image: none;
+  box-shadow: none;
+}
+
+.ce-block__content .cdx-input-labeled-preview.cdx-input-gallery::before {
+  content: '';
+  flex-basis: 100%;
+  height: 20px;
+  background: var(--pw-media-icon) center / 20px 20px no-repeat;
+}
+
 .cdx-quote__caption {
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23707684" viewBox="0 0 16 16">   <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/> </svg>');
 }
@@ -37,6 +63,12 @@
 }
 .cdx-input-editable[contentEditable='true'][data-placeholder]:empty:focus::before {
   display: none;
+}
+.flex {
+  display: flex;
+}
+.flex-center {
+  justify-content: center;
 }
 .flex .cdx-input {
   margin: 0 5px;
@@ -79,6 +111,44 @@
 .media-tool__delete:focus-visible {
   outline: 2px solid var(--focus-ring-color, #0284c7);
   outline-offset: 2px;
+}
+
+/** StateBlock: the preview a block switches to (Embed draws a 16:9 box) **/
+[style*='--aspect-ratio'] > :first-child {
+  width: 100%;
+}
+[style*='--aspect-ratio'] > img {
+  height: auto;
+}
+@supports (--custom: property) {
+  [style*='--aspect-ratio'] {
+    position: relative;
+  }
+  [style*='--aspect-ratio']::before {
+    content: '';
+    display: block;
+    padding-bottom: calc(100% / (var(--aspect-ratio)));
+  }
+  [style*='--aspect-ratio'] > :first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
+}
+.hidden {
+  display: none !important;
+}
+.preview-wrapper {
+  background: #f9fafb;
+  border-radius: 3px;
+  opacity: 0.95;
+  position: relative;
+}
+.preview-wrapper:hover {
+  background: repeating-linear-gradient(45deg, #f3f4f6, #fff 15%, #f3f4f6 20%);
+  border-radius: 3px;
+  opacity: 0.75;
 }
 
 /** Toggler **/

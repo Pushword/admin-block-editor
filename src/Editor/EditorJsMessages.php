@@ -109,13 +109,21 @@ final readonly class EditorJsMessages
             ]),
             'tools' => [
                 'attaches' => $this->translate(self::MEDIA),
+                'card_list' => $this->translate([
+                    'Media picker not available' => 'editorMediaPickerUnavailable',
+                    'No page has this slug' => 'editorCardListUnknownSlug',
+                ]),
                 'codeBlock' => $this->translate([
                     'Enter Mermaid code to preview the diagram.' => 'editorMermaidEmpty',
                     'Language' => 'editorLanguage',
                     'Loading preview…' => 'editorMermaidLoading',
                     'Unable to render the Mermaid diagram.' => 'editorMermaidError',
                 ]),
-                'embed' => $this->translate([...self::MEDIA, 'Style' => 'editorStyle']),
+                'embed' => $this->translate([
+                    ...self::MEDIA,
+                    'Add the video URL, its thumbnail and its alternative text first.' => 'editorEmbedIncomplete',
+                    'Style' => 'editorStyle',
+                ]),
                 'gallery' => $this->translate([
                     ...self::MEDIA,
                     'Ce média est déjà présent dans la galerie.' => 'editorMediaAlreadyInGallery',
@@ -131,7 +139,10 @@ final readonly class EditorJsMessages
                     'Collapsible' => 'editorCollapsible',
                     'Group' => 'editorGroup',
                 ]),
-                'header' => $this->translate(['Heading' => 'editorHeading']),
+                'header' => $this->translate([
+                    'Heading' => 'editorHeading',
+                    'Heading level' => 'editorHeadingLevel',
+                ]),
                 'notice' => $this->translate([
                     'Level' => 'editorNoticeLevel',
                     'Notice' => 'editorNotice',
@@ -149,7 +160,14 @@ final readonly class EditorJsMessages
                     'Style' => 'editorStyle',
                     'Text link' => 'editorLinkText',
                 ]),
-                'pages_list' => $this->translate(['No parameters' => 'editorNoParameters']),
+                'pages_list' => $this->translate([
+                    'No parameters' => 'editorNoParameters',
+                    'Say which pages to list first.' => 'editorPagesListIncomplete',
+                ]),
+                'quiz' => $this->translate([
+                    'Media picker not available' => 'editorMediaPickerUnavailable',
+                    'Upload failed' => 'editorUploadFailed',
+                ]),
                 'snippet' => $this->translate([
                     'Choose a snippet first.' => 'editorChooseSnippetFirst',
                     'Choose a snippet…' => 'editorChooseSnippet',

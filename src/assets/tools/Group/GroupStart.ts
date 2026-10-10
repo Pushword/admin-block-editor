@@ -1,13 +1,15 @@
-import { API, BlockAPI, BlockTool, BlockToolConstructorOptions } from '@editorjs/editorjs'
+import { API, BlockTool, BlockToolConstructorOptions } from '@editorjs/editorjs'
 import { IconBrackets } from '@codexteam/icons'
 import './Group.css'
 import make from '../utils/make'
+import { MarkdownUtils } from '../utils/MarkdownUtils'
+import GroupMarker from './GroupMarker'
 import { GroupRegistry } from './GroupRegistry'
 import {
   buildStartCall,
   GroupKind,
   kindOf,
-  startCallArguments,
+  startAttributes,
   startSyntax,
 } from './GroupSyntax'
 
@@ -34,9 +36,7 @@ const stripAttributeBreakers = (value: string): string => value.replace(/["'<>]/
  * holds the toggle and the button, so layout classes belong on a plain group
  * nested inside, not here.
  */
-export default class GroupStart implements BlockTool {
-  private api: API
-  private block: BlockAPI
+export default class GroupStart extends GroupMarker implements BlockTool {
   private data: Required<GroupStartData>
   private readOnly: boolean
 
@@ -53,13 +53,8 @@ export default class GroupStart implements BlockTool {
     return { icon: IconBrackets, title: 'Group' }
   }
 
-  static get isReadOnlySupported(): boolean {
-    return true
-  }
-
   constructor({ data, api, block, readOnly }: BlockToolConstructorOptions<GroupStartData>) {
-    this.api = api
-    this.block = block
+    super({ api, block })
     this.readOnly = readOnly
     this.isFresh = Object.keys(data ?? {}).length === 0
     this.data = {
@@ -80,7 +75,7 @@ export default class GroupStart implements BlockTool {
 
     wrapper.appendChild(
       this.input('pw-group-anchor', '#' + this.api.i18n.t('Anchor'), this.data.anchor, (value) => {
-        this.data.anchor = value.replace(/[^a-z0-9_-]/gi, '')
+        this.data.anchor = MarkdownUtils.sanitizeAnchor(value)
       }),
     )
     this.classInput = this.input('pw-group-class', '', this.data.class, (value) => {
@@ -169,21 +164,12 @@ export default class GroupStart implements BlockTool {
     }
   }
 
-  rendered(): void {
+  override rendered(): void {
     if (this.isFresh) {
       this.isFresh = false
       this.closeFreshGroup()
     }
-    GroupRegistry.schedule(this.api)
-  }
-
-  moved(): void {
-    GroupRegistry.schedule(this.api)
-  }
-
-  removed(): void {
-    GroupRegistry.removePartnerOf(this.api, this.block.id)
-    GroupRegistry.schedule(this.api)
+    super.rendered()
   }
 
   /** A toolbox-inserted group opens ready to type into: end marker + empty paragraph. */
@@ -228,25 +214,11 @@ export default class GroupStart implements BlockTool {
   }
 
   static importFromMarkdown(editor: API, markdown: string): void {
-    const trimmed = markdown.trim()
-    const syntax = startSyntax(trimmed)
+    const syntax = startSyntax(markdown)
 
-    if ('div' === syntax) {
-      editor.blocks.insert(GroupRegistry.START, {
-        anchor: /\sid="([^"]*)"/.exec(trimmed)?.[1] ?? '',
-        class: /\sclass="([^"]*)"/.exec(trimmed)?.[1] ?? '',
-        collapsible: false,
-        legacy: false,
-      })
-
-      return
-    }
-
-    const [id, className] = 'twig' === syntax ? startCallArguments(trimmed) : []
     editor.blocks.insert(GroupRegistry.START, {
-      anchor: id ?? '',
-      class: className ?? '',
-      collapsible: true,
+      ...startAttributes(markdown),
+      collapsible: 'div' !== syntax,
       legacy: 'comment' === syntax,
     })
   }

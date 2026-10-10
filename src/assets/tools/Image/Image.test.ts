@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { afterEach, describe, it, expect, vi } from 'vitest'
 import { API } from '@editorjs/editorjs'
 import Image from './Image'
 import { MediaToolConfig } from '../Abstract/AbstractMediaTool'
@@ -80,6 +80,47 @@ describe('Image – an upload', () => {
 
     expect(wrapper.querySelector('img')?.getAttribute('src')).toBe('/media/md/photo.jpg')
     expect(tool.save(wrapper)).toEqual({ media: 'photo.jpg', caption: 'A caption' })
+  })
+
+  it('takes its caption from the name the answer gives', () => {
+    const tool = imageWith('')
+    const wrapper = tool.render()
+
+    tool.onUpload({ success: true, file: { media: 'photo.jpg', name: 'A photo' } })
+
+    expect(tool.save(wrapper)).toEqual({ media: 'photo.jpg', caption: 'A photo' })
+  })
+})
+
+describe('Image – an older block', () => {
+  it('takes the media name from the file url and the caption from its name', () => {
+    expect(
+      Image.normalizeData({ file: { url: '/media/default/1.jpg', name: 'Demo 1' } }),
+    ).toEqual({
+      media: '1.jpg',
+      caption: 'Demo 1',
+    })
+  })
+})
+
+describe('Image – a renamed media', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('shows and saves the name the media goes by now', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => ({ ok: true, json: async () => ({ fileName: 'new-name.jpg' }) })),
+    )
+    const tool = imageWith('Old Name.jpg')
+    const wrapper = tool.render()
+    const img = wrapper.querySelector('img')!
+
+    img.dispatchEvent(new Event('error'))
+
+    await vi.waitFor(() => expect(img.getAttribute('src')).toBe('/media/md/new-name.jpg'))
+    expect(tool.save(wrapper).media).toBe('new-name.jpg')
   })
 })
 

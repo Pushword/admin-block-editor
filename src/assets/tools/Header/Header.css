@@ -1,6 +1,8 @@
+/* The level badge leads the heading, on its first baseline: the level is read
+   before the text, and every heading starts on the same edge past the badge. */
 .ce-header-container {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
   position: relative;
   padding-top: 15px;
@@ -25,51 +27,67 @@
 .ce-header-container h5,
 .ce-header-container h6 {
   flex: 1;
+  min-width: 0;
   margin: 0;
-  padding: 3px 0 3px 45px !important; /* Left padding for absolutely positioned select */
+  padding: 3px 0 !important;
+}
+
+/* The page title above the editor is 22px bold: every heading stays under it,
+   and weight, not size alone, sets them apart from the 16px body copy. */
+.ce-header-container h2,
+.ce-header-container h3,
+.ce-header-container h4,
+.ce-header-container h5,
+.ce-header-container h6 {
+  font-weight: 600;
 }
 
 .ce-header-container h2 {
-  font-size: 30px; /* Tailwind 3xl (1.875rem) */
+  font-size: var(--pw-text-lg, 20px);
 }
 
 .ce-header-container h3 {
-  font-size: 24px; /* Tailwind 2xl (1.5rem) */
+  font-size: 18px;
 }
 
-.ce-header-container h4 {
-  font-size: 20px; /* Tailwind xl (1.25rem) */
-}
-
-.ce-header-container h5 {
-  font-size: 18px; /* Tailwind lg (1.125rem) */
-}
-
+.ce-header-container h4,
+.ce-header-container h5,
 .ce-header-container h6 {
-  font-size: 16px; /* Tailwind base (1rem) */
+  font-size: var(--pw-text-md, 16px);
 }
 
-/* Level selector wrapper - positioned absolutely to avoid copy issues */
+/* More room above a heading than below it, so it opens the section that follows
+   instead of trailing the one before. */
+.ce-header-container:has(h2) {
+  margin-top: 16px;
+}
+
+.ce-header-container:has(h3) {
+  margin-top: 8px;
+}
+
+/* Level selector wrapper: kept out of the copied text by ClipboardManager.
+   The label's padding hangs in the gutter, so the level lines up with the
+   body copy. */
 .ce-header-level-wrapper {
-  position: absolute;
-  left: 0;
-  top: 61%;
-  transform: translateY(-50%);
-  z-index: 1;
+  position: relative;
+  flex: none;
+  margin-left: -6px;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
 }
 
-/* Label shows the current heading level - use ::before to avoid text in DOM */
+/* Label shows the current heading level - use ::before to avoid text in DOM.
+   24px of height makes it a target (WCAG 2.5.8), still quiet beside the
+   heading. */
 .ce-header-level-label {
-  display: block;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 3px 8px;
-  font-size: 14px;
-  border-radius: 4px;
-  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: var(--pw-radius-sm, 4px);
+  color: #64748b; /* slate-500 */
   pointer-events: none;
   /* Hide actual text content from copy */
   font-size: 0;
@@ -80,31 +98,49 @@
 /* Display level via pseudo-element (not copyable) */
 .ce-header-level-label::before {
   content: attr(data-level);
-  font-size: 14px;
+  font-size: var(--pw-text-xs, 12px);
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Select overlays the label, opacity 0 but still interactive */
+/* The chevron says the label opens a choice */
+.ce-header-level-label::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+/* Select overlays the label, opacity 0 but still interactive. At 16px, iOS
+   does not zoom the page in when it gets focus. */
 .ce-header-level-wrapper select {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   opacity: 0;
+  font-size: 16px;
   cursor: pointer;
+}
+
+/* A finger needs 44px: the select reaches 10px above and below the 24px label
+   without moving it. */
+@media (pointer: coarse) {
+  .ce-header-level-wrapper select {
+    inset: -10px -4px;
+  }
 }
 
 .ce-header-level-wrapper:hover .ce-header-level-label,
 .ce-header-level-wrapper:focus-within .ce-header-level-label {
-  color: #707684;
-  border-color: #66afe9;
-  box-shadow:
-    inset 0 1px 1px rgba(0, 0, 0, 0.075),
-    0 0 8px rgba(102, 175, 233, 0.6);
+  background-color: #f1f5f9; /* slate-100 */
+  color: #334155; /* slate-700 */
 }
 
 /* WCAG 2.1 AA: Visible focus indicator for keyboard navigation */
-.ce-header-level-wrapper select:focus-visible + .ce-header-level-label {
+.ce-header-level-wrapper:has(select:focus-visible) .ce-header-level-label {
   outline: 2px solid var(--focus-ring-color, #0284c7);
   outline-offset: 2px;
 }

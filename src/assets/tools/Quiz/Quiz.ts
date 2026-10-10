@@ -3,7 +3,13 @@ import make from '../utils/make'
 import ToolboxIcon from './toolbox-icon.svg?raw'
 import SelectIcon from '../Abstract/icon/folder.svg?raw'
 import UploadIcon from '../Abstract/icon/upload.svg?raw'
-import { beginMediaPick, MediaUtils } from '../utils/media'
+import {
+  MediaUtils,
+  openMediaPicker,
+  pickedMediaName,
+  pickFile,
+  uploadMedia,
+} from '../utils/media'
 import { API, BlockToolData } from '@editorjs/editorjs'
 import { BaseTool } from '../Abstract/BaseTool'
 
@@ -87,6 +93,7 @@ const LABELS: { key: string; placeholder: string; only?: QuizMode[] }[] = [
 export default class Quiz extends BaseTool {
   declare public data: QuizData
   private conversationTypes: string[] = []
+  /** Each block needs its own datalist to point at. */
   private ctaListId = ''
   private wrapper!: HTMLElement
   private singleSection!: HTMLElement
@@ -105,9 +112,6 @@ export default class Quiz extends BaseTool {
    * their own `×N` chip and survive an edit untouched.
    */
   private static readonly W_MAX = 3
-
-  /** Each block needs its own datalist to point at. */
-  private static listSeq = 0
 
   private get profileMode(): boolean {
     return 'profile' === this.mode
@@ -133,7 +137,7 @@ export default class Quiz extends BaseTool {
     // Contributed by the quiz bundle's editor tool provider (the form types this
     // site actually declares). Absent when the conversation bundle is not installed.
     this.conversationTypes = Array.isArray(config?.conversationTypes) ? config.conversationTypes : []
-    this.ctaListId = 'cdx-quiz-cta-' + String(++Quiz.listSeq)
+    this.ctaListId = make.uniqueId('cdx-quiz-cta')
 
     const questions =
       Array.isArray(data.questions) && data.questions.length > 0
@@ -738,14 +742,14 @@ export default class Quiz extends BaseTool {
       'cdx-quiz__media-btn',
       { type: 'button', title: 'Browse the media library' },
       SelectIcon,
-      () => this.openMediaPicker(input, syncThumb),
+      () => this.chooseMediaFor(input, syncThumb),
     )
     const upload = make.element(
       'button',
       'cdx-quiz__media-btn',
       { type: 'button', title: 'Upload a file' },
       UploadIcon,
-      () => this.uploadMedia(input, syncThumb),
+      () => this.uploadMediaFor(input, syncThumb),
     )
 
     field.appendChild(thumb)
@@ -758,70 +762,43 @@ export default class Quiz extends BaseTool {
   }
 
   /** Open the shared admin media picker modal and write the chosen filename into `input`. */
-  private openMediaPicker(input: HTMLInputElement, onSet: (value: string) => void): void {
-    const picker = document.querySelector('select[id*="inline_image"]') as HTMLSelectElement | null
-    const wrapper = picker ? (picker.closest('.pw-media-picker') as HTMLElement | null) : null
-    const chooseButton = wrapper
-      ? (wrapper.querySelector('[data-pw-media-picker-action="choose"]') as HTMLButtonElement | null)
-      : null
-
-    if (!picker || !chooseButton) {
-      this.api.notifier.show({ message: 'Media picker not available', style: 'error' })
+  private chooseMediaFor(input: HTMLInputElement, onSet: (value: string) => void): void {
+    const pick = openMediaPicker({
+      onPick: (media) => {
+        const mediaName = pickedMediaName(media)
+        input.value = mediaName
+        onSet(mediaName)
+      },
+    })
+    if (!pick) {
+      this.api.notifier.show({
+        message: this.api.i18n.t('Media picker not available'),
+        style: 'error',
+      })
       return
     }
 
-    // The registry is shared, so this also drops a pick another block abandoned
-    const pick = beginMediaPick()
     this.mediaPick = pick
-
-    const messageHandler = (event: MessageEvent): void => {
-      if (event.origin !== window.location.origin) return
-      const payload = event.data
-      if (!payload || payload.type !== 'pw-media-picker-select' || payload.fieldId !== picker.id) return
-
-      pick.abort()
-      const media = payload.media
-      if (!media) return
-
-      const mediaName = media.fileName || String(media.id)
-      input.value = mediaName
-      onSet(mediaName)
-    }
-
-    window.addEventListener('message', messageHandler, { signal: pick.signal })
-    chooseButton.click()
   }
 
   /** Upload a local file through the shared media endpoint, then write its filename into `input`. */
-  private uploadMedia(input: HTMLInputElement, onSet: (value: string) => void): void {
-    const file = make.element('input', null, { type: 'file', accept: 'image/*' }) as HTMLInputElement
-    file.style.display = 'none'
-    file.addEventListener('change', async () => {
-      const chosen = file.files?.[0]
-      if (chosen) {
-        const formData = new FormData()
-        formData.append('image', chosen)
-        try {
-          const response = await fetch('/admin/media/block', { method: 'POST', body: formData })
-          if (!response.ok) throw new Error(await MediaUtils.uploadErrorMessage(response))
-          const data = await response.json()
-          const mediaName: string | undefined = data?.file?.media
-          if (mediaName) {
-            input.value = mediaName
-            onSet(mediaName)
-          }
-        } catch (error) {
-          const detail = error instanceof Error ? error.message : ''
-          this.api.notifier.show({
-            message: detail ? `Upload failed (${detail})` : 'Upload failed',
-            style: 'error',
-          })
+  private uploadMediaFor(input: HTMLInputElement, onSet: (value: string) => void): void {
+    pickFile('image/*', async (file) => {
+      try {
+        const mediaName = (await uploadMedia(file)).file?.media
+        if (mediaName) {
+          input.value = mediaName
+          onSet(mediaName)
         }
+      } catch (error) {
+        const detail = error instanceof Error ? error.message : ''
+        const message = this.api.i18n.t('Upload failed')
+        this.api.notifier.show({
+          message: detail ? `${message} (${detail})` : message,
+          style: 'error',
+        })
       }
-      file.remove()
     })
-    document.body.appendChild(file)
-    file.click()
   }
 
   public destroy(): void {

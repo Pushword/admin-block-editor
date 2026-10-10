@@ -2,13 +2,12 @@ import './CardList.css'
 import make from '../utils/make'
 import ToolboxIcon from './toolbox-icon.svg?raw'
 import { MarkdownUtils } from '../utils/MarkdownUtils'
-import { beginMediaPick, MediaUtils } from '../utils/media'
+import { MediaUtils, openMediaPicker, pickedMediaName } from '../utils/media'
 import { API, BlockToolData } from '@editorjs/editorjs'
 import { BlockTuneData } from '@editorjs/editorjs/types/block-tunes/block-tune-data'
 import { Suggest } from '../../../../../admin/src/Resources/assets/suggest.js'
 import { BaseTool } from '../Abstract/BaseTool'
 import { exportCardListToMarkdown } from './CardListExportToMarkdown'
-import { jsonrepair } from 'jsonrepair'
 import DOMPurify from 'dompurify'
 import * as he from 'he'
 import Raw from '../Raw/Raw'
@@ -42,6 +41,7 @@ interface CardListItemNodes {
   wrapper: HTMLElement
   idInput: HTMLInputElement
   pageInput: HTMLInputElement
+  slugError: HTMLElement
   titleInput: HTMLElement
   imageContainer: HTMLElement
   imageValue: string
@@ -154,6 +154,13 @@ export default class CardList extends BaseTool {
       placeholder,
     }) as HTMLInputElement
     const pageSuggester = make.element('div', 'page-suggester')
+    // An unknown slug is said in words, not only by the red border.
+    const slugError = make.element('p', 'cardlist-slug-error', {
+      id: make.uniqueId('cardlist-slug-error'),
+    })
+    slugError.textContent = this.api.i18n.t('No page has this slug')
+    slugError.hidden = true
+    pageInput.setAttribute('aria-describedby', slugError.id)
     pageInputWrapper.appendChild(pageInput)
     pageInputWrapper.appendChild(pageSuggester)
 
@@ -171,15 +178,13 @@ export default class CardList extends BaseTool {
     pageInput.addEventListener('blur', () => {
       if (slugValidationTimeout) clearTimeout(slugValidationTimeout)
       slugValidationTimeout = setTimeout(() => {
-        const slug = pageInput.value
-        const isValid = this.isValidSlug(slug)
-        pageInput.classList.toggle('cardlist-slug-invalid', !isValid)
+        CardList.showSlugValidity(pageInput, slugError, this.isValidSlug(pageInput.value))
       }, 500)
     })
 
     // Clear invalid state when user starts typing and update placeholder if cleared
     pageInput.addEventListener('input', () => {
-      pageInput.classList.remove('cardlist-slug-invalid')
+      CardList.showSlugValidity(pageInput, slugError, true)
       // Reset placeholder to default when slug has value
       if (pageInput.value) {
         pageInput.placeholder = 'Page slug...'
@@ -349,12 +354,15 @@ export default class CardList extends BaseTool {
     })
 
     wrapper.appendChild(header)
+    // Under the header row, so the row's buttons stay centred on the input.
+    wrapper.appendChild(slugError)
     wrapper.appendChild(customFields)
 
     return {
       wrapper,
       idInput,
       pageInput,
+      slugError,
       titleInput,
       imageContainer,
       imageValue,
@@ -368,19 +376,23 @@ export default class CardList extends BaseTool {
     }
   }
 
-  private createField(label: string, name: string, value: string): HTMLElement {
+  private labelledField(label: string, control: HTMLElement): HTMLElement {
     const field = make.element('div', 'cardlist-item-field')
     const labelEl = make.element('label')
     labelEl.textContent = label
+    field.appendChild(labelEl)
+    field.appendChild(control)
+    return field
+  }
+
+  private createField(label: string, name: string, value: string): HTMLElement {
     const input = make.element('input', null, {
       type: 'text',
       name,
       value,
       placeholder: label,
-    }) as HTMLInputElement
-    field.appendChild(labelEl)
-    field.appendChild(input)
-    return field
+    })
+    return this.labelledField(label, input)
   }
 
   private createContentEditableField(
@@ -388,9 +400,6 @@ export default class CardList extends BaseTool {
     name: string,
     value: string,
   ): HTMLElement {
-    const field = make.element('div', 'cardlist-item-field')
-    const labelEl = make.element('label')
-    labelEl.textContent = label
     const editable = make.element(
       'div',
       ['cardlist-description', 'ce-paragraph', 'cdx-block'],
@@ -416,9 +425,7 @@ export default class CardList extends BaseTool {
       }
     })
 
-    field.appendChild(labelEl)
-    field.appendChild(editable)
-    return field
+    return this.labelledField(label, editable)
   }
 
   private createHtmlEditableField(
@@ -426,9 +433,6 @@ export default class CardList extends BaseTool {
     name: string,
     value: string,
   ): HTMLElement {
-    const field = make.element('div', 'cardlist-item-field')
-    const labelEl = make.element('label')
-    labelEl.textContent = label
     const editable = make.element('div', ['cardlist-title'], {
       contentEditable: !this.readOnly ? 'true' : 'false',
       'data-name': name,
@@ -441,9 +445,7 @@ export default class CardList extends BaseTool {
         ALLOWED_ATTR: ['class', 'href', 'rel', 'target'],
       })
     }
-    field.appendChild(labelEl)
-    field.appendChild(editable)
-    return field
+    return this.labelledField(label, editable)
   }
 
   private createIconCheckboxField(
@@ -456,7 +458,7 @@ export default class CardList extends BaseTool {
     const input = make.element('input', null, {
       type: 'checkbox',
       name,
-      id: `${name}-${Date.now()}`,
+      id: make.uniqueId(name),
     }) as HTMLInputElement
     if (checked) {
       input.checked = true
@@ -476,10 +478,6 @@ export default class CardList extends BaseTool {
     value: string,
     itemIndex: number,
   ): { field: HTMLElement; container: HTMLElement; value: string } {
-    const field = make.element('div', 'cardlist-item-field')
-    const labelEl = make.element('label')
-    labelEl.textContent = label
-
     const container = make.element('div', 'cardlist-media-picker')
     container.dataset.value = value
 
@@ -498,7 +496,7 @@ export default class CardList extends BaseTool {
       { type: 'button' },
       ImageIcon + ' Select',
     )
-    selectBtn.addEventListener('click', () => this.openMediaPicker(itemIndex))
+    selectBtn.addEventListener('click', () => this.chooseItemImage(itemIndex))
 
     const removeBtn = make.element(
       'button',
@@ -519,50 +517,22 @@ export default class CardList extends BaseTool {
     container.appendChild(preview)
     container.appendChild(actions)
 
-    field.appendChild(labelEl)
-    field.appendChild(container)
-
-    return { field, container, value }
+    return { field: this.labelledField(label, container), container, value }
   }
 
-  private openMediaPicker(itemIndex: number): void {
-    const selectElement = document.querySelector(
-      'select[id*="inline_image"]',
-    ) as HTMLSelectElement | null
-    if (!selectElement) {
-      this.api.notifier.show({ message: 'Media picker not available', style: 'error' })
+  private chooseItemImage(itemIndex: number): void {
+    const pick = openMediaPicker({
+      onPick: (media) => this.setItemImage(itemIndex, pickedMediaName(media)),
+    })
+    if (!pick) {
+      this.api.notifier.show({
+        message: this.api.i18n.t('Media picker not available'),
+        style: 'error',
+      })
       return
     }
 
-    const pickerWrapper = selectElement.closest('.pw-media-picker') as HTMLElement | null
-    if (!pickerWrapper) return
-
-    const actionButton = pickerWrapper.querySelector(
-      '[data-pw-media-picker-action="choose"]',
-    ) as HTMLButtonElement | null
-    if (!actionButton) return
-
-    // The registry is shared, so this also drops a pick another block abandoned
-    const pick = beginMediaPick()
     this.mediaPick = pick
-
-    const messageHandler = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return
-      const payload = event.data
-      if (!payload || payload.type !== 'pw-media-picker-select') return
-      if (payload.fieldId !== selectElement.id) return
-
-      pick.abort()
-
-      const media = payload.media
-      if (!media) return
-
-      const mediaName = media.fileName || String(media.id)
-      this.setItemImage(itemIndex, mediaName)
-    }
-
-    window.addEventListener('message', messageHandler, { signal: pick.signal })
-    actionButton.click()
   }
 
   public destroy(): void {
@@ -696,18 +666,26 @@ export default class CardList extends BaseTool {
 
   public validate(): boolean {
     this.updateDataFromNodes()
-    if (this.data.items.length === 0) return false
 
-    // Check all slugs are valid (visual feedback already handled by blur event)
-    let allValid = true
+    // An unknown slug is flagged, not refused: Editor.js drops a block that
+    // fails validation from the saved content, cards and all.
     this.itemNodes.forEach((nodes) => {
-      const slug = nodes.pageInput.value
-      const isValid = this.isValidSlug(slug)
-      nodes.pageInput.classList.toggle('cardlist-slug-invalid', !isValid)
-      if (!isValid) allValid = false
+      const isValid = this.isValidSlug(nodes.pageInput.value)
+      CardList.showSlugValidity(nodes.pageInput, nodes.slugError, isValid)
     })
 
-    return allValid
+    return this.data.items.length > 0
+  }
+
+  private static showSlugValidity(
+    input: HTMLInputElement,
+    message: HTMLElement,
+    isValid: boolean,
+  ): void {
+    input.classList.toggle('cardlist-slug-invalid', !isValid)
+    if (isValid) input.removeAttribute('aria-invalid')
+    else input.setAttribute('aria-invalid', 'true')
+    message.hidden = isValid
   }
 
   public static exportToMarkdown(data: CardListData, tunes?: BlockTuneData): string {
@@ -716,39 +694,30 @@ export default class CardList extends BaseTool {
 
   static importFromMarkdown(editor: API, markdown: string): void {
     const result = MarkdownUtils.parseTunesFromMarkdown(markdown)
-    const tunes: BlockTuneData = result.tunes
-    markdown = result.markdown
+    const call = CardList.parseCall(result.markdown)
+    if (call === null) return Raw.importFromMarkdown(editor, markdown)
 
-    // Match: {{ card_list([...]) }} or {{ card_list([...], 'class', 'anchor') }}
-    // Supports both single and double quotes
-    const match = markdown.match(
-      /\{\{\s*card_list\(\s*(\[.*\])(?:\s*,\s*['"]([^'"]*)['"]\s*)?(?:\s*,\s*['"]([^'"]*)['"]\s*)?\s*\)\s*\}\}/s,
-    )
-    if (!match || !match[1]) return
+    const data: CardListData = { items: call.items }
+    const tunes = MarkdownUtils.parseTuneArguments(call.args, result.tunes)
 
-    try {
-      const items = JSON.parse(jsonrepair(match[1])) as CardListItem[]
-      const data: CardListData = { items }
+    const block = editor.blocks.insert('card_list', data)
+    editor.blocks.update(block.id, data, tunes)
+  }
 
-      // Extract class and anchor from additional arguments
-      if (match[2]) tunes.class = match[2]
-      if (match[3]) tunes.anchor = match[3]
+  /** The cards and the quoted class and anchor arguments of a block that is one card_list() call. */
+  private static parseCall(
+    markdown: string,
+  ): { items: CardListItem[]; args: string[] } | null {
+    const call = MarkdownUtils.extractJsonCall('card_list', markdown)
+    if (call === null || !Array.isArray(call.json)) return null
 
-      const block = editor.blocks.insert('card_list', data)
-      editor.blocks.update(block.id, data, tunes)
-    } catch (e) {
-      console.error('Failed to parse card_list data:', e)
-      Raw.importFromMarkdown(editor, markdown)
-    }
+    const args = MarkdownUtils.extractTwigProperties(call.args)
+    if (args === null || args.length > 2) return null
+
+    return { items: call.json, args }
   }
 
   static isItMarkdownExported(markdown: string): boolean {
-    return (
-      markdown
-        .trim()
-        .match(
-          /\{\{\s*card_list\(\s*\[.*\](?:\s*,\s*['"][^'"]*['"])?(?:\s*,\s*['"][^'"]*['"])?\s*\)\s*\}\}/s,
-        ) !== null
-    )
+    return CardList.parseCall(markdown) !== null
   }
 }

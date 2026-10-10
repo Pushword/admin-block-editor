@@ -1,12 +1,12 @@
 import { API, OutputData } from '@editorjs/editorjs'
 import { logger } from './tools/utils/logger'
+import { loadMonaco } from './tools/utils/loadScript'
+import { boundInputOf } from './boundInput'
 
 /**
  * Gestionnaire des modes d'édition (EditorJS, JSON, Markdown)
  */
 export class EditorModeManager {
-  private static monacoLoaderPromise: Promise<unknown> | null = null
-  private static readonly MONACO_SCRIPT_URL = '/bundles/pushwordadmin/monaco/app.js'
   private readonly editorId: string
   private monacoInstance: any = null
 
@@ -32,21 +32,9 @@ export class EditorModeManager {
    * Récupère l'élément input de l'éditeur
    */
   private getEditorInput(): HTMLInputElement | HTMLTextAreaElement | null {
-    const editorHolder = document.getElementById(this.editorId)
-    if (!editorHolder) {
-      logger.warn("Élément holder de l'éditeur non trouvé", { editorId: this.editorId })
-      return null
-    }
-
-    const inputId = editorHolder.getAttribute('data-input-id')
-
-    const input = document.getElementById(inputId || '') as
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | null
-
+    const input = boundInputOf(this.editorId)
     if (!input) {
-      logger.warn('Élément input non trouvé', { inputId })
+      logger.warn('Élément input non trouvé', { editorId: this.editorId })
     }
 
     return input
@@ -162,7 +150,7 @@ export class EditorModeManager {
   private initMonacoEditor(textarea: HTMLTextAreaElement): void {
     setTimeout(async () => {
       try {
-        const helperReady = await this.ensureMonacoHelperLoaded()
+        const helperReady = await loadMonaco()
         if (!helperReady || !window.monacoHelper) {
           logger.error('Monaco helper non disponible', {
             editorId: this.editorId,
@@ -197,70 +185,6 @@ export class EditorModeManager {
         })
       }
     }, 0)
-  }
-
-  private async ensureMonacoHelperLoaded(): Promise<boolean> {
-    if (window.monacoHelper) {
-      return true
-    }
-
-    // pushword/admin fetches the same bundle on any page holding a Monaco field,
-    // and parks its promise here: without sharing it, a form carrying both would
-    // pull those megabytes twice.
-    if (window.pwMonacoLoading) {
-      EditorModeManager.monacoLoaderPromise = window.pwMonacoLoading
-    }
-
-    if (!EditorModeManager.monacoLoaderPromise) {
-      EditorModeManager.monacoLoaderPromise = new Promise<void>((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = window.pwMonacoUrl ?? EditorModeManager.MONACO_SCRIPT_URL
-        script.dataset.pwMonaco = '1'
-        script.async = true
-        script.defer = true
-
-        const cleanup = (): void => {
-          script.removeEventListener('load', onLoad)
-          script.removeEventListener('error', onError)
-        }
-
-        const onLoad = (): void => {
-          cleanup()
-          resolve()
-        }
-
-        const onError = (event: Event): void => {
-          cleanup()
-          reject(event)
-        }
-
-        script.addEventListener('load', onLoad)
-        script.addEventListener('error', onError)
-        document.head.appendChild(script)
-      })
-    }
-
-    try {
-      await EditorModeManager.monacoLoaderPromise
-    } catch (error) {
-      logger.error('Erreur lors du chargement de Monaco', {
-        editorId: this.editorId,
-        error,
-      })
-      EditorModeManager.monacoLoaderPromise = null
-
-      return false
-    }
-
-    if (!window.monacoHelper) {
-      logger.error('Monaco helper toujours indisponible après chargement', {
-        editorId: this.editorId,
-      })
-
-      return false
-    }
-
-    return true
   }
 
   private switchTo(format: string = 'json'): void {
@@ -387,19 +311,11 @@ export class EditorModeManager {
   }
 
   private showOrHideBtn(show: boolean = true, btn: string = 'all'): void {
-    const btnToggleMarkdown = document.querySelector(
-      `[onclick="toggleEditor('markdown')"]`,
-    ) as HTMLElement
-    const btnToggleEditor = document.querySelector(
-      `[onclick="toggleEditor()"]`,
-    ) as HTMLElement
-    if (btnToggleMarkdown && ['markdown', 'all'].includes(btn)) {
-      btnToggleMarkdown.style.opacity = show ? '1' : '0'
-      btnToggleMarkdown.style.pointerEvents = show ? 'auto' : 'none'
-    }
-    if (btnToggleEditor && ['json', 'all'].includes(btn)) {
-      btnToggleEditor.style.opacity = show ? '1' : '0'
-      btnToggleEditor.style.pointerEvents = show ? 'auto' : 'none'
+    for (const mode of ['markdown', 'json']) {
+      if (btn !== 'all' && btn !== mode) continue
+      const button = document.querySelector<HTMLElement>(`[data-pw-editor-mode="${mode}"]`)
+      // Hidden but still holding its place, so the other buttons don't shift.
+      if (button) button.style.visibility = show ? '' : 'hidden'
     }
   }
 

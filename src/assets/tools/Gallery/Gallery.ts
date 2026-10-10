@@ -15,7 +15,6 @@ import {
 } from '../Abstract/AbstractMediaTool'
 import Raw from '../Raw/Raw'
 import make from '../utils/make'
-import { jsonrepair } from 'jsonrepair'
 
 interface GalleryItem {
   caption?: string
@@ -68,49 +67,22 @@ export default class Gallery extends AbstractMediaTool {
   }
 
   static normalizeData(data: GalleryDataToNormalize | GalleryData): GalleryData {
+    // The current shape wraps the items; pw:block:upgrade left a bare array of names.
+    let items: GalleryDataToNormalize | GalleryItem[] = []
+    if (Array.isArray(data)) {
+      items = data
+    } else if (Array.isArray(data?.items)) {
+      items = data.items
+    }
     const normalizedItems: GalleryItem[] = []
 
-    if (
-      data &&
-      typeof data === 'object' &&
-      'items' in data &&
-      Array.isArray(data.items)
-    ) {
-      for (const item of data.items) {
-        if (typeof item !== 'object') continue
-        const media =
-          item.media ||
-          (item.url ? MediaUtils.extractMediaName(item.url) : null) ||
-          item.file?.media
-        if (!media) continue
-        normalizedItems.push({ media: media, caption: item.caption || '' })
-      }
-
-      return { items: normalizedItems }
-    }
-
-    if (!data || !Array.isArray(data)) {
-      return { items: [] }
-    }
-
-    for (const item of data) {
-      if (typeof item === 'string') {
-        normalizedItems.push({ media: item, caption: '' })
-      } else if (typeof item === 'object' && item !== null) {
-        // Priorité: item.media > item.url > item.file?.media
-        let media = null
-        if ('media' in item && item.media) {
-          media = item.media
-        } else if ('url' in item && item.url) {
-          media = MediaUtils.extractMediaName(item.url)
-        } else if ('file' in item && item.file && 'media' in item.file) {
-          media = item.file.media
-        }
-
-        if (media) {
-          normalizedItems.push({ media: media, caption: item.caption || '' })
-        }
-      }
+    for (const item of items) {
+      const media = MediaUtils.getMediaNameFromData(item)
+      if (!media) continue
+      normalizedItems.push({
+        media,
+        caption: (typeof item === 'object' && item.caption) || '',
+      })
     }
 
     return { items: normalizedItems }
@@ -136,26 +108,19 @@ export default class Gallery extends AbstractMediaTool {
     }
   }
 
-  onUpload(response: UploadResponse): void {
-    if (!this.responsIsValid(response)) {
-      return this.handleUploadError('incorrect response: ' + JSON.stringify(response))
-    }
-
-    const mediaName =
-      response.file.media || MediaUtils.extractMediaName(response.file.url)
-
+  protected fillWith(file: UploadResponse['file']): void {
     // Vérifier si le média existe déjà dans la galerie
-    if (this.isMediaAlreadyInGallery(mediaName)) {
+    if (this.isMediaAlreadyInGallery(file.media)) {
       this.handleDuplicateMediaError()
       return
     }
 
     const itemElement = this.getLastGalleryItem()
 
-    this._createImage(response.file.url || '', itemElement, response.file.name || '')
+    this._createImage(file.url || '', itemElement, file.name || '')
     this.data.items.push({
-      media: mediaName,
-      caption: response.file.name || '',
+      media: file.media,
+      caption: file.name || '',
     })
 
     itemElement.classList.add('cdxcarousel-item--empty')
@@ -291,18 +256,11 @@ export default class Gallery extends AbstractMediaTool {
    * Create Image View
    */
   _createImage(url: string, item: HTMLElement, captionText: string = ''): void {
-    const image = document.createElement('img')
-    image.src = url
-
-    image.addEventListener('error', async () => {
-      const mediaName = MediaUtils.extractMediaName(image.src)
-      const resolved = await MediaUtils.resolveMediaName(mediaName)
-      if (resolved && resolved !== mediaName) {
-        const newUrl = MediaUtils.buildFullUrl(resolved)
-        image.src = newUrl
-        item.style.setProperty('--bg-image-url', `url('${newUrl}')`)
-      }
-    })
+    const image = MediaUtils.createImage(
+      MediaUtils.extractMediaName(url),
+      (_renamed, newUrl) => item.style.setProperty('--bg-image-url', `url('${newUrl}')`),
+      url,
+    )
 
     const caption = make.element('div', ['image-tool__caption', this.api.styles.input], {
       contentEditable: true,
@@ -387,78 +345,46 @@ export default class Gallery extends AbstractMediaTool {
 
   static importFromMarkdown(editor: API, markdown: string): void {
     const result = MarkdownUtils.parseTunesFromMarkdown(markdown)
-    const tunes: BlockTuneData = result.tunes
-    const markdownWithoutTunes = result.markdown
-
-    const galleryMatch = markdownWithoutTunes.match(
-      /{{ gallery\(\s*(images:\s*)?(?<medias>\{.*?\})\s*(,\s*clickable:\s*(?<clickable>true|false))?\) }}/s,
-    )
-
-    tunes.clickableTune = {
-      value: [true, 'true', '1'].includes(galleryMatch?.groups?.clickable || false)
-        ? true
-        : false,
-    }
-
-    if (
-      !galleryMatch ||
-      !Gallery.importGalleryFromJsonString(
-        galleryMatch.groups?.medias || '{}',
-        editor,
-        tunes,
-      )
-    ) {
+    const call = Gallery.parseCall(result.markdown)
+    if (call === null || call.items.length === 0) {
       return Raw.importFromMarkdown(editor, markdown)
     }
+
+    const tunes: BlockTuneData = result.tunes
+    tunes.clickableTune = { value: call.clickable }
+
+    const block = editor.blocks.insert('gallery')
+
+    // Pass an object with 'items' property, not an array
+    const dataToUpdate = { items: call.items }
+    editor.blocks.update(block.id, dataToUpdate, tunes)
+
+    block.validate(dataToUpdate)
+    block.dispatchChange()
   }
 
-  private static parseGalleryData(jsonString: string): Record<string, string> | false {
-    try {
-      return JSON.parse(jsonrepair(jsonString))
-    } catch {
-      return false
+  /** The images and the clickable flag of a block that is one gallery() call. */
+  private static parseCall(
+    markdown: string,
+  ): { items: GalleryItem[]; clickable: boolean } | null {
+    const call = MarkdownUtils.extractJsonCall('gallery', markdown)
+    if (call === null || Array.isArray(call.json)) return null
+
+    const clickableArg = /^(?:clickable:\s*(true|false|0|1))?$/.exec(call.args)
+    if (clickableArg === null) return null
+
+    return {
+      items: Object.entries(call.json as Record<string, unknown>).map(
+        ([media, caption]) => ({
+          caption: String(caption),
+          media: String(media),
+        }),
+      ),
+      clickable: ['true', '1'].includes(clickableArg[1] ?? ''),
     }
-  }
-
-  private static importGalleryFromJsonString(
-    jsonString: string,
-    editor: API,
-    tunes: BlockTuneData,
-  ): boolean {
-    const galleryData = Gallery.parseGalleryData(jsonString)
-    if (galleryData === false) {
-      return false
-    }
-
-    const galleryItems: GalleryItem[] = Object.entries(galleryData).map(
-      ([media, caption]) => ({
-        caption: String(caption),
-        media: String(media),
-      }),
-    )
-
-    if (galleryItems.length > 0) {
-      const block = editor.blocks.insert('gallery')
-
-      // Pass an object with 'items' property, not an array
-      const dataToUpdate = { items: galleryItems }
-      editor.blocks.update(block.id, dataToUpdate, tunes)
-
-      block.validate(dataToUpdate)
-      block.dispatchChange()
-      return true
-    }
-
-    return false
   }
 
   static isItMarkdownExported(markdown: string): boolean {
-    return (
-      markdown
-        .trim()
-        .match(
-          /{{ gallery\(\s*(images:\s*)?\{.*?\}\s*(,\s*clickable:\s*(true|false|0|1))?\) }}/s,
-        ) !== null
-    )
+    return Gallery.parseCall(markdown) !== null
   }
 }

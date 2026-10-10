@@ -1,14 +1,85 @@
 /* purgecss start ignore */
 
+/* The admin form lays its fields out in an auto-sized grid track, which grows
+   to the widest min-content inside. Monaco sizes itself in px from the width it
+   is given, so once a code block measured a wide track it kept it open: on a
+   phone the whole editor overflowed and was clipped on the right. Containment
+   keeps the editor's content out of that measure. */
+.editorjs-holder {
+  contain: inline-size;
+}
+
+/* JSON, Markdown and copy: tertiary actions, so quiet grey icons — but each a
+   real, labelled button with a 32px target, not a 12px link. */
+.pw-editor-modes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 8px 4px 0;
+}
+
+.pw-editor-mode {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pw-radius-sm, 4px);
+  background: transparent;
+  color: #6b7280; /* gray-500 */
+  cursor: pointer;
+}
+
+.pw-editor-mode:hover {
+  background: #f1f5f9; /* slate-100 */
+  color: #334155; /* slate-700 */
+}
+
+.pw-editor-mode:focus-visible {
+  outline: 2px solid var(--focus-ring-color, #0284c7);
+  outline-offset: 2px;
+}
+
+.pw-editor-mode svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* On a phone, the form card's 24px padding, on top of the page's and the
+   widget's, left a text column about 34 characters wide. */
+@media (max-width: 575.98px) {
+  .form-fieldset-body:has(.editorjs-holder) {
+    padding-inline: 12px;
+  }
+
+  /* The edit toggle of Embed and Pages List hangs in that gutter: keep it in. */
+  .ce-block__content .toggle-label {
+    right: -20px;
+  }
+}
+
+/* Body copy: at the admin's 14px, the 650px column ran ~95 characters a line;
+   16px brings it back near 80 (1.6 line height comes with the paragraph tool). */
+.codex-editor__redactor {
+  font-size: 16px;
+}
+
 /* heading anchor size */
 .ce-header::after {
   font-size: 1rem;
   padding-top: 2rem;
 }
 
+/* An obfuscated link is told apart by its dashed underline as well as its
+   colour, which alone a colour-blind editor would miss; emerald-700 keeps the
+   4.5:1 contrast text needs. */
 a[rel='obfuscate']:not(.link-btn),
 a[rel='encrypt']:not(.link-btn) {
-  color: #059669;
+  color: #047857;
+  text-decoration-style: dashed;
 }
 
 @media screen and (min-width: 1200px) {
@@ -20,8 +91,10 @@ a[rel='encrypt']:not(.link-btn) {
 
 /** editorjs quote ui inspired by https://github.com/editor-js/quote/pull/23 */
 
+/* One accent bar holds the text and its caption together. The caption is
+   supporting content: muted and smaller, not link-blue behind a rule of its own. */
 .cdx-quote {
-  border-left: 0;
+  border-left: 3px solid #cbd5e1; /* slate-300 */
 }
 
 .cdx-quote .cdx-input[data-placeholder]::before {
@@ -30,21 +103,35 @@ a[rel='encrypt']:not(.link-btn) {
 
 .cdx-quote__text {
   min-height: unset !important;
-  margin-bottom: 10px;
+  margin-bottom: 0;
   border: none;
-  border-left: 1px solid #517b9f;
   box-shadow: none;
   border-radius: 0;
-  margin-bottom: 0;
 }
 
 .cdx-quote__caption {
   border: none;
-  border-left: 1px solid #517b9f;
   box-shadow: none;
   border-radius: 0;
-  color: #3e58fb;
-  border-top: 1px solid #00000017;
+  color: #64748b; /* slate-500 */
+  font-size: var(--pw-text-sm, 14px);
+}
+
+/* Inline code is another voice, not an error: monospace on a neutral chip.
+   Editor.js' red-on-pink default made every snippet of a docs page look wrong.
+   A translucent chip in the surrounding text colour reads on any background,
+   tinted notices included. */
+.codex-editor .inline-code {
+  background: rgb(15 23 42 / 0.07);
+  color: inherit;
+  font-family: var(--bs-font-monospace, monospace);
+}
+
+/* A section break is a pause, not content: the 30px black asterisks outweighed
+   the headings around them. */
+.ce-delimiter::before {
+  color: #94a3b8; /* slate-400 */
+  font-size: var(--pw-text-lg, 20px);
 }
 
 /* @editorjs/list sets pre-wrap: a soft line break kept from the markdown
@@ -72,6 +159,22 @@ div[data-item-name='convert-to'] {
 
   .ce-popover-item__title {
     display: none;
+  }
+
+  /* The two moves side by side, removal set apart at the end of the row: a
+     reorder click never lands on delete, and delete only turns red once aimed. */
+  [data-item-name='move-up'],
+  [data-item-name='move-down'] {
+    order: 1;
+  }
+
+  [data-item-name='delete'] {
+    order: 2;
+    margin-left: auto;
+  }
+
+  [data-item-name='delete']:not(.ce-popover-item--confirmation):hover .ce-popover-item__icon {
+    color: #dc2626; /* red-600 */
   }
 }
 

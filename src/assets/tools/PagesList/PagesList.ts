@@ -7,7 +7,7 @@ import { API, BlockToolData } from '@editorjs/editorjs'
 import { BlockTuneData } from '@editorjs/editorjs/types/block-tunes/block-tune-data'
 import { Suggest } from '../../../../../admin/src/Resources/assets/suggest.js'
 import { BaseTool } from '../Abstract/BaseTool'
-import { BLOCK_STATE, StateBlock, StateBlockToolInterface } from '../utils/StateBlock'
+import { StateBlock, StateBlockToolInterface } from '../utils/StateBlock'
 import { exportPagesListToMarkdown } from './PagesListExportToMarkdown'
 import { logger } from '../utils/logger'
 
@@ -217,22 +217,6 @@ export default class PagesList extends BaseTool implements StateBlockToolInterfa
     return this.nodes.orderSelect
   }
 
-  public show(state: number): void {
-    if (state === BLOCK_STATE.VIEW) {
-      if (!this.validate()) {
-        this.api.notifier.show({
-          message: this.api.i18n.t(
-            'Something is missing to properly render the the pages list.',
-          ),
-          style: 'error',
-        })
-        StateBlock.show(this, BLOCK_STATE.EDIT)
-        return
-      }
-      StateBlock.show(this, state)
-    }
-  }
-
   protected updateData(): void {
     this.data.kw = this.nodes?.kwInput?.textContent || this.data.kw
     this.data.display = this.nodes?.displaySelect?.value || this.data.display
@@ -249,6 +233,8 @@ export default class PagesList extends BaseTool implements StateBlockToolInterfa
     this.updateData()
     return this.data
   }
+
+  public readonly incompleteMessage = 'Say which pages to list first.'
 
   public validate(): boolean {
     this.updateData()
@@ -294,10 +280,10 @@ export default class PagesList extends BaseTool implements StateBlockToolInterfa
 
   static importFromMarkdown(editor: API, markdown: string): void {
     const result = MarkdownUtils.parseTunesFromMarkdown(markdown)
-    const tunes: BlockTuneData = result.tunes
-    markdown = result.markdown
-
-    const properties = MarkdownUtils.extractTwigFunctionProperties('pages_list', markdown)
+    const properties = MarkdownUtils.extractTwigFunctionProperties(
+      'pages_list',
+      result.markdown,
+    )
     if (!properties) return
 
     const data: PagesListData = {
@@ -308,8 +294,7 @@ export default class PagesList extends BaseTool implements StateBlockToolInterfa
       maxPages: properties[4] || PagesList.defaultData.maxPages,
     }
 
-    tunes.class = properties[5] || ''
-    tunes.anchor = properties[6] || ''
+    const tunes = MarkdownUtils.parseTuneArguments(properties.slice(5), result.tunes)
 
     const block = editor.blocks.insert('pages_list', data)
     editor.blocks.update(block.id, data, tunes)

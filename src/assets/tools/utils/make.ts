@@ -2,7 +2,7 @@ import { BaseTool } from '../Abstract/BaseTool'
 import './switch.css'
 
 export default class make {
-  private static switchCount = 0
+  private static idCount = 0
 
   public static element(
     tagName: string,
@@ -80,6 +80,11 @@ export default class make {
     options.forEach((option) => make.option(select, option, null, {}, selectedValue))
   }
 
+  /** A counter, not the clock: elements built in the same tick get distinct ids. */
+  public static uniqueId(prefix: string): string {
+    return `${prefix}-${++make.idCount}`
+  }
+
   public static switchInput(
     name: string,
     labelText: string,
@@ -88,7 +93,7 @@ export default class make {
     // The link tool and the link tune both render a `targetBlank` switch: with a
     // shared id, both labels bind to whichever input the document holds first,
     // and clicking one toggles the other.
-    const id = `${name}-${++make.switchCount}`
+    const id = make.uniqueId(name)
 
     const wrapper = make.element('div', 'editor-switch')
     const checkbox = make.element('input', null, {
@@ -108,28 +113,5 @@ export default class make {
     }
 
     return wrapper
-  }
-
-  public static selectionCollapseToEnd(): void {
-    const sel = window.getSelection()
-    if (!sel || !sel.focusNode) return
-
-    const range = document.createRange()
-    range.selectNodeContents(sel.focusNode)
-    range.collapse(false)
-    sel.removeAllRanges()
-    sel.addRange(range)
-  }
-
-  public static moveCaretToTheEnd(element: HTMLElement) {
-    if (!element.focus) return
-    element.focus()
-    const range = document.createRange()
-    range.selectNodeContents(element)
-    range.collapse(false)
-    const selection = window.getSelection()
-    if (!selection) return
-    selection.removeAllRanges()
-    selection.addRange(range)
   }
 }

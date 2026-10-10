@@ -70,16 +70,13 @@ export default class Attaches extends AbstractMediaTool {
     }
 
     this.data = Attaches.normalizeData(data)
-
-    this.onSelectFile = config.onSelectFile
-    this.onUploadFile = config.onUploadFile
   }
 
   static normalizeData(data: AttachesDataToNormalize): AttachesData {
     return {
       title: data.title || '',
       file: {
-        media: data.file?.media || MediaUtils.extractMediaName(data.file?.url || ''),
+        media: MediaUtils.getMediaNameFromData(data.file),
         size: data.file?.size || 0,
       },
     }
@@ -117,14 +114,10 @@ export default class Attaches extends AbstractMediaTool {
     return this.data.title !== '' || this.data.file.media !== ''
   }
 
-  onUpload(response: UploadResponse): void {
-    if (!this.responsIsValid(response)) {
-      return this.handleUploadError('incorrect response: ' + JSON.stringify(response))
-    }
-
-    this.data.file.media = response.file.media
-    this.data.title = response.file.name || response.file.title || ''
-    this.data.file.size = response.file.size ?? 0
+  protected fillWith(file: UploadResponse['file']): void {
+    this.data.file.media = file.media
+    this.data.title = file.name || file.title || ''
+    this.data.file.size = file.size ?? 0
 
     this.showFileData()
 
@@ -246,12 +239,12 @@ export default class Attaches extends AbstractMediaTool {
       title: properties[0] || '',
       file: {
         media: properties[1] || '',
-        size: parseInt(properties[3] || '0', 10),
+        size: parseInt(properties[2] || '0', 10),
       },
     }
 
-    if (properties[4] && properties[4] !== '') {
-      tunes.anchor = properties[4]
+    if (properties[3]) {
+      tunes.anchor = properties[3]
     }
 
     const block = editor.blocks.insert('attaches')

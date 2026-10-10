@@ -5,7 +5,7 @@ import { MarkdownUtils } from '../utils/MarkdownUtils'
 import { API, BlockToolData } from '@editorjs/editorjs'
 import { BlockTuneData } from '@editorjs/editorjs/types/block-tunes/block-tune-data'
 import { BaseTool } from '../Abstract/BaseTool'
-import { BLOCK_STATE, StateBlock, StateBlockToolInterface } from '../utils/StateBlock'
+import { StateBlock, StateBlockToolInterface } from '../utils/StateBlock'
 
 interface SnippetSchemaField {
   type?: string
@@ -37,8 +37,6 @@ interface SnippetNodes {
   editInput?: HTMLInputElement
 }
 
-let nextSnippetId = 0
-
 /**
  * Block for the `snippet('name', {params})` Twig function. Lists the snippets
  * declared by the server (content snippets + dev components) and renders a
@@ -53,7 +51,7 @@ export default class Snippet extends BaseTool implements StateBlockToolInterface
   /** key → reader returning the current param value */
   private fieldReaders: Record<string, () => any> = {}
   /** stable suffix so this block's field ids never collide with another block's */
-  private readonly uid = `snippet-${++nextSnippetId}`
+  private readonly uid = make.uniqueId('snippet')
 
   public static toolbox = {
     title: 'Snippet',
@@ -262,6 +260,8 @@ export default class Snippet extends BaseTool implements StateBlockToolInterface
     this.data.params = params
   }
 
+  public readonly incompleteMessage = 'Choose a snippet first.'
+
   public validate(): boolean {
     return !!this.data.name
   }
@@ -269,18 +269,6 @@ export default class Snippet extends BaseTool implements StateBlockToolInterface
   public save(): SnippetData {
     this.updateData()
     return this.data
-  }
-
-  public show(state: number): void {
-    if (state === BLOCK_STATE.VIEW && !this.validate()) {
-      this.api.notifier.show({
-        message: this.api.i18n.t('Choose a snippet first.'),
-        style: 'error',
-      })
-      StateBlock.show(this, BLOCK_STATE.EDIT)
-      return
-    }
-    StateBlock.show(this, state)
   }
 
   public updatePreview(): void {

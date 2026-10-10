@@ -6,12 +6,13 @@ import {
   STATUS,
   UploadResponse,
 } from '../Abstract/AbstractMediaTool'
-import ToolboxIcon from './toolbox-icon.svg?raw'
+import { IconPlay } from '@codexteam/icons'
+import PlayIcon from './play.svg?raw'
 import make from '../utils/make'
 import { e, MarkdownUtils } from '../utils/MarkdownUtils'
 import { API, BlockToolData } from '@editorjs/editorjs'
 import { BlockTuneData } from '@editorjs/editorjs/types/block-tunes/block-tune-data'
-import { BLOCK_STATE, StateBlock, StateBlockToolInterface } from '../utils/StateBlock'
+import { StateBlock, StateBlockToolInterface } from '../utils/StateBlock'
 import { MediaUtils } from '../utils/media'
 
 export interface EmbedDataToNormalize extends BlockToolData {
@@ -47,7 +48,7 @@ export default class Embed extends AbstractMediaTool implements StateBlockToolIn
   data: EmbedData
 
   static get toolbox() {
-    return { title: 'Embed', icon: ToolboxIcon }
+    return { title: 'Embed', icon: IconPlay }
   }
 
   constructor({
@@ -74,7 +75,7 @@ export default class Embed extends AbstractMediaTool implements StateBlockToolIn
     return {
       serviceUrl: data.serviceUrl || '',
       alternativeText: data.alternativeText || '',
-      media: data.media || (data as EmbedDataToNormalize).image?.media || '',
+      media: MediaUtils.getMediaNameFromData(data),
     }
   }
 
@@ -82,14 +83,11 @@ export default class Embed extends AbstractMediaTool implements StateBlockToolIn
     return StateBlock.render(this)
   }
 
-  public onUpload(response: UploadResponse): void {
-    if (!this.responsIsValid(response)) {
-      return this.handleUploadError('incorrect response: ' + JSON.stringify(response))
-    }
-    this.data.media = response.file.media
-    if (!response.file.name) return
-    this.data.alternativeText = response.file.name
-    this.nodes.inputAlternativeText.textContent = response.file.name
+  protected fillWith(file: UploadResponse['file']): void {
+    this.data.media = file.media
+    if (!file.name) return
+    this.data.alternativeText = file.name
+    this.nodes.inputAlternativeText.textContent = file.name
     this.fillImage()
   }
 
@@ -117,6 +115,9 @@ export default class Embed extends AbstractMediaTool implements StateBlockToolIn
     return wrapper
   }
 
+  public readonly incompleteMessage =
+    'Add the video URL, its thumbnail and its alternative text first.'
+
   public validate(): boolean {
     return !!(this.data.serviceUrl && this.data.alternativeText && this.data.media)
   }
@@ -128,30 +129,15 @@ export default class Embed extends AbstractMediaTool implements StateBlockToolIn
 
     this.nodes.preview.innerHTML =
       '<div style="display:block;--aspect-ratio:16/9;background: center / cover no-repeat url(\'' +
-      '/media/md/' +
-      this.data.media +
+      MediaUtils.buildFullUrl(this.data.media) +
       '\');">' +
       '<div style="display: flex;justify-content: center;align-items: center; width:100%;height:100%;color:#c4302b">' +
-      ToolboxIcon.replace('width="16"', 'width="100"').replace(
+      PlayIcon.replace('width="16"', 'width="100"').replace(
         'height="16"',
         'height="100"',
       ) +
       '</div>' +
       '</div>'
-  }
-
-  public show(state: number): void {
-    this.updatePreview()
-    if (state !== BLOCK_STATE.VIEW) return StateBlock.show(this, state)
-    if (!this.validate()) {
-      this.api.notifier.show({
-        message: this.api.i18n.t(
-          'Something is missing to properly render the embeded video.',
-        ),
-        style: 'error',
-      })
-      return StateBlock.show(this, state)
-    }
   }
 
   public save(): EmbedData {
@@ -188,7 +174,7 @@ export default class Embed extends AbstractMediaTool implements StateBlockToolIn
     this.nodes.fileButton.appendChild(this.nodes.imageEl)
 
     if (this.validate() && this.nodes.inputs) {
-      this.show(BLOCK_STATE.VIEW)
+      this.updatePreview()
     }
   }
 

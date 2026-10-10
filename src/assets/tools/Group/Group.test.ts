@@ -3,6 +3,7 @@ import GroupStart, { GroupStartData } from './GroupStart'
 import GroupEnd from './GroupEnd'
 import { GroupNesting } from './GroupNesting'
 import { GroupRegistry } from './GroupRegistry'
+import { startAttributes } from './GroupSyntax'
 import { chunkTool } from '../../EditorJsParseMarkdown'
 import { MarkdownUtils } from '../utils/MarkdownUtils'
 import CodeBlock from '../CodeBlock/CodeBlock'
@@ -384,6 +385,82 @@ describe('GroupStart lifecycle', () => {
   })
 })
 
+describe('both markers, as blocks', () => {
+  beforeEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  /** Render the marker `id` among `blocks`, once the pairing has run. */
+  async function renderedMarker(
+    Marker: typeof GroupStart | typeof GroupEnd,
+    blocks: { id: string; name: string }[],
+    id: string,
+  ) {
+    const stub = apiStub(blocks)
+    const marker = new Marker({
+      data: { anchor: '', class: '' },
+      api: stub.api,
+      block: { id },
+      readOnly: false,
+    } as any)
+    marker.rendered()
+    await tick()
+    return { stub, marker }
+  }
+
+  it.each([
+    ['groupStart', GroupStart, 'g1', 'g2'],
+    ['groupEnd', GroupEnd, 'g2', 'g1'],
+  ])('a removed %s takes its partner along', async (_name, Marker, removed, partner) => {
+    const { stub, marker } = await renderedMarker(
+      Marker,
+      [
+        { id: 'g1', name: 'groupStart' },
+        { id: 'p1', name: 'paragraph' },
+        { id: 'g2', name: 'groupEnd' },
+      ],
+      removed,
+    )
+
+    stub.api.blocks.delete(stub.api.blocks.getBlockIndex(removed))
+    stub.deleted.length = 0 // keep only what the cascade deletes
+    marker.removed()
+    await tick()
+
+    expect(stub.deleted).toEqual([partner])
+  })
+
+  it.each([
+    ['groupStart', GroupStart, 'g1'],
+    ['groupEnd', GroupEnd, 'g2'],
+  ])('a moved %s pairs the markers by their new order', async (_name, Marker, moved) => {
+    const { stub, marker } = await renderedMarker(
+      Marker,
+      [
+        { id: 'g1', name: 'groupStart' },
+        { id: 'g2', name: 'groupEnd' },
+        { id: 'g3', name: 'groupEnd' },
+      ],
+      moved,
+    )
+
+    stub.list.splice(0, 2, stub.list[1]!, stub.list[0]!) // g2 g1 g3: g1 pairs with g3
+    marker.moved()
+    await tick()
+    stub.api.blocks.delete(stub.api.blocks.getBlockIndex('g1'))
+    stub.deleted.length = 0 // keep only what the cascade deletes
+    GroupRegistry.removePartnerOf(stub.api, 'g1')
+    await tick()
+
+    expect(stub.deleted).toEqual(['g3'])
+  })
+
+  it('both stay readable in read-only mode', () => {
+    expect(GroupStart.isReadOnlySupported).toBe(true)
+    expect(GroupEnd.isReadOnlySupported).toBe(true)
+  })
+})
+
 describe('GroupStart inputs', () => {
   function renderedTool(data: GroupStartData) {
     const { api } = apiStub([])
@@ -607,6 +684,8 @@ describe('GroupStart claims the show-more spellings', () => {
   })
 
   it.each([
+    // Holds nothing either, yet must not come back as the legacy comment.
+    '{{ startShowMore() }}',
     "{{ startShowMore('faq') }}",
     "{{ startShowMore('faq', 'mt-8') }}",
     "{{ startShowMore(showMoreExtraClass: 'mt-8') }}",
@@ -625,6 +704,27 @@ describe('GroupStart claims the show-more spellings', () => {
 
     expect(data).toEqual({ anchor: 'faq', class: 'lg:mt-8', collapsible: true, legacy: false })
   })
+})
+
+describe('startAttributes', () => {
+  it.each([
+    ['<div class="grid" id="faq">', { anchor: 'faq', class: 'grid' }],
+    ['  <div id="faq">  ', { anchor: 'faq', class: '' }],
+    ['{{ startShowMore() }}', { anchor: '', class: '' }],
+    ["{{startShowMore('faq')}}", { anchor: 'faq', class: '' }],
+    ["{{ startShowMore('faq', null) }}", { anchor: 'faq', class: '' }],
+    ['{{ startShowMore(null, "mt-8") }}', { anchor: '', class: 'mt-8' }],
+    ['<!--start-show-more-->', { anchor: '', class: '' }],
+  ])('reads %s', (markdown, attributes) => {
+    expect(startAttributes(markdown)).toEqual(attributes)
+  })
+
+  it.each(['<div style="color:red" id="faq">', "{{ startShowMore(page.slug, 'mt-8') }}"])(
+    'reads nothing from %s, which no tool claims',
+    (markdown) => {
+      expect(startAttributes(markdown)).toEqual({ anchor: '', class: '' })
+    },
+  )
 })
 
 describe('a group and a collapsible never close each other', () => {
