@@ -62,6 +62,7 @@ function fixture(
   const editor: any = {
     configuration: { holder, defaultBlock: 'paragraph', readOnly: false },
     readOnly: { isEnabled: false },
+    inlineToolbar: { close: vi.fn() },
     blocks: {
       getBlocksCount: () => redactor.children.length,
       getBlockByIndex: block,
@@ -387,6 +388,88 @@ it('reinitializes history without carrying edits from a replaced document', asyn
   expect(f.all()[0]!.data.text).toBe('original!')
 })
 
+it.each(['<input value="/draft">', '<textarea>/draft</textarea>'])(
+  'leaves inline toolbar draft history native for %s',
+  async (control) => {
+    const f = fixture()
+    await f.undo.initialize()
+    f.type('!')
+    await f.undo.flush()
+    const toolbar = document.createElement('div')
+    toolbar.className = 'ce-inline-toolbar'
+    toolbar.innerHTML = control
+    f.holder.append(toolbar)
+    const input = toolbar.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+      'input, textarea',
+    )!
+    input.focus()
+    for (const key of ['z', 'y']) {
+      const event = new KeyboardEvent('keydown', {
+        key,
+        ctrlKey: true,
+        bubbles: true,
+        cancelable: true,
+      })
+      input.dispatchEvent(event)
+      expect(event.defaultPrevented).toBe(false)
+    }
+    for (const inputType of ['historyUndo', 'historyRedo']) {
+      const event = new InputEvent('beforeinput', {
+        inputType,
+        bubbles: true,
+        cancelable: true,
+      })
+      input.dispatchEvent(event)
+      expect(event.defaultPrevented).toBe(false)
+    }
+    await f.undo.flush()
+    expect(f.all()[0]!.data.text).toBe('original!')
+    expect(f.undo.canUndo()).toBe(true)
+    await f.undo.undo()
+    expect(f.all()[0]!.data.text).toBe('original')
+  },
+)
+
+it.each(['checkbox', 'radio'])(
+  'keeps document undo active when an inline toolbar %s has focus',
+  async (type) => {
+    const f = fixture()
+    await f.undo.initialize()
+    f.type('!')
+    await f.undo.flush()
+    const toolbar = document.createElement('div')
+    toolbar.className = 'ce-inline-toolbar'
+    toolbar.innerHTML = `<input type="${type}">`
+    f.holder.append(toolbar)
+    const input = toolbar.querySelector('input')!
+    input.focus()
+    const event = new KeyboardEvent('keydown', {
+      key: 'z',
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    })
+    input.dispatchEvent(event)
+    await f.undo.flush()
+    expect(event.defaultPrevented).toBe(true)
+    expect(f.all()[0]!.data.text).toBe('original')
+  },
+)
+
+it('closes stale inline toolbar ranges before applying an undo snapshot', async () => {
+  const f = fixture()
+  await f.undo.initialize()
+  f.type('!')
+  await f.undo.flush()
+  const update = vi.spyOn(f.editor.blocks, 'update')
+  await f.undo.undo()
+  expect(f.editor.inlineToolbar.close).toHaveBeenCalledOnce()
+  expect(update).toHaveBeenCalledOnce()
+  expect(f.editor.inlineToolbar.close.mock.invocationCallOrder[0]).toBeLessThan(
+    update.mock.invocationCallOrder[0]!,
+  )
+})
+
 it('records typing while the bound form is still being exported', async () => {
   let finish!: () => void
   const exporting = new Promise<void>((resolve) => {
@@ -468,4 +551,33 @@ it('supports Command+Z and Command+Shift+Z on macOS', async () => {
   )
   await f.undo.flush()
   expect(f.all()[0]!.data.text).toBe('original!')
+})
+
+it('captures only the edited block in a long document and retains history across undo branches', async () => {
+  const normalize = vi.fn<NonNullable<UndoOptions['normalizeBlockData']>>((data) => data)
+  const f = fixture(
+    Array.from({ length: 200 }, (_, i) => paragraph(String(i), i === 199 ? '' : 'Text')),
+    {
+      normalizeBlockData: normalize,
+    },
+  )
+  await f.undo.initialize()
+  normalize.mockClear()
+  f.type(' first', 3)
+  await f.undo.flush()
+  expect(normalize).toHaveBeenCalledOnce()
+  expect(normalize.mock.calls[0]![1]).toEqual({ id: '3', type: 'paragraph' })
+  f.type(' second', 4)
+  await f.undo.flush()
+  expect(normalize).toHaveBeenCalledTimes(2)
+  await f.undo.undo()
+  expect(f.all()[4]!.data.text).toBe('Text')
+  expect(f.all()[3]!.data.text).toBe('Text first')
+  f.type(' branch', 5)
+  await f.undo.flush()
+  await f.undo.undo()
+  expect(f.all()[5]!.data.text).toBe('Text')
+  await f.undo.redo()
+  expect(f.all()[5]!.data.text).toBe('Text branch')
+  expect(f.all()[199]!.data.text).toBe('')
 })

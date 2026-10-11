@@ -7,6 +7,7 @@ namespace Pushword\AdminBlockEditor\Tests;
 use Facebook\WebDriver\Chrome\ChromeDevToolsDriver;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverDimension;
 use Facebook\WebDriver\WebDriverKeys;
 use PHPUnit\Framework\Attributes\Group;
 use Pushword\Admin\Tests\Frontend\AbstractPantherAdminTest;
@@ -69,6 +70,119 @@ final class UndoBrowserTest extends AbstractPantherAdminTest
         );
         $this->shortcut($client, 'y');
         self::assertTrue($this->pollUntilTrue($client, 'return document.querySelector("[data-id=keyboard] .ce-paragraph").textContent === "Original first second"'));
+    }
+
+    public function testInlineToolbarHistory(): void
+    {
+        $client = $this->openEditor('block-editor-inline-history-test');
+        $script = file_get_contents(__DIR__.'/browser/undo-inline.js');
+        self::assertIsString($script);
+        $client->executeScript($script);
+        self::assertTrue($this->pollUntilTrue($client, 'return window.undoInlineChecks.done', [], 90));
+        $results = $client->executeScript('return window.undoInlineChecks.results');
+        self::assertIsArray($results);
+        self::assertCount(17, $results);
+        foreach ($results as $result) {
+            self::assertIsArray($result);
+            self::assertTrue($result['passed'], json_encode($result, \JSON_THROW_ON_ERROR));
+        }
+    }
+
+    public function testNativeInlineToolbarHistory(): void
+    {
+        $client = $this->openEditor('block-editor-native-inline-history-test');
+        foreach (['bold' => 'b,strong', 'italic' => 'i,em', 'inline-code' => 'code', 'marker' => 'mark', 'Strikethrough' => 's,strike', 'small' => 'small', 'link' => 'a[href]'] as $name => $selector) {
+            $client->executeScript(<<<'JS'
+                void window.editors[document.querySelector('.editorjs-holder').id].blocks.render({
+                    blocks: [{ id: 'native-inline', type: 'paragraph', data: { text: 'Format me' } }],
+                });
+                JS);
+            $client->waitFor('[data-id="native-inline"] .ce-paragraph');
+            $this->sleepMs(650);
+            $field = $client->findElement(WebDriverBy::cssSelector('[data-id="native-inline"] .ce-paragraph'));
+            $field->click();
+            $field->sendKeys([WebDriverKeys::HOME, WebDriverKeys::SHIFT, ...array_fill(0, 6, WebDriverKeys::ARROW_RIGHT), WebDriverKeys::NULL]);
+            $buttonSelector = '.ce-inline-toolbar [data-item-name="'.$name.'"]';
+            $client->waitForVisibility($buttonSelector);
+            if ('link' === $name) {
+                $this->shortcut($client, 'k');
+                $client->waitForVisibility('.link-options__url');
+                $input = $client->findElement(WebDriverBy::cssSelector('.link-options__url'));
+                $input->sendKeys('https://example.org/native');
+                $this->shortcut($client, 'z');
+                self::assertTrue($this->pollUntilTrue($client, 'return document.querySelector(".link-options__url").value === ""'), 'URL input uses native undo');
+                self::assertSame('Format me', $client->executeScript('return document.querySelector("[data-id=native-inline] .ce-paragraph").innerHTML'));
+                $this->shortcut($client, 'y');
+                self::assertTrue($this->pollUntilTrue($client, 'return document.querySelector(".link-options__url").value === "https://example.org/native"'), 'URL input uses native redo');
+                $input->sendKeys(WebDriverKeys::ENTER);
+            } else {
+                $button = $client->findElement(WebDriverBy::cssSelector($buttonSelector));
+                if ('button' !== $button->getTagName()) {
+                    $button = $button->findElement(WebDriverBy::tagName('button'));
+                }
+
+                $button->click();
+            }
+
+            $formatted = 'return document.querySelector("[data-id=native-inline] .ce-paragraph").querySelector(arguments[0])?.textContent === "Format"';
+            self::assertTrue($this->pollUntilTrue($client, $formatted, [$selector]), $name.' applied');
+            $this->shortcut($client, 'z');
+            self::assertTrue($this->pollUntilTrue($client, 'return document.querySelector("[data-id=native-inline] .ce-paragraph").innerHTML === "Format me"'), $name.' undo');
+            self::assertSame('Format', $client->executeScript('return getSelection().toString()'), $name.' selection');
+            $this->shortcut($client, 'y');
+            self::assertTrue($this->pollUntilTrue($client, $formatted, [$selector]), $name.' redo');
+
+            if (\in_array($name, ['bold', 'italic'], true)) {
+                $this->shortcut($client, 'bold' === $name ? 'b' : 'i');
+                self::assertTrue($this->pollUntilTrue($client, 'return !document.querySelector("[data-id=native-inline] .ce-paragraph").querySelector(arguments[0])', [$selector]), $name.' keyboard toggle');
+                $this->shortcut($client, 'z');
+                self::assertTrue($this->pollUntilTrue($client, $formatted, [$selector]), $name.' keyboard undo');
+            }
+        }
+    }
+
+    public function testIncrementalWorkAndDeferredCodeEditors(): void
+    {
+        $client = $this->openEditor('block-editor-performance-test');
+        $script = file_get_contents(__DIR__.'/browser/performance.js');
+        self::assertIsString($script);
+        $client->executeScript($script);
+        self::assertTrue($this->pollUntilTrue($client, 'return window.editorPerformanceChecks.done', [], 60));
+        $results = $client->executeScript('return window.editorPerformanceChecks.results');
+        self::assertIsArray($results);
+        foreach ($results as $result) {
+            self::assertIsArray($result);
+            self::assertTrue($result['passed'], json_encode($result, \JSON_THROW_ON_ERROR));
+        }
+
+        self::assertCount(10, $results);
+    }
+
+    public function testOutlineResizingKeepsTheEditorWithinTheViewport(): void
+    {
+        $client = $this->openEditor('block-editor-outline-resize-test');
+        $window = $client->getWebDriver()->manage()->window();
+        $originalSize = $window->getSize();
+        $preference = $client->executeScript('return localStorage.getItem("pw-outline-collapsed")');
+
+        try {
+            $window->setSize(new WebDriverDimension(1280, 900));
+            $client->executeScript('document.querySelector(".pw-outline-opener").click()');
+            self::assertTrue($this->pollUntilTrue($client, 'return parseFloat(getComputedStyle(document.body).paddingLeft) === document.querySelector(".pw-outline").getBoundingClientRect().width'));
+            self::assertSame('0', $client->executeScript('return localStorage.getItem("pw-outline-collapsed")'));
+
+            $window->setSize(new WebDriverDimension(390, 844));
+            self::assertTrue($this->pollUntilTrue($client, 'return getComputedStyle(document.body).paddingLeft === "0px"'));
+            self::assertTrue($this->pollUntilTrue($client, 'return document.documentElement.scrollWidth <= innerWidth'));
+            self::assertTrue($client->executeScript('return document.querySelector(".pw-outline").getBoundingClientRect().width > 0'));
+            self::assertSame('0', $client->executeScript('return localStorage.getItem("pw-outline-collapsed")'));
+
+            $window->setSize(new WebDriverDimension(1280, 900));
+            self::assertTrue($this->pollUntilTrue($client, 'return parseFloat(getComputedStyle(document.body).paddingLeft) === document.querySelector(".pw-outline").getBoundingClientRect().width'));
+        } finally {
+            $window->setSize($originalSize);
+            $client->executeScript('if (arguments[0] === null) localStorage.removeItem("pw-outline-collapsed"); else localStorage.setItem("pw-outline-collapsed", arguments[0])', [$preference]);
+        }
     }
 
     private function shortcut(Client $client, string $key): void
