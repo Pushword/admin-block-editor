@@ -12,6 +12,7 @@ const destroyEditor = vi.fn()
 const destroyUndo = vi.fn()
 const parseMarkdown = vi.fn()
 const scheduleRefresh = vi.fn()
+const outlineCreated = vi.fn()
 
 /** Config the editorJs class handed to Editor.js, captured at construction. */
 let captured: any = null
@@ -52,6 +53,9 @@ vi.mock('./tools/utils/Undo/Undo', () => ({
 vi.mock('./outline/OutlinePanel', () => ({
   OutlinePanel: class {
     scheduleRefresh = scheduleRefresh
+    constructor() {
+      outlineCreated()
+    }
   },
 }))
 vi.mock('./tools/Hyperlink/PasteLink', () => ({ default: class {} }))
@@ -62,7 +66,7 @@ const { editorJs } = await import('./editor')
 const { editorJsHelper } = await import('./editorJsHelper')
 const { EditorModeManager } = await import('./EditorModeManager')
 
-function setUpDom(): void {
+function setUpDom(pageEditor = true): void {
   document.body.innerHTML = ''
   const holder = document.createElement('div')
   holder.id = 'ed'
@@ -71,6 +75,11 @@ function setUpDom(): void {
   input.id = 'inp'
   const form = document.createElement('form')
   form.append(holder, input)
+  if (pageEditor) {
+    const title = document.createElement('input')
+    title.className = 'h1Field'
+    form.append(title)
+  }
   document.body.append(form)
 }
 
@@ -78,8 +87,9 @@ function setUpDom(): void {
 function boot(
   content: string,
   extraConfig: Record<string, unknown> = {},
+  pageEditor = true,
 ): InstanceType<typeof editorJs> {
-  setUpDom()
+  setUpDom(pageEditor)
   captured = null
   ;(window as any).editorjsConfig = { holder: 'ed', tools: {}, ...extraConfig }
   ;(window as any).pageMainContent = content
@@ -95,6 +105,17 @@ beforeEach(() => {
   parseMarkdown.mockClear()
   destroyEditor.mockClear()
   destroyUndo.mockClear()
+  outlineCreated.mockClear()
+})
+
+it('keeps the admin navigation for editors outside the page form', () => {
+  boot('{"blocks":[]}', { outline: { labels: {} } }, false)
+  expect(outlineCreated).not.toHaveBeenCalled()
+})
+
+it('keeps the outline available in the page editor', () => {
+  boot('{"blocks":[]}', { outline: { labels: {} } })
+  expect(outlineCreated).toHaveBeenCalledOnce()
 })
 
 it('accepts a site-provided tool constructor alongside the built-in tools', () => {
@@ -174,6 +195,22 @@ it('leaves an erasing key typed outside the blocks alone', () => {
   holder.querySelector('input')!.dispatchEvent(event)
 
   expect(event.defaultPrevented).toBe(false)
+})
+
+it.each(['input', 'button'])('keeps characters typed in a popup %s from replacing selected blocks', (tag) => {
+  const instance = boot('{"blocks":[]}')
+  const holder = document.getElementById('ed')!
+  holder.innerHTML = `<div class="ce-block ce-block--selected"><p contenteditable="true">Text</p></div><div class="ce-settings"><${tag}></${tag}></div>`
+  const control = holder.querySelector(tag)!
+  const editor = instance.getEditors().ed!
+  for (const key of ['x', ' ']) {
+    window.getSelection()!.collapse(holder.querySelector('p')!.firstChild, 0)
+    const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
+    control.dispatchEvent(event)
+    expect(event.defaultPrevented).toBe(false)
+  }
+  expect(editor.blocks.insert).not.toHaveBeenCalled()
+  expect(editor.blocks.delete).not.toHaveBeenCalled()
 })
 
 it.each(['read-only', 'text selection', 'unselected blocks'])('keeps native typing with %s', (state) => {
