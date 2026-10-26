@@ -31,7 +31,7 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-it('keeps diagnostics hidden during normal editing and records source mode changes', () => {
+it('offers the report before any failure, without a failure message, and records source mode changes', () => {
   holder.querySelector('p')!.dispatchEvent(
     new InputEvent('beforeinput', { bubbles: true, inputType: 'insertText' }),
   )
@@ -40,7 +40,8 @@ it('keeps diagnostics hidden during normal editing and records source mode chang
     { action: 'input:insertText' },
     { action: 'mode:json' },
   ])
-  expect(document.querySelector<HTMLElement>('[data-pw-diagnostics-for]')?.hidden).toBe(true)
+  expect(document.querySelector<HTMLElement>('[data-pw-diagnostics-for]')?.hidden).toBe(false)
+  expect(document.querySelector<HTMLElement>('[role=alert]')?.hidden).toBe(true)
 })
 
 it('records useful action metadata while omitting input, clipboard and exception text', () => {
@@ -121,7 +122,6 @@ it.each([
       { operation: 'uncaught', warning: 'resize-observer-loop', frames: [] },
     ])
     expect(document.querySelector<HTMLElement>('[role=alert]')?.hidden).toBe(true)
-    expect(document.querySelector<HTMLElement>('[data-pw-diagnostics-for]')?.hidden).toBe(true)
     expect(event.defaultPrevented).toBe(false)
     expect(JSON.stringify(diagnostics.report())).not.toContain(message)
   },
@@ -183,4 +183,21 @@ it('can report an initialization failure before the Editor.js API is ready', () 
     editorjs: '2.33.0',
     errors: [{ operation: 'uncaught', name: 'TypeError' }],
   })
+})
+
+it('records mode clicks from the container naming the editor, wherever it sits', () => {
+  diagnostics.destroy()
+  document.body.innerHTML = `<div id="editor"></div>
+    <div data-pw-editor-modes-for="editor"><button type="button" data-pw-editor-mode="markdown">MD</button></div>`
+  const named = new EditorDiagnostics(document.getElementById('editor')!, {
+    blocks: { getBlocksCount: () => 1, getById: () => ({ name: 'paragraph' }) },
+  } as unknown as EditorJS, {
+    version: '1.2.3',
+    editorjsVersion: '2.33.0',
+    labels: { failure: 'x' },
+  })
+  document.querySelector<HTMLButtonElement>('[data-pw-editor-mode]')!.click()
+
+  expect(named.report().actions).toMatchObject([{ action: 'mode:markdown' }])
+  named.destroy()
 })
