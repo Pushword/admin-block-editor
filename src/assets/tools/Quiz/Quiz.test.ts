@@ -588,4 +588,47 @@ describe('Quiz assessment', () => {
     const importApi = {blocks: {insert: () => ({id: 'assessment'}), update: () => {}}} as unknown as API
     expect(Quiz.importFromMarkdown(importApi, Quiz.exportToMarkdown(data))).toMatchObject(data)
   })
+
+  it('keeps a chosen result setting across a mode switch, while defaults follow the mode', () => {
+    const tool = new Quiz({ data: { showComparison: false, questions: [{ q: 'Q', answers: [{ a: 'A', correct: true }, { a: 'B' }] }] }, api, readOnly: false })
+    const el = tool.render()
+    const switchTo = (mode: string): void => {
+      const select = el.querySelector<HTMLSelectElement>('.cdx-quiz__mode-select')!
+      select.value = mode
+      select.dispatchEvent(new Event('change'))
+    }
+
+    switchTo('profile')
+    expect(tool.save()).toMatchObject({ showComparison: false })
+    expect(tool.save().recordResults).toBeUndefined()
+
+    switchTo('assessment')
+    expect(el.querySelector<HTMLInputElement>('[data-setting="recordResults"]')!.checked).toBe(false)
+    expect(tool.save()).toMatchObject({ mode: 'assessment', showComparison: false })
+    expect(tool.save().recordResults).toBeUndefined()
+
+    const record = el.querySelector<HTMLInputElement>('[data-setting="recordResults"]')!
+    record.checked = true
+    record.dispatchEvent(new Event('change'))
+    switchTo('quiz')
+    switchTo('assessment')
+    expect(tool.save()).toMatchObject({ recordResults: true, showComparison: false })
+  })
+
+  it('offers the comparison line in assessment mode, with its own default', () => {
+    const data: QuizData = { mode: 'profile', labels: { share: '{p}% like you' }, questions: [{ q: 'Q', answers: [{ a: 'A' }, { a: 'B' }] }] }
+    const tool = new Quiz({ data, api, readOnly: false })
+    const el = tool.render()
+    const share = el.querySelector<HTMLInputElement>('.cdx-quiz__label[data-label="share"]')!
+    expect(share.placeholder).toBe('{p}% got the same profile')
+
+    const select = el.querySelector<HTMLSelectElement>('.cdx-quiz__mode-select')!
+    select.value = 'assessment'
+    select.dispatchEvent(new Event('change'))
+
+    expect(share.hidden).toBe(false)
+    expect(share.placeholder).toBe('{p}% got the same result')
+    expect(share.getAttribute('aria-label')).toBe('{p}% got the same result')
+    expect(tool.save().labels).toMatchObject({ share: '{p}% like you' })
+  })
 })
