@@ -16,6 +16,7 @@ const outlineCreated = vi.fn()
 
 /** Config the editorJs class handed to Editor.js, captured at construction. */
 let captured: any = null
+const configs: any[] = []
 /** Options the editorJs class handed to Undo, captured at construction. */
 let undoOptions: any = null
 
@@ -23,7 +24,7 @@ vi.mock('@editorjs/editorjs', () => ({
   default: class {
     destroy = destroyEditor
     readOnly = { isEnabled: false }
-    blocks = { getBlockIndex: () => 0, insert: vi.fn(() => ({ id: 'replacement' })), delete: vi.fn() }
+    blocks = { getBlockIndex: () => 0, getBlocksCount: () => 0, getBlockByIndex: vi.fn(), insert: vi.fn(() => ({ id: 'replacement' })), delete: vi.fn() }
     caret = { setToBlock: vi.fn() }
     saver = { save: vi.fn(async () => ({ blocks: [] })) }
     tools = {
@@ -36,6 +37,7 @@ vi.mock('@editorjs/editorjs', () => ({
 
     constructor(config: any) {
       captured = config
+      configs.push(config)
     }
   },
 }))
@@ -92,7 +94,7 @@ function boot(
   setUpDom(pageEditor)
   captured = null
   ;(window as any).editorjsConfig = { holder: 'ed', tools: {}, ...extraConfig }
-  ;(window as any).pageMainContent = content
+  ;(document.getElementById('inp') as HTMLTextAreaElement).value = content
   ;(window as any).EditorJsParseMarkdown = class {
     parseMarkdown = parseMarkdown
   }
@@ -101,11 +103,29 @@ function boot(
 }
 
 beforeEach(() => {
+  delete window.editorjsConfigs
+  configs.length = 0
   initialize.mockClear()
   parseMarkdown.mockClear()
   destroyEditor.mockClear()
   destroyUndo.mockClear()
   outlineCreated.mockClear()
+})
+
+it('loads each editor from its own field when a form has multiple editors', () => {
+  setUpDom(false)
+  const form = document.querySelector('form')!
+  form.insertAdjacentHTML('beforeend', '<div id="second" data-input-id="secondInput"></div><textarea id="secondInput"></textarea>')
+  for (const [id, text] of [['inp', 'First'], ['secondInput', 'Second']]) {
+    (document.getElementById(id) as HTMLTextAreaElement).value = JSON.stringify({ blocks: [{ type: 'paragraph', data: { text } }] })
+  }
+  window.editorjsConfigs = {
+    ed: { holder: 'ed', tools: {} },
+    second: { holder: 'second', tools: {} },
+  }
+  const editors = new editorJs().getEditors()
+  expect(Object.keys(editors)).toEqual(['ed', 'second'])
+  expect(configs.map(config => config.data.blocks[0].data.text)).toEqual(['First', 'Second'])
 })
 
 it('keeps the admin navigation for editors outside the page form', () => {
@@ -195,6 +215,22 @@ it.each(['Delete', 'Backspace'])('erases selected blocks on %s though the browse
   expect(editor.blocks.insert).toHaveBeenCalledWith('paragraph', { text: '' }, undefined, 0, false)
   expect(vi.mocked(editor.blocks.delete).mock.calls).toEqual([[2], [1]])
   expect(editor.caret.setToBlock).toHaveBeenCalledWith('replacement', 'end')
+})
+
+it('preserves a heading when Backspace removes the preceding blank paragraph', () => {
+  const instance = boot('{"blocks":[]}')
+  const holder = document.getElementById('ed')!
+  holder.innerHTML = '<div class="ce-block" data-id="0"><p class="ce-paragraph" contenteditable="true">&nbsp;</p></div><div class="ce-block" data-id="1"><h3 class="ce-header" contenteditable="true">Title</h3></div>'
+  const field = holder.querySelector('h3')!
+  const editor = instance.getEditors().ed!
+  const blocks = Array.from(holder.children, (element, index) => ({ id: String(index), name: index ? 'header' : 'paragraph', holder: element }))
+  vi.spyOn(editor.blocks, 'getBlockIndex').mockImplementation(id => Number(id))
+  vi.spyOn(editor.blocks, 'getBlocksCount').mockReturnValue(2)
+  vi.mocked(editor.blocks.getBlockByIndex).mockImplementation(index => blocks[index] as any)
+  window.getSelection()!.collapse(field.firstChild, 0)
+  field.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }))
+  expect(editor.blocks.delete).toHaveBeenCalledExactlyOnceWith(0)
+  expect(editor.caret.setToBlock).toHaveBeenCalledExactlyOnceWith('1', 'start')
 })
 
 it('leaves an erasing key typed outside the blocks alone', () => {
