@@ -1,15 +1,10 @@
-import { test, expect, render, saveAndReload } from './fixtures'
-
-import { readFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { test, expect, render, saveAndReload, editorUrl, waitForEditorWorker } from './fixtures'
 
 test.describe('before initialization', () => {
   test.use({ javaScriptEnabled: false })
 
   test('renders loading feedback before JavaScript runs', async ({ page }, testInfo) => {
-    const pages = JSON.parse(readFileSync(join(tmpdir(), 'com.github.pushword.pushword/tests', process.env.TEST_RUN_ID!, 'browser-pages.json'), 'utf8'))
-    await page.goto(pages[testInfo.project.name])
+    await page.goto(editorUrl(testInfo))
     await expect(page.locator('[data-pw-editor-widget]')).toHaveAttribute('data-pw-editor-state', 'loading')
     await expect(page.getByText('Loading content…', { exact: true })).toBeVisible()
     await expect(page.locator('.editorjs-holder')).toHaveAttribute('inert', '')
@@ -46,6 +41,7 @@ test('waits for Markdown content before revealing or saving the editor', async (
   })
   await page.reload()
   await page.waitForFunction(() => typeof (window as any).releaseLoading === 'function')
+  await waitForEditorWorker(page)
   await expect(page.locator('[data-pw-editor-status]')).toBeVisible()
   await expect(page.locator('.ce-paragraph')).toBeHidden()
   await expect(page.locator('.h1Field')).toBeFocused()
@@ -65,6 +61,7 @@ test('waits for Markdown content before revealing or saving the editor', async (
   await expect(page.locator('[data-pw-editor-widget]')).toHaveAttribute('data-pw-editor-state', 'ready')
   await expect(page.locator('.ce-paragraph')).toHaveText('Content to preserve')
   await expect(page.locator('.h1Field')).toHaveValue('Title edited while loading')
+  await waitForEditorWorker(page)
 })
 
 test('offers a reload after a failed import and preserves the original source', async ({ editorPage: page }) => {
@@ -89,13 +86,15 @@ test('offers a reload after a failed import and preserves the original source', 
   await expect(page.locator('[data-pw-editor-load-error]')).toBeVisible()
   await expect(page.locator('.pw-editor-mode:disabled')).toHaveCount(3)
   await expect(page.locator('textarea[data-editorjs]')).toHaveValue(original)
+  await waitForEditorWorker(page)
   const posts: string[] = []
   page.on('request', request => { if (request.method() === 'POST') posts.push(request.url()) })
   await page.locator('.action-saveAndContinue').click()
   await expect(page.locator('[data-pw-editor-load-error]')).toBeVisible()
   expect(posts).toEqual([])
   await expect(page.locator('textarea[data-editorjs]')).toHaveValue(original)
-  await page.getByRole('button', { name: 'Reload page', exact: true }).click()
+  await page.getByRole('button', { name: 'Reload page', exact: true }).press('Enter')
   await expect(page.locator('[data-pw-editor-widget]')).toHaveAttribute('data-pw-editor-state', 'ready')
   await expect(page.locator('.ce-paragraph')).toHaveText('Original source')
+  await waitForEditorWorker(page)
 })

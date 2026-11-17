@@ -1,4 +1,4 @@
-import { test as base, expect, type BrowserContext, type Page } from '@playwright/test'
+import { test as base, expect, type BrowserContext, type Page, type TestInfo } from '@playwright/test'
 import type { OutputBlockData } from '@editorjs/editorjs'
 import { existsSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -7,16 +7,52 @@ import { join } from 'node:path'
 type StorageState = Awaited<ReturnType<BrowserContext['storageState']>>
 const directory = join(tmpdir(), 'com.github.pushword.pushword/tests', process.env.TEST_RUN_ID!)
 
+type WorkerStartupWindow = typeof window & { pwTestEditorWorkers: { started: number, ready: number } }
+
+export async function waitForEditorWorker(page: Page): Promise<void> {
+  // Page network-idle does not include the module imports inside a worker.
+  await expect.poll(() => page.evaluate(() => {
+    const { started, ready } = (window as WorkerStartupWindow).pwTestEditorWorkers
+    return started > 0 && ready === started
+  }), { message: 'Monaco worker imports must finish before navigating' }).toBe(true)
+}
+
 async function waitForEditor(page: Page): Promise<void> {
   await page.waitForFunction(() => {
     const holder = document.querySelector<HTMLElement>('.editorjs-holder')
     return holder && window.editors?.[holder.id]?.blocks && !document.querySelector('[data-pw-baseline-pending]')
   })
+  await waitForEditorWorker(page)
+}
+
+export function editorUrl(testInfo: TestInfo): string {
+  const pages: Record<string, string> = JSON.parse(readFileSync(join(directory, 'browser-pages.json'), 'utf8'))
+  return pages[`${testInfo.project.name}:${testInfo.parallelIndex}`]!
 }
 
 export const test = base.extend<{ editorPage: Page }, { authState: StorageState }>({
+  page: async ({ page }, use) => {
+    await page.addInitScript(() => {
+      const state = window as WorkerStartupWindow
+      state.pwTestEditorWorkers = { started: 0, ready: 0 }
+      window.Worker = new Proxy(window.Worker, {
+        construct(Target, args) {
+          const worker = Reflect.construct(Target, args) as Worker
+          if ((args[1] as WorkerOptions | undefined)?.name === 'editorWorkerService') {
+            state.pwTestEditorWorkers.started++
+            worker.addEventListener('message', event => {
+              // Monaco sends this after its module and static imports have loaded.
+              if (event.data?.type === 'vscode-worker-ready') state.pwTestEditorWorkers.ready++
+            })
+          }
+          return worker
+        },
+      })
+    })
+    await use(page)
+  },
   authState: [async ({ browser }, use, workerInfo) => {
-    const statePath = join(directory, `auth-${workerInfo.project.name}.json`)
+    const statePath = join(directory, `auth-${workerInfo.project.name}-${workerInfo.parallelIndex}.json`)
     // A failed test restarts its worker; reuse the login instead of hitting the login throttle.
     if (existsSync(statePath)) {
       await use(JSON.parse(readFileSync(statePath, 'utf8')))
@@ -41,12 +77,12 @@ export const test = base.extend<{ editorPage: Page }, { authState: StorageState 
     page.on('console', message => {
       if (message.type() === 'error') errors.push(message.text())
     })
-    const pages: Record<string, string> = JSON.parse(readFileSync(join(directory, 'browser-pages.json'), 'utf8'))
-    // Sequential journeys reuse the same page and must retain its lock ownership.
+    const url = editorUrl(testInfo)
+    // Each parallel worker owns a page and retains its lock between journeys and restarts.
     await page.addInitScript(tabId => sessionStorage.setItem('pw-edit-lock-tab-id', tabId),
-      `${process.env.TEST_RUN_ID}:${testInfo.project.name}`)
+      `${process.env.TEST_RUN_ID}:${testInfo.project.name}:${testInfo.parallelIndex}`)
     const lockResponse = page.waitForResponse(response => response.url().endsWith('/lock/ping'))
-    await page.goto(pages[testInfo.project.name]!)
+    await page.goto(url)
     const lockInfo = await (await lockResponse).json()
     expect(lockInfo.isOwner, 'The journey must own the page edit lock').toBe(true)
     await expect(page.locator('#pw-edit-lock-banner')).toBeHidden()
@@ -55,6 +91,7 @@ export const test = base.extend<{ editorPage: Page }, { authState: StorageState 
     await waitForEditor(page)
     testInfo.annotations.push({ type: 'browser version', description: `${testInfo.project.name} ${browser.version()}` })
     testInfo.annotations.push({ type: 'platform', description: await page.evaluate(() => navigator.userAgent) })
+    testInfo.annotations.push({ type: 'worker page', description: url })
     await use(page)
     expect(errors, 'Browser exceptions and console errors').toEqual([])
   },
