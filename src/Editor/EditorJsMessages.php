@@ -16,6 +16,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 final readonly class EditorJsMessages
 {
+    /** Paragraph insertion around embedded code editors. */
+    private const array RAW = [
+        'Add paragraph after' => 'editorAddParagraphAfter',
+        'Add paragraph before' => 'editorAddParagraphBefore',
+    ];
+
     /** Labels emitted by the media tools' shared base class. */
     private const array MEDIA = [
         'Alternative text' => 'editorAlternativeText',
@@ -78,7 +84,10 @@ final readonly class EditorJsMessages
                     'converter' => $this->translate(['Convert to' => 'editorConvertTo']),
                 ],
                 'toolbar' => [
-                    'toolbox' => $this->translate(['Add' => 'editorAdd']),
+                    'toolbox' => $this->translate([
+                        'Add' => 'editorAdd',
+                        'Add paragraph' => 'editorAddParagraph',
+                    ]),
                 ],
                 'popover' => $this->translate([
                     'Convert to' => 'editorConvertTo',
@@ -120,9 +129,21 @@ final readonly class EditorJsMessages
                     'No page has this slug' => 'editorCardListUnknownSlug',
                 ]),
                 'codeBlock' => $this->translate([
+                    ...self::RAW,
+                    'Code' => 'editorCode',
+                    'Diagram preview' => 'editorMermaidPreview',
+                    'Done' => 'editorMermaidDone',
+                    'Edit diagram' => 'editorMermaidEdit',
                     'Enter Mermaid code to preview the diagram.' => 'editorMermaidEmpty',
+                    'Enter fullscreen' => 'editorMermaidEnterFullscreen',
+                    'Exit fullscreen' => 'editorMermaidExitFullscreen',
                     'Language' => 'editorLanguage',
+                    'Last valid preview' => 'editorMermaidLastValid',
+                    'Live preview' => 'editorMermaidLive',
                     'Loading preview…' => 'editorMermaidLoading',
+                    'Mermaid editor' => 'editorMermaidEditor',
+                    'Mermaid source' => 'editorMermaidSource',
+                    'Preview unavailable' => 'editorMermaidUnavailable',
                     'Unable to render the Mermaid diagram.' => 'editorMermaidError',
                 ]),
                 'embed' => $this->translate([
@@ -134,6 +155,8 @@ final readonly class EditorJsMessages
                     ...self::MEDIA,
                     'Ce média est déjà présent dans la galerie.' => 'editorMediaAlreadyInGallery',
                     'Convert to image' => 'editorConvertToImage',
+                    'Move image left' => 'editorMoveImageLeft',
+                    'Move image right' => 'editorMoveImageRight',
                 ]),
                 'groupEnd' => $this->translate([
                     'End of collapsible' => 'editorCollapsibleEnd',
@@ -182,6 +205,7 @@ final readonly class EditorJsMessages
                     'Media picker not available' => 'editorMediaPickerUnavailable',
                     'Upload failed' => 'editorUploadFailed',
                 ]),
+                'raw' => $this->translate(self::RAW),
                 'snippet' => $this->translate([
                     'Choose a snippet first.' => 'editorChooseSnippetFirst',
                     'Choose a snippet…' => 'editorChooseSnippet',

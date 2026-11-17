@@ -1,5 +1,101 @@
-import { test, expect, render } from './fixtures'
+import { test, expect, render, expectInsertionPreservesLayout } from './fixtures'
 import type { Locator } from '@playwright/test'
+
+test('the paragraph plus stays visible and tappable between non-text blocks', async ({ editorPage: page }) => {
+  await render(page, [
+    { type: 'table', data: { content: [['Keep cell']] } },
+    { type: 'raw', data: { html: '<div>Keep raw</div>' } },
+  ])
+  const button = page.getByRole('button', { name: 'Add paragraph', exact: true })
+  await expect(page.locator('.pw-block-insertion')).toHaveCSS('opacity', '1')
+  await expect(button).toHaveCSS('height', '44px')
+  await expectInsertionPreservesLayout(page)
+  await page.locator('.pw-block-insertion').tap({ position: { x: 4, y: 4 } })
+  await expect(page.locator('.ce-block')).toHaveCount(2)
+  await button.tap()
+  await expect(page.locator('.ce-block').nth(1).locator('.ce-paragraph')).toBeFocused()
+  await page.keyboard.type('Touch paragraph')
+  await expect(page.locator('.ce-paragraph')).toHaveText('Touch paragraph')
+  await expect(page.locator('.tc-cell')).toHaveText('Keep cell')
+})
+
+test('native touch text selection preserves mixed paragraph and list boundaries through undo', async ({ editorPage: page }) => {
+  await render(page, [
+    { type: 'paragraph', data: { text: 'BEFORE|CUT' } },
+    { type: 'list', data: { style: 'unordered', items: [
+      { content: 'CUT|AFTER', meta: {}, items: [] }, { content: 'OTHER', meta: {}, items: [] },
+    ] } },
+  ])
+  await page.locator('.ce-paragraph').tap()
+  // Represent the range delivered by native selection handles across editing hosts.
+  await page.locator('.ce-paragraph').evaluate(field => {
+    const end = document.querySelector('.cdx-list__item-content')!
+    getSelection()!.setBaseAndExtent(field.firstChild!, 7, end.firstChild!, 4)
+  })
+  await expect.poll(() => page.evaluate(() => CSS.highlights.has('pw-text-selection'))).toBe(true)
+  await page.locator('.ce-paragraph').evaluate(field => field.dispatchEvent(
+    new InputEvent('beforeinput', { inputType: 'deleteContentBackward', bubbles: true, cancelable: true }),
+  ))
+  await expect(page.locator('.ce-paragraph')).toHaveText('BEFORE|')
+  await expect(page.locator('.cdx-list__item-content')).toHaveText(['AFTER', 'OTHER'])
+  await page.locator('.ce-paragraph').evaluate(field => field.dispatchEvent(
+    new InputEvent('beforeinput', { inputType: 'historyUndo', bubbles: true, cancelable: true }),
+  ))
+  await expect(page.locator('.ce-paragraph')).toHaveText('BEFORE|CUT')
+  await expect(page.locator('.cdx-list__item-content')).toHaveText(['CUT|AFTER', 'OTHER'])
+})
+
+test('touch insertion stays in the gutter without expanding text or mixing with block actions', async ({ editorPage: page }, testInfo) => {
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 844 })
+    await render(page, [
+      { type: 'paragraph', data: { text: 'First paragraph' } },
+      { type: 'paragraph', data: { text: 'Second paragraph' } },
+      { type: 'header', data: { text: 'Section', level: 2 } },
+      { type: 'paragraph', data: { text: 'Text below the heading' } },
+    ])
+    await expectInsertionPreservesLayout(page)
+    const paragraph = page.locator('.ce-paragraph').nth(1)
+    await paragraph.tap()
+    const text = (await paragraph.boundingBox())!
+    const button = page.getByRole('button', { name: 'Add paragraph', exact: true }).first()
+    const rule = await page.locator('.pw-block-insertion').first().evaluate(element =>
+      ['::before', '::after'].map(pseudo => getComputedStyle(element, pseudo).content),
+    )
+    expect(rule).toEqual(['none', 'none'])
+    const insertion = (await button.boundingBox())!
+    const icon = (await button.locator('svg').boundingBox())!
+    expect(icon.x + icon.width / 2 - insertion.x - insertion.width / 2).toBe(2)
+    expect(insertion.width).toBeGreaterThanOrEqual(24)
+    expect(insertion.height).toBe(44)
+    expect(insertion.x).toBeGreaterThanOrEqual(text.x + text.width)
+    expect(insertion.x + insertion.width).toBeLessThanOrEqual(width)
+    const actions = page.locator('.ce-toolbar__actions')
+    await insideViewport(actions)
+    const toolbar = (await actions.boundingBox())!
+    expect(toolbar.y).toBeGreaterThan(text.y + text.height)
+    await page.screenshot({ path: testInfo.outputPath(`compact-insertion-${width}.png`) })
+    await button.tap()
+    await expect(page.locator('.ce-block').nth(1).locator('.ce-paragraph')).toBeFocused()
+    await expect(actions).toBeHidden()
+    await expect(page.locator('.ce-block')).toHaveCount(5)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+  }
+})
+
+test('the plus inserts text between a Mermaid diagram and an H3 on touch screens', async ({ editorPage: page }) => {
+  await render(page, [
+    { type: 'codeBlock', data: { html: 'graph TD\nA --> B', language: 'mermaid' } },
+    { type: 'header', data: { text: 'Keep H3', level: 3 } },
+  ])
+  await expect(page.locator('.pw-mermaid-preview svg')).toBeVisible()
+  await page.getByRole('button', { name: 'Add paragraph', exact: true }).tap()
+  await expect(page.locator('.ce-block').nth(1).locator('.ce-paragraph')).toBeFocused()
+  await page.keyboard.type('Touch paragraph')
+  await expect(page.locator('h3.ce-header')).toHaveText('Keep H3')
+  await expect(page.locator('.ce-paragraph')).toHaveText('Touch paragraph')
+  await expect(page.locator('.pw-block-insertion')).toHaveCount(2)
+})
 
 async function insideViewport(panel: Locator): Promise<void> {
   await expect
@@ -256,4 +352,59 @@ test('the outline and media picker open and close by touch', async ({
   )
   await modal.getByRole('button', { name: 'Close', exact: true }).tap()
   await expect(modal).toBeHidden()
+})
+
+test('Mermaid editing keeps a compact live preview and a tappable Done button', async ({ editorPage: page }) => {
+  await render(page, [
+    { type: 'codeBlock', data: { html: 'flowchart LR\nA[Before] --> B[After]', language: 'mermaid' } },
+  ])
+  const block = page.locator('.pw-code-block')
+  await expect(block.locator('.pw-mermaid-preview svg')).toBeVisible()
+  await block.getByRole('button', { name: 'Edit diagram' }).tap()
+  await expect(block.getByRole('textbox', { name: 'Mermaid source', exact: true })).toBeFocused()
+  const done = block.getByRole('button', { name: 'Done', exact: true })
+  expect((await done.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+  const preview = (await block.locator('.pw-mermaid-preview').boundingBox())!
+  const code = (await block.locator('.pw-code-source').boundingBox())!
+  expect(preview.y + preview.height).toBeLessThanOrEqual(code.y + 1)
+  expect(preview.height).toBeLessThanOrEqual(160)
+  await page.keyboard.press('Control+a')
+  await page.keyboard.type('flowchart LR\nA[Mobile] --> B[Preview]')
+  await expect(block.locator('.pw-mermaid-preview svg')).toContainText('Mobile')
+  await done.tap()
+  await expect(block.locator('.pw-code-source')).toBeHidden()
+})
+
+test('Mermaid fullscreen keeps source and live preview usable on touch screens', async ({ editorPage: page }, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 850 })
+  await render(page, [{ type: 'codeBlock', data: { html: 'flowchart LR\nA[Before] --> B[After]', language: 'mermaid' } }])
+  const block = page.locator('.pw-code-block')
+  await block.getByRole('button', { name: 'Edit diagram' }).tap()
+  await expect(block.getByRole('textbox', { name: 'Mermaid source', exact: true })).toBeFocused()
+  const overflow = await page.evaluate(() => getComputedStyle(document.documentElement).overflow)
+  const expand = block.getByRole('button', { name: 'Enter fullscreen' })
+  expect((await expand.boundingBox())!.width).toBeGreaterThanOrEqual(44)
+  expect((await expand.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+  await expand.tap()
+  const workspace = block.getByRole('dialog', { name: 'Mermaid editor', exact: true })
+  expect(await workspace.boundingBox()).toEqual({ x: 0, y: 0, width: 320, height: 850 })
+  const preview = workspace.getByRole('region', { name: 'Diagram preview', exact: true })
+  const diagram = (await preview.boundingBox())!
+  const code = (await workspace.locator('.pw-code-source').boundingBox())!
+  expect(diagram.y + diagram.height).toBeLessThanOrEqual(code.y + 1)
+  expect(diagram.height).toBeGreaterThan(200)
+  expect((await workspace.locator('.monaco-editor').boundingBox())!.height).toBeGreaterThan(250)
+  expect(await workspace.evaluate(node => node.scrollWidth)).toBeLessThanOrEqual(320)
+  await page.keyboard.press('Control+a')
+  await page.keyboard.type('flowchart LR\nA[Fullscreen] --> B[Mobile]')
+  await expect(preview.locator('svg')).toContainText('Fullscreen')
+  await page.screenshot({ path: testInfo.outputPath('mermaid-fullscreen-mobile.png') })
+  await page.setViewportSize({ width: 844, height: 390 })
+  await expect.poll(() => workspace.evaluate(node => node.clientWidth)).toBe(844)
+  expect((await workspace.locator('.monaco-editor').boundingBox())!.height).toBeGreaterThan(200)
+  await workspace.getByRole('button', { name: 'Exit fullscreen' }).tap()
+  await expect(workspace).toBeHidden()
+  await expect(block.locator('.pw-code-source')).toBeVisible()
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe(overflow)
+  await expect(block.locator('.pw-mermaid-preview svg')).toContainText('Fullscreen')
 })

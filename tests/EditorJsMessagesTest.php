@@ -38,6 +38,8 @@ final class EditorJsMessagesTest extends TestCase
             'editorConvertToImage' => 'Convertir en image',
             'editorMermaidError' => 'Impossible d’afficher le diagramme Mermaid.',
             'editorObfuscate' => 'Obfusquer',
+            'editorMoveImageLeft' => 'Déplacer l’image à gauche',
+            'editorMoveImageRight' => 'Déplacer l’image à droite',
             'editorWithHeadings' => 'Avec en-têtes',
         ], 'fr');
 
@@ -53,6 +55,8 @@ final class EditorJsMessagesTest extends TestCase
         self::assertSame('Convertir en', $messages['ui']['popover']['Convert to']);
         self::assertSame('Convertir en galerie', $messages['tools']['image']['Convert to gallery']);
         self::assertSame('Convertir en image', $messages['tools']['gallery']['Convert to image']);
+        self::assertSame('Déplacer l’image à gauche', $messages['tools']['gallery']['Move image left']);
+        self::assertSame('Déplacer l’image à droite', $messages['tools']['gallery']['Move image right']);
         self::assertSame('Impossible d’afficher le diagramme Mermaid.', $messages['tools']['codeBlock']['Unable to render the Mermaid diagram.']);
     }
 
@@ -138,6 +142,21 @@ final class EditorJsMessagesTest extends TestCase
         self::assertSame('Options de colonne', $messages['tools']['table']['Column options']);
         self::assertSame('Options de ligne', $messages['tools']['table']['Row options']);
         self::assertSame('Barré', $messages['toolNames']['Strikethrough']);
+        self::assertSame('Modifier', $messages['tools']['codeBlock']['Edit diagram']);
+        self::assertSame('Terminer', $messages['tools']['codeBlock']['Done']);
+        self::assertSame('Source Mermaid', $messages['tools']['codeBlock']['Mermaid source']);
+        self::assertSame('Dernier aperçu valide', $messages['tools']['codeBlock']['Last valid preview']);
+        self::assertSame('Aperçu en direct', $messages['tools']['codeBlock']['Live preview']);
+        self::assertSame('Aperçu du diagramme', $messages['tools']['codeBlock']['Diagram preview']);
+        self::assertSame('Aperçu indisponible', $messages['tools']['codeBlock']['Preview unavailable']);
+        self::assertSame('Passer en plein écran', $messages['tools']['codeBlock']['Enter fullscreen']);
+        self::assertSame('Quitter le plein écran', $messages['tools']['codeBlock']['Exit fullscreen']);
+        self::assertSame('Éditeur Mermaid', $messages['tools']['codeBlock']['Mermaid editor']);
+        self::assertSame('Ajouter un paragraphe', $messages['ui']['toolbar']['toolbox']['Add paragraph']);
+        foreach (['raw', 'codeBlock'] as $tool) {
+            self::assertSame('Ajouter un paragraphe avant', $messages['tools'][$tool]['Add paragraph before']);
+            self::assertSame('Ajouter un paragraphe après', $messages['tools'][$tool]['Add paragraph after']);
+        }
     }
 
     /**
