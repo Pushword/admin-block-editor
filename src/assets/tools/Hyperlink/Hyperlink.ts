@@ -1,16 +1,18 @@
 import SelectionUtils from './Selection'
 import make from '../utils/make'
 import { unwrapTag } from '../utils/inlineTag'
-import { IconLink, IconUnlink } from '@codexteam/icons'
+import { IconLink } from '@codexteam/icons'
 import { API } from '@editorjs/editorjs'
 import './Hyperlink.css'
 
 import PageLinkSuggestions, { PageLink } from './PageLinkSuggestions'
 import { isSafeLinkUrl } from './safeLinkUrl'
+import { selectedLink } from './selectedLink'
 
 interface HyperlinkNodes {
   wrapper: HTMLElement | null
   input: HTMLInputElement | null
+  error: HTMLElement | null
   selectDesign: HTMLSelectElement | null
   selectRel: HTMLSelectElement | null
   targetBlank: HTMLElement | null
@@ -55,6 +57,7 @@ export default class Hyperlink {
   private nodes: HyperlinkNodes = {
     wrapper: null,
     input: null,
+    error: null,
     selectDesign: null,
     selectRel: null,
     targetBlank: null,
@@ -118,6 +121,15 @@ export default class Hyperlink {
     )
 
     urlLabel.htmlFor = this.nodes.input.id
+    this.nodes.error = make.element('p', 'link-options__error')
+    this.nodes.error.id = `${this.nodes.input.id}-error`
+    this.nodes.error.setAttribute('role', 'alert')
+    this.nodes.error.textContent = this.api.i18n.t('Enter a valid URL.')
+    this.nodes.error.hidden = true
+    this.nodes.input.setAttribute('aria-describedby', this.nodes.error.id)
+    this.nodes.input.addEventListener('input', () => {
+      if (this.nodes.input!.hasAttribute('aria-invalid')) this.validateUrl()
+    })
 
     this.nodes.targetBlank = make.switchInput('targetBlank', this.api.i18n.t('New tab'))
 
@@ -132,12 +144,18 @@ export default class Hyperlink {
     )
 
     this.nodes.wrapper = make.element('div', 'link-options-wrapper')
-    this.nodes.wrapper.append(urlLabel, suggester)
+    this.nodes.wrapper.append(urlLabel, this.nodes.error, suggester)
     // Built even when hidden: the fields mirror the edited link's target, rel and
     // class, so a link keeps them when only its address changes.
     if (this.showOptions) {
       this.nodes.wrapper.append(fields)
     }
+    const actions = make.element('div', 'link-options__actions')
+    const done = make.element('button', 'link-options__done', { type: 'button' })
+    done.textContent = this.api.i18n.t('Done')
+    done.addEventListener('click', () => this.applyLink())
+    actions.append(done)
+    this.nodes.wrapper.append(actions)
 
     this.nodes.wrapper.addEventListener('change', () => {
       this.updateLink()
@@ -158,8 +176,7 @@ export default class Hyperlink {
         event.preventDefault()
         event.stopPropagation()
         event.stopImmediatePropagation()
-        this.updateLink()
-        this.closeActions()
+        this.applyLink()
       }
     })
     return this.nodes.wrapper
@@ -201,25 +218,10 @@ export default class Hyperlink {
   }
 
   checkState(): boolean {
-    const anchorTag = this.anchorTag || this.api.selection.findParentTag('A')
-
-    if (!anchorTag) {
-      this.showUnlink(false)
-      return false
-    }
-
-    if (!anchorTag.innerText.includes(window.getSelection()?.toString() || '')) {
-      this.showUnlink(true)
-      return false
-    }
-
-    this.showUnlink()
-    this.anchorTag = anchorTag
-    this.openActions()
-    this.updateActionValues(anchorTag)
-    setTimeout(() => this.nodes.input!.focus(), 0)
-
-    return true
+    if (!this.inputOpened) this.anchorTag = selectedLink()
+    this.nodes.button?.classList.toggle(this.api.styles.inlineToolButtonActive, !!this.anchorTag)
+    // Editor.js interprets true as a request to open the full link form.
+    return this.inputOpened
   }
 
   surround(range: Range | null): void {
@@ -230,11 +232,10 @@ export default class Hyperlink {
 
     if (this.inputOpened) this.selection.restore()
 
-    const termWrapper = this.api.selection.findParentTag('A') || this.anchorTag
+    const termWrapper = selectedLink()
 
     if (termWrapper) {
-      this.unlink(termWrapper)
-      this.closeActions()
+      this.edit(termWrapper)
       return
     }
 
@@ -244,14 +245,11 @@ export default class Hyperlink {
     this.openActions(true)
   }
 
-  showUnlink(showUnlink = true): void {
-    if (showUnlink) {
-      this.nodes.button?.classList.add(this.api.styles.inlineToolButtonActive)
-      this.nodes.button!.innerHTML = IconUnlink
-      return
-    }
-    this.nodes.button!.innerHTML = IconLink
-    this.nodes.button?.classList.remove(this.api.styles.inlineToolButtonActive)
+  edit(anchor: HTMLElement): void {
+    this.anchorTag = anchor
+    this.selection.save()
+    this.updateActionValues(anchor)
+    this.openActions(true)
   }
 
   updateActionValues(anchorTag: HTMLElement): void {
@@ -331,10 +329,6 @@ export default class Hyperlink {
 
   openActions(needFocus = false): void {
     this.nodes.wrapper!.style.display = 'block'
-    if (this.anchorTag) {
-      this.api.selection.expandToTag(this.anchorTag)
-      this.selection.save()
-    }
     if (needFocus) {
       this.nodes.input!.focus()
     }
@@ -343,7 +337,6 @@ export default class Hyperlink {
 
   closeActions(): void {
     this.selection.restore()
-    this.selection.collapseToEnd()
 
     const value = this.nodes.input!.value || ''
     if (!value.trim()) this.unlink(this.anchorTag)
@@ -351,11 +344,30 @@ export default class Hyperlink {
     this.api.inlineToolbar.close()
   }
 
+  private validateUrl(): boolean {
+    const value = this.nodes.input!.value.trim()
+    const valid = !value || isSafeLinkUrl(value)
+    this.nodes.error!.hidden = valid
+    if (valid) this.nodes.input!.removeAttribute('aria-invalid')
+    else this.nodes.input!.setAttribute('aria-invalid', 'true')
+    return valid
+  }
+
+  private applyLink(): void {
+    if (!this.validateUrl()) {
+      this.nodes.input!.focus()
+      return
+    }
+    this.updateLink()
+    this.closeActions()
+  }
+
   updateLink(): HTMLElement | null {
+    if (!this.validateUrl()) return null
     const href = this.nodes.input!.value.trim() || ''
     if (!this.anchorTag) {
       const range = this.selection.savedSelectionRange
-      if (!range || !href || !isSafeLinkUrl(href)) return null
+      if (!range || !href) return null
       // Expanding the selection blurs the URL input and emits change. Assign
       // first so that reentrant updateLink() edits this anchor instead of nesting one.
       this.anchorTag = document.createElement('a')
@@ -364,7 +376,7 @@ export default class Hyperlink {
       this.api.selection.expandToTag(this.anchorTag)
       this.selection.save()
     }
-    if (href && isSafeLinkUrl(href)) {
+    if (href) {
       this.anchorTag.setAttribute('href', href)
     } else {
       this.anchorTag.removeAttribute('href')
