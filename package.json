@@ -37,6 +37,7 @@
     "build:converter": "vite build --config vite.config.converter.mjs && rm src/Command/convert-json-to-markdown-built/style.css",
     "watch": "vite build --watch",
     "test": "vitest run",
+    "test:mutation": "node ../../.scripts/test-js-mutation.mjs admin-block-editor",
     "test:browser": "playwright test",
     "test:windows": "node tests/browser/windows.mjs",
     "test:watch": "vitest"
